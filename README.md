@@ -7,6 +7,6 @@ Creating a full stack application which will have the capability to manage emplo
 * DB - MySQL
 
 # Team Members
-* Deepak Vasuki Kashyap - 
-* Sushmita Javali - 
+* Deepak Vasuki Kashyap - deepakvaskashyap@ufl.edu
+* Sushmita Javali - ssubramanyajaval@ufl.edu
 * Tejas Dharmastalam Sridhar - tejasdharmastala@ufl.edu
