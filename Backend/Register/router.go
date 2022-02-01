@@ -5,6 +5,8 @@ import (
 	"fmt"
 	"net/http"
 
+	errorHandler "github.com/dstejas19/HRManagementSoftware-SoftwareEngineering/Backend/ErrorHandler"
+	errorResponses "github.com/dstejas19/HRManagementSoftware-SoftwareEngineering/Backend/ErrorHandler/ErrorResponse"
 	models "github.com/dstejas19/HRManagementSoftware-SoftwareEngineering/Backend/Models"
 	utils "github.com/dstejas19/HRManagementSoftware-SoftwareEngineering/Backend/Utils"
 	"github.com/gorilla/mux"
@@ -25,9 +27,7 @@ func registerHR(w http.ResponseWriter, req *http.Request) {
 	if err := json.NewDecoder(req.Body).Decode(&u); err != nil {
 		fmt.Println(err)
 
-		utils.SendBadRequestResponse()
-
-		w = utils.ResponseHandler(w, "Error decoding response object, incorrect input", "", "", http.StatusBadRequest)
+		errorResponses.SendBadRequestResponse(w)
 
 		return
 	}
@@ -42,16 +42,7 @@ func registerHR(w http.ResponseWriter, req *http.Request) {
 
 	jsonResponse, jsonError := json.Marshal(res)
 
-	if jsonError != nil {
-		fmt.Println(jsonError)
+	errorHandler.JsonErrorHandler(jsonError, fmt.Sprintf("Could not create json for %v. Exiting.\n", res))
 
-		w.WriteHeader(http.StatusInternalServerError)
-		w.Write(jsonResponse)
-
-		return
-	}
-
-	w.Header().Set("Content-Type", "application/json")
-	w.WriteHeader(http.StatusOK)
-	w.Write(jsonResponse)
+	utils.MessageHandler(w, jsonResponse, http.StatusCreated)
 }

@@ -1,10 +1,8 @@
 package errors
 
-var InternalServerError = Error{
-	Code: 500,
-	Msg:  "",
-	Err:  "Internal Server Error. Please try again.",
-	Data: "",
-}
+import "net/http"
 
-var InternalServerErrorJSON []byte
+var InternalServerError = Error{
+	Code: http.StatusInternalServerError,
+	Err:  "Internal Server Error. Please try again.",
+}
