@@ -1,0 +1,13 @@
+{
+  "devDependencies": {
+    "less": "^4.1.2",
+    "less-loader": "^10.2.0",
+    "sass": "^1.49.7",
+    "sass-loader": "^12.4.0",
+    "stylus": "^0.56.0",
+    "stylus-loader": "^6.2.0"
+  },
+  "dependencies": {
+    "vue-router": "^3.5.3"
+  }
+}
