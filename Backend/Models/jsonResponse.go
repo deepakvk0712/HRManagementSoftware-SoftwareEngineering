@@ -4,7 +4,7 @@ import (
 	"encoding/json"
 	"fmt"
 
-	errorHandler "github.com/dstejas19/HRManagementSoftware-SoftwareEngineering/Backend/ErrorHandler"
+	errorHandler "github.com/AlexWeiZH/HRManagementSoftware-SoftwareEngineering/Backend/ErrorHandler"
 )
 
 type JsonResponse struct {

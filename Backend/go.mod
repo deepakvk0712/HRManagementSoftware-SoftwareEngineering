@@ -1,4 +1,4 @@
-module github.com/dstejas19/HRManagementSoftware-SoftwareEngineering/Backend
+module github.com/AlexWeiZH/HRManagementSoftware-SoftwareEngineering/Backend
 
 go 1.17
 
