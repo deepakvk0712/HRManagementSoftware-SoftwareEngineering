@@ -2,9 +2,8 @@ package models
 
 import (
 	"encoding/json"
-	"fmt"
 
-	errorHandler "github.com/dstejas19/HRManagementSoftware-SoftwareEngineering/Backend/ErrorHandler"
+	errors "github.com/dstejas19/HRManagementSoftware-SoftwareEngineering/Backend/Models/Errors"
 )
 
 type JsonResponse struct {
@@ -16,7 +15,19 @@ type JsonResponse struct {
 func (m JsonResponse) ToJSON() []byte {
 	jsonResponse, jsonError := json.Marshal(m)
 
-	errorHandler.JsonErrorHandler(jsonError, fmt.Sprintf("Could not create json for %v. Exiting.\n", m))
+	if jsonError != nil {
+		internalServerError := errors.InternalServerError
+
+		message := JsonResponse{}
+
+		message.Error = internalServerError.Err
+		message.Data = ""
+		message.Msg = ""
+
+		res := message.ToJSON()
+
+		return res
+	}
 
 	return jsonResponse
 }

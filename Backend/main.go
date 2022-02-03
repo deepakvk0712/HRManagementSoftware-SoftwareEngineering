@@ -5,14 +5,15 @@ import (
 	"net/http"
 	"strings"
 
+	db "github.com/dstejas19/HRManagementSoftware-SoftwareEngineering/Backend/Database"
 	register "github.com/dstejas19/HRManagementSoftware-SoftwareEngineering/Backend/Register"
-	utils "github.com/dstejas19/HRManagementSoftware-SoftwareEngineering/Backend/Utils"
 
 	"github.com/gorilla/mux"
 )
 
 func main() {
-	utils.Init()
+	db.ConnectToDB()
+
 	router := mux.NewRouter()
 
 	router.HandleFunc("/", home)
