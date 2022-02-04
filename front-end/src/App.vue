@@ -4,15 +4,17 @@
     <v-content class="ma-4">
       <router-view></router-view>
     </v-content>
+    <PageBottom/>
   </v-app>
 </template>
 
 <script>
 import NavigationBar from './components/NavigationBar.vue'
+import PageBottom from './components/PageBottom.vue'
 
 export default {
   components: {
-    NavigationBar,
+    NavigationBar, PageBottom
   }
 }
 </script>

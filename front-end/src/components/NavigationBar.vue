@@ -11,6 +11,17 @@
             </v-btn>
         </v-app-bar>
         <v-navigation-drawer v-model="isClicked" dark app class="#444 darken-4">
+            <v-layout column align-center>
+            <v-flex class="mt-5"> 
+                    <v-avatar size="100">
+                            <img src="../assets/user.png" alt="">
+                    </v-avatar>
+                    <p class="white--text subheading mt-1 text-center">Username</p>
+            </v-flex>
+            <v-flex class="mt-4 mb-4">
+                <Popup />
+            </v-flex>
+            </v-layout>
             <v-list flat> 
                 <v-list-item v-for="itm in sideBarItems" :key="itm.title" router :to="itm.path" active-class="border">
                     <v-list-item-action>
