@@ -4,7 +4,7 @@
       <template v-slot:activator="{ on }">
         <v-btn v-on="on" text>
           <span style="margin-right: 10px"> Apply Leave </span>
-          <v-icon justify="center"> exit_to_app </v-icon>
+          <v-icon color="#D22B2B" justify="center"> exit_to_app </v-icon>
         </v-btn>
       </template>
       <v-card>

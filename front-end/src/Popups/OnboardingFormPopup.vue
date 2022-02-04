@@ -4,7 +4,7 @@
       <template v-slot:activator="{ on }">
         <v-btn v-on="on" text>
           <span style="margin-right: 10px">Start Onboarding</span>
-          <v-icon justify="center"> folder_shared </v-icon>
+          <v-icon color="#D22B2B" justify="center"> folder_shared </v-icon>
         </v-btn>
       </template>
       <v-card>
@@ -122,14 +122,5 @@ export default {
     preferedName: "",
     inputRules: [(v) => v.length >= 3 || "Minimum lenght is 3 charachters"],
   }),
-  methods: {
-    
-  },
-  computed: {
-    
-  },
-  watch: {
-    
-  },
 };
 </script>
