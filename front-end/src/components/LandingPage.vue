@@ -7,7 +7,7 @@
             <v-list-item>
               <v-list-item-avatar tile class="mt-n7">
                 <v-sheet color="white" elevation="10">
-                  <v-icon style="font-size: 48px; margin-top: 15px" large
+                  <v-icon color="#D22B2B" style="font-size: 48px; margin-top: 15px" large
                     >person</v-icon
                   >
                 </v-sheet>
@@ -39,7 +39,7 @@
             <v-list-item>
               <v-list-item-avatar tile class="mt-n7">
                 <v-sheet color="white" elevation="10">
-                  <v-icon style="font-size: 42px; margin-top: 10px" large>folder_shared</v-icon>
+                  <v-icon color="#D22B2B" style="font-size: 42px; margin-top: 10px" large>feed</v-icon>
                 </v-sheet>
               </v-list-item-avatar>
               <v-list-item-content>
@@ -55,50 +55,28 @@
             </v-card-actions>
           </v-card>
         </v-flex>
-        <!-- <v-flex sm6 xs12 md6 lg3>
+
+        <v-flex sm6 xs12 md6 lg3>
           <v-card class="ma-3">
             <v-list-item>
               <v-list-item-avatar tile class="mt-n7">
-                <v-sheet color="#03A9F4" width="80" height="80" elevation="10">
-                  <v-icon dark large>add_shopping_cart</v-icon>
+                <v-sheet color="white" elevation="10">
+                  <v-icon color="#D22B2B" style="font-size: 44px; margin-top: 10px" large>account_balance</v-icon>
                 </v-sheet>
               </v-list-item-avatar>
               <v-list-item-content>
-                <div class="overline text-right">Shopping</div>
-                <v-list-item-title class="headline mb-1 text-right"
-                  >$34,245</v-list-item-title
+                <div class="text-right mb-1" style="font-size: 20px">Financial Form</div>
+                <v-list-item-title class="text-right"
+                  >Banking Information</v-list-item-title
                 >
                 <div><v-divider></v-divider></div>
               </v-list-item-content>
             </v-list-item>
             <v-card-actions>
-              <v-icon text class="ma-2">credit_card</v-icon>
-              <div class="overline">VISA Card</div>
+              <FinancialFormPopup style="margin:15px;"/>
             </v-card-actions>
           </v-card>
-        </v-flex> -->
-        <!-- <v-flex sm6 xs12 md6 lg3>
-          <v-card class="ma-3">
-            <v-list-item>
-              <v-list-item-avatar tile class="mt-n7">
-                <v-sheet color="#FFC107" width="80" height="80" elevation="10">
-                  <v-icon dark large>folder_shared</v-icon>
-                </v-sheet>
-              </v-list-item-avatar>
-              <v-list-item-content>
-                <div class="overline text-right">Folder shared</div>
-                <v-list-item-title class="headline mb-1 text-right"
-                  >1730</v-list-item-title
-                >
-                <div><v-divider></v-divider></div>
-              </v-list-item-content>
-            </v-list-item>
-            <v-card-actions>
-              <v-icon text class="ma-2">folder</v-icon>
-              <div class="overline">Prodect</div>
-            </v-card-actions>
-          </v-card>
-        </v-flex> -->
+        </v-flex>
         <!-- <v-flex xs12 sm6 md4 lg3 v-for="person in team" :key="person.name">
           <v-card class="text-center ma-3">
             <v-responsive class="pt-4">
@@ -124,12 +102,14 @@
 </template>
 
 <script>
-import ApplyLeavePopup from "../Popups/ApplyLeavePopup.vue";
+import ApplyLeavePopup from "../Popups/ApplyLeavePopup.vue"
 import OnboardingFormPopup from '../Popups/OnboardingFormPopup.vue'
+import FinancialFormPopup from '../Popups/FinancialFormPopup.vue'
+
 export default {
   name: "LandingPage",
   components: {
-    ApplyLeavePopup, OnboardingFormPopup,
+    ApplyLeavePopup, OnboardingFormPopup, FinancialFormPopup
   },
   data: () => ({
     team: [

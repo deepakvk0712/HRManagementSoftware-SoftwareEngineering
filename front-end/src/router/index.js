@@ -1,8 +1,10 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
 import LandingPage from '../components/LandingPage.vue'
-import LeavePage from '../components/LeavePage.vue'
+import AttendancePage from '../components/AttendancePage.vue'
 import PayslipPage from '../components/PayslipPage.vue'
+import UserProfileView from '../views/UserProfileView.vue'
+import AboutView from '../views/AboutView.vue'
 
 Vue.use(VueRouter)
 
@@ -13,15 +15,25 @@ const routes = [
     component: LandingPage
   },
   {
-    path: '/leaves',
-    name: 'leaves',
-    component: LeavePage
+    path: '/attendance',
+    name: 'attendance',
+    component: AttendancePage
   },
   {
     path: '/payslip',
     name: 'payslip',
     component: PayslipPage
-  }
+  },
+  {
+    path: '/about',
+    name: 'about',
+    component: AboutView
+  },
+  {
+    path: '/user-profile',
+    name: 'profile',
+    component: UserProfileView
+  },
 ]
 
 const router = new VueRouter({
