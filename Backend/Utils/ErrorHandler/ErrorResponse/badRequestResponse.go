@@ -3,9 +3,9 @@ package errorResponses
 import (
 	"net/http"
 
-	models "github.com/AlexWeiZH/HRManagementSoftware-SoftwareEngineering/Backend/Models"
-	errors "github.com/AlexWeiZH/HRManagementSoftware-SoftwareEngineering/Backend/Models/Errors"
-	utils "github.com/AlexWeiZH/HRManagementSoftware-SoftwareEngineering/Backend/Utils"
+	models "hrtool.com/HRManagementSoftware-SoftwareEngineering/Backend/Models"
+	errors "hrtool.com/HRManagementSoftware-SoftwareEngineering/Backend/Models/Errors"
+	utils "hrtool.com/HRManagementSoftware-SoftwareEngineering/Backend/Utils"
 )
 
 func SendBadRequestResponse(w http.ResponseWriter) {
