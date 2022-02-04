@@ -1,6 +1,18 @@
 package models
 
-type Employee struct {
+type GormUser struct {
+	OfficialEmail string `json:"OfficialEmail"`
+	EmployeeID    int64  `json:"EmployeeID";gorm:"primaryKey"`
+	FirstName     string `json:"firstName"`
+	LastName      string `json:"lastName"`
+	BusinessUnit  string `json:"businessUnit"`
+	ManagerId     int    `json:"managerId"`
+	Grade         string `json:"grade"`
+	Location      string `json:"location"`
+	Country       string `json:"country"`
+	Title         string `json:"title"`
+	Type          string `json:"type"`
+	PersonalEmail string `json:"personalEmail"`
 	//IDs
 	DriversLicense string `json:"DriversLicense"`
 	SSN            string `json:"SSN"`
@@ -10,8 +22,6 @@ type Employee struct {
 	Phone           string `json:"Phone"`
 	AlternateEmails string `json:"AlternateEmails"`
 	//Personal Info
-	FirstName   string `json:"FirstName"`
-	LastName    string `json:"LastName"`
 	Gender      string `json:"Gender"`
 	DateOfBirth string `json:"DateOfBirth"` /* MM/DD/YYYY */
 	Race        string `json:"Race"`

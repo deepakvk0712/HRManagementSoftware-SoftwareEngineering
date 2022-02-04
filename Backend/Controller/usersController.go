@@ -6,7 +6,6 @@ import (
 	models "hrtool.com/HRManagementSoftware-SoftwareEngineering/Backend/Models"
 	utils "hrtool.com/HRManagementSoftware-SoftwareEngineering/Backend/Utils"
 	errorResponses "hrtool.com/HRManagementSoftware-SoftwareEngineering/Backend/Utils/ErrorHandler/ErrorResponse"
-	errorResponses2 "hrtool.com/HRManagementSoftware-SoftwareEngineering/Backend/Utils/ErrorHandler/ErrorResponse"
 	"net/http"
 	"os"
 	"strings"
@@ -18,7 +17,7 @@ func RegisterHR(w http.ResponseWriter, req *http.Request) {
 	if err := json.NewDecoder(req.Body).Decode(&u); err != nil {
 		fmt.Println(err)
 
-		errorResponses2.SendBadRequestResponse(w)
+		errorResponses.SendBadRequestResponse(w)
 
 		return
 	}
