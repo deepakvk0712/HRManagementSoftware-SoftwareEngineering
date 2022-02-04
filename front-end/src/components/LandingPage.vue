@@ -1,6 +1,7 @@
 <template>
   <div class="team">
     <v-container>
+      <NavigationBar/>
       <v-layout row wrap>
         <v-flex sm6 xs12 md6 lg3>
           <v-card class="ma-3" >
@@ -97,6 +98,7 @@
           </v-card>
         </v-flex> -->
       </v-layout>
+      <PageBottom/>
     </v-container>
   </div>
 </template>
@@ -105,11 +107,13 @@
 import ApplyLeavePopup from "../Popups/ApplyLeavePopup.vue"
 import OnboardingFormPopup from '../Popups/OnboardingFormPopup.vue'
 import FinancialFormPopup from '../Popups/FinancialFormPopup.vue'
+import NavigationBar from './NavigationBar.vue'
+import PageBottom from './PageBottom.vue'
 
 export default {
   name: "LandingPage",
   components: {
-    ApplyLeavePopup, OnboardingFormPopup, FinancialFormPopup
+    ApplyLeavePopup, OnboardingFormPopup, FinancialFormPopup, NavigationBar, PageBottom,
   },
   data: () => ({
     team: [

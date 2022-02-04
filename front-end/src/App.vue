@@ -1,24 +1,31 @@
 <template>
   <v-app>
-    <NavigationBar/>
+    <!-- <NavigationBar/> -->
     <v-content class="ma-4">
+      <!-- <LoginPage/> -->
       <router-view></router-view>
     </v-content>
-    <PageBottom/>
+    <!-- <PageBottom/> -->
+    <!-- <LoginPage/> -->
+    <!-- <SignupPage/> -->
   </v-app>
 </template>
 
 <script>
-import NavigationBar from './components/NavigationBar.vue'
-import PageBottom from './components/PageBottom.vue'
+// import NavigationBar from './components/NavigationBar.vue'
+// import PageBottom from './components/PageBottom.vue'
+// import LoginPage from './components/LoginPage.vue'
+// import SignupPage from './components/SignupPage.vue'
 
 export default {
   components: {
-    NavigationBar, PageBottom
+    // NavigationBar, 
+    // PageBottom, 
+    // LoginPage,
+
   }
 }
 </script>
-
 
 <style lang="scss">
 #app {

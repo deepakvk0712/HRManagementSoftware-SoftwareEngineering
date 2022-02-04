@@ -4,7 +4,7 @@
       <v-app-bar-nav-icon @click.stop="isClicked = !isClicked">
       </v-app-bar-nav-icon>
       <v-spacer></v-spacer>
-      <v-btn text>
+      <v-btn to="/login" text>
         <span> Sign Out </span>
         <v-icon right> exit_to_app </v-icon>
       </v-btn>
