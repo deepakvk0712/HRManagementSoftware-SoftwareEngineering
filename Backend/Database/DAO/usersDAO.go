@@ -9,16 +9,6 @@ import (
 )
 
 func CreateUserDAO(u models.User, email string) int {
-	//var user = struct {
-	//	models.User
-	//	string
-	//}{
-	//	u,
-	//	email,
-	//}
-
-	//_ = utils.Db.AutoMigrate(&gormModels.User{})
-
 	user := gormModels.User{
 		OfficialEmail: email,
 		FirstName:     u.FirstName,
@@ -36,8 +26,6 @@ func CreateUserDAO(u models.User, email string) int {
 	}
 
 	result := utils.Db.Omit("EmployeeID").Create(&user)
-
-	//result := utils.Db.Select("FirstName", "LastName", "BusinessUnit", "ManagerId", "Grade", "Location", "Country", "Title", "Type", "PersonalEmail", "OfficialEmail").Create(&user)
 
 	if result.Error != nil {
 		fmt.Println(result.Error)
