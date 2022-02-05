@@ -4,7 +4,7 @@ Creating a full stack application which will have the capability to manage emplo
 # Tech Stack
 * Front end - Vue js
 * Back end - GoLang
-* DB - MySQL
+* DB - SQLite
 * Using HTTP Rest API for communication.
 
 # Team Members
