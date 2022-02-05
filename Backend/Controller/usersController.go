@@ -3,6 +3,7 @@ package Controller
 import (
 	"encoding/json"
 	"fmt"
+	Dao "hrtool.com/HRManagementSoftware-SoftwareEngineering/Backend/Database/DAO"
 	models "hrtool.com/HRManagementSoftware-SoftwareEngineering/Backend/Models"
 	utils "hrtool.com/HRManagementSoftware-SoftwareEngineering/Backend/Utils"
 	errorResponses "hrtool.com/HRManagementSoftware-SoftwareEngineering/Backend/Utils/ErrorHandler/ErrorResponse"
@@ -23,19 +24,29 @@ func RegisterHR(w http.ResponseWriter, req *http.Request) {
 	}
 
 	emailSlice := strings.Split(u.PersonalEmail, "@")
-	email := emailSlice[0] + os.Getenv("emailDomain")
+	email := emailSlice[0] + os.Getenv("EMAIL_DOMAIN")
 
-	//queryString := utils.Queries.RegisterHR + "\"" + u.FirstName + "\", " + "\"" + u.LastName + "\", " + "\"" + u.BusinessUnit + "\", " + string(rune(u.ManagerId)) + "\"" + u.Grade + "\", " + "\"" + u.Location + "\", " + "\"" + u.Country + "\", " + "\"" + u.Title + "\", " + "\"" + u.Type + "\", " + "\"" + u.PersonalEmail + "\", " + "\"" + email + "\", " + "CURRENT_TIMESTAMP, CURRENT_TIMESTAMP)"
+	if Dao.CreateUserDAO(u, email) == 0 {
+		errorResponses.SendInternalServerErrorResponse(w)
 
-	//_, err := db.Db.Exec(queryString)
+		return
+	}
 
-	//if err != nil {
-	//	fmt.Println(err)
-	//
-	//	errorResponses.SendInternalServerErrorResponse(w)
-	//
-	//	return
-	//}
+	welcomeMail := models.MailTemplate{
+		From:        "HR Admin",
+		To:          u.FirstName + " " + u.LastName,
+		FromEmail:   os.Getenv("SENDGRID_SENDER_MAIL"),
+		ToEmail:     u.PersonalEmail,
+		Subject:     "Welcome to the company",
+		TextContent: "Dear " + u.FirstName + " " + u.LastName + ",\n\n Welcome onboard. Your official email id is " + email + ". We will reach out to you shortly regarding the onboarding process.\n\nRegards,\nHR Team",
+		HTMLContent: "",
+	}
+
+	if utils.SendMail(welcomeMail) == 0 {
+		errorResponses.SendInternalServerErrorResponse(w)
+
+		return
+	}
 
 	res := models.JsonResponse{}
 

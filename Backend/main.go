@@ -1,7 +1,7 @@
 package main
 
 import (
-	register "hrtool.com/HRManagementSoftware-SoftwareEngineering/Backend/Register"
+	"hrtool.com/HRManagementSoftware-SoftwareEngineering/Backend/Routers"
 	utils "hrtool.com/HRManagementSoftware-SoftwareEngineering/Backend/Utils"
 	"log"
 	"net/http"
@@ -17,7 +17,7 @@ func main() {
 
 	router.HandleFunc("/", home)
 
-	mount(router, "/register", register.Router())
+	mount(router, "/register", Routers.Router())
 
 	log.Fatal(http.ListenAndServe(":8080", router))
 }
