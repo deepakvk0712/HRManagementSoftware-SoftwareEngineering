@@ -1,6 +1,6 @@
 <template>
     <v-app>
-        <v-parallax dark src="https://cdn.vuetifyjs.com/images/backgrounds/vbanner.jpg" height = 750 jumbotron>
+        <v-parallax dark src="https://cdn.vuetifyjs.com/images/backgrounds/vbanner.jpg" height ="100%" jumbotron>
             <!-- <v-row align="center" justify="center">
                 <v-col class="text-center" cols="12"></v-col>
             </v-row> -->
