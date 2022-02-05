@@ -9,6 +9,6 @@ Creating a full stack application which will have the capability to manage emplo
 
 # Team Members
 * Deepak Vasuki Kashyap - deepakvaskashyap@ufl.edu
-* Sushmita Javali - ssubramanyajaval@ufl.edu
+* Sushmitha Subramanya Javali - ssubramanyajaval@ufl.edu
 * Tejas Dharmastalam Sridhar - tejasdharmastala@ufl.edu
 * Zihan Wei - weizihan@ufl.edu
