@@ -1,5 +1,6 @@
 <template>
-  <v-app class="blue">
+  <v-app>
+    <v-parallax dark src="https://cdn.vuetifyjs.com/images/backgrounds/vbanner.jpg" height ="100%" jumbotron>
     <validation-observer ref="observer" v-slot="{ invalid }">
       <form @submit.prevent="submit">
         <v-content>
@@ -18,6 +19,7 @@
                     :error-messages="errors"
                     label="Name"
                     required
+                    style="margin:25px;"
                   ></v-text-field>
                 </validation-provider>
 
@@ -31,6 +33,7 @@
                     :error-messages="errors"
                     label="E-mail"
                     required
+                    style="margin:25px;"
                   ></v-text-field>
                 </validation-provider>
 
@@ -46,6 +49,7 @@
                     label="Password"
                     type="password"
                     required
+                    style="margin:25px;"
                   >
                     <template v-slot:append>
                       <v-icon v-if="PasswordCheck" color="green">
@@ -69,6 +73,7 @@
                     type="password"
                     :rules="[matchingPasswords]"
                     required
+                    style="margin:25px;"
                   >
                     <template v-slot:append>
                       <v-icon v-if="PasswordCheck2" color="green">
@@ -80,16 +85,17 @@
                 </validation-provider>
 
                 <v-divider></v-divider>
-                <v-btn class="mr-4" to="/login" type="submit" :disabled="invalid"
+                <v-btn class="mr-4" to="/login" type="submit" style="margin:25px;" :disabled="invalid"
                   >submit</v-btn
                 >
-                <v-btn @click="clear">clear</v-btn>
+                <v-btn @click="clear" style="margin:25px;">clear</v-btn>
               </v-card>
             </v-row>
           </v-container>
         </v-content>
       </form>
     </validation-observer>
+    </v-parallax>
   </v-app>
 </template>
 
