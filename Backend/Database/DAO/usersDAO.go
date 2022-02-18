@@ -35,3 +35,15 @@ func CreateUserDAO(u models.User, email string) int {
 
 	return 1
 }
+
+func DeleteUserDAO(email string) int {
+	result := utils.Db.Where("OFFICIAL_EMAIL = ?", email).Delete(gormModels.User{})
+
+	if result.Error != nil {
+		fmt.Println(result.Error)
+
+		return 0
+	}
+
+	return 1
+}

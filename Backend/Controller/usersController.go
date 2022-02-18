@@ -25,8 +25,23 @@ func RegisterHR(w http.ResponseWriter, req *http.Request) {
 
 	emailSlice := strings.Split(u.PersonalEmail, "@")
 	email := emailSlice[0] + os.Getenv("EMAIL_DOMAIN")
+	tempPassword := utils.GenerateRandomString(len(email))
+
+	hashedPassword, err := utils.HashPassword(tempPassword)
+
+	if err == 0 {
+		errorResponses.SendInternalServerErrorResponse(w)
+
+		return
+	}
 
 	if Dao.CreateUserDAO(u, email) == 0 {
+		errorResponses.SendInternalServerErrorResponse(w)
+
+		return
+	}
+
+	if Dao.CreateLoginDAO(email, hashedPassword) == 0 {
 		errorResponses.SendInternalServerErrorResponse(w)
 
 		return
@@ -38,11 +53,14 @@ func RegisterHR(w http.ResponseWriter, req *http.Request) {
 		FromEmail:   os.Getenv("SENDGRID_SENDER_MAIL"),
 		ToEmail:     u.PersonalEmail,
 		Subject:     "Welcome to the company",
-		TextContent: "Dear " + u.FirstName + " " + u.LastName + ",\n\n Welcome onboard. Your official email id is " + email + ". We will reach out to you shortly regarding the onboarding process.\n\nRegards,\nHR Team",
+		TextContent: "Dear " + u.FirstName + " " + u.LastName + ",\n\n Welcome onboard. Your official email id is " + email + ". Your temporary password is " + tempPassword + "\n\nRegards,\nHR Team",
 		HTMLContent: "",
 	}
 
 	if utils.SendMail(welcomeMail) == 0 {
+		Dao.DeleteUserDAO(email)
+		Dao.DeleteLoginDAO(email)
+
 		errorResponses.SendInternalServerErrorResponse(w)
 
 		return

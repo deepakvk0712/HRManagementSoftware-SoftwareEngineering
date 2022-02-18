@@ -17,6 +17,8 @@ func main() {
 
 	router.HandleFunc("/", home)
 
+	router.HandleFunc("/login", home)
+
 	mount(router, "/register", Routers.Router())
 
 	log.Fatal(http.ListenAndServe(":8080", router))

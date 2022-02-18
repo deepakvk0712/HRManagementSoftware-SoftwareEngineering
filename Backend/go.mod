@@ -6,6 +6,7 @@ require (
 	github.com/gorilla/mux v1.8.0
 	github.com/joho/godotenv v1.4.0
 	github.com/sendgrid/sendgrid-go v3.10.5+incompatible
+	golang.org/x/crypto v0.0.0-20220214200702-86341886e292
 	gorm.io/driver/sqlite v1.2.6
 	gorm.io/gorm v1.22.5
 )

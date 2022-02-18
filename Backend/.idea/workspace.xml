@@ -5,12 +5,27 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="92e96ae0-5c25-4d74-9f10-84e21d1f6971" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/../.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/../.gitignore" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/.gitignore" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/Backend.iml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/modules.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Controller/loginController.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Database/DAO/loginDAO.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Models/GormModels/loginUser.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Routers/login.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Utils/utilityFunctions.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/dataSources/c26e4ff1-0f93-4efc-b289-8e77dd6bce11.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/dataSources/c26e4ff1-0f93-4efc-b289-8e77dd6bce11/storage_v2/_src_/schema/main.uQUzAA.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/dataSources/cedef0cf-7448-4155-9ab9-3d5f75b8b6e4.xml" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Controller/usersController.go" beforeDir="false" afterPath="$PROJECT_DIR$/Controller/usersController.go" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Database/DAO/usersDAO.go" beforeDir="false" afterPath="$PROJECT_DIR$/Database/DAO/usersDAO.go" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Database/TestHR" beforeDir="false" afterPath="$PROJECT_DIR$/Database/TestHR" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Utils/goEnv.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Utils/sendMail.go" beforeDir="false" afterPath="$PROJECT_DIR$/Utils/sendMail.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/go.mod" beforeDir="false" afterPath="$PROJECT_DIR$/go.mod" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/go.sum" beforeDir="false" afterPath="$PROJECT_DIR$/go.sum" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/main" beforeDir="false" afterPath="$PROJECT_DIR$/main" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/main.go" beforeDir="false" afterPath="$PROJECT_DIR$/main.go" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -27,6 +42,14 @@
   <component name="GOROOT" url="file:///usr/local/go" />
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/.." />
+  </component>
+  <component name="GitSEFilterConfiguration">
+    <file-type-list>
+      <filtered-out-file-type name="LOCAL_BRANCH" />
+      <filtered-out-file-type name="REMOTE_BRANCH" />
+      <filtered-out-file-type name="TAG" />
+      <filtered-out-file-type name="COMMIT_BY_MESSAGE" />
+    </file-type-list>
   </component>
   <component name="GoLibraries">
     <option name="indexEntireGoPath" value="false" />
@@ -56,6 +79,7 @@
     <property name="go.sdk.automatically.set" value="true" />
     <property name="go.watchers.conflict.with.on.save.actions.check.performed" value="true" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+    <property name="run.code.analysis.last.selected.profile" value="pProject Default" />
     <property name="settings.editor.selected.configurable" value="editor.preferences.fonts.default" />
   </component>
   <component name="RecentsManager">
@@ -99,7 +123,7 @@
                   <entry key="branch">
                     <value>
                       <list>
-                        <option value="Zihan-Backend" />
+                        <option value="Tejas_Dev" />
                       </list>
                     </value>
                   </entry>
