@@ -16,10 +16,10 @@ func main() {
 	router := mux.NewRouter()
 
 	router.HandleFunc("/", home)
-
 	router.HandleFunc("/login", home)
 
 	mount(router, "/register", Routers.Router())
+	mount(router, "/settings", Routers.SettingsRouter())
 
 	log.Fatal(http.ListenAndServe(":8080", router))
 }

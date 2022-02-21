@@ -5,25 +5,16 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="92e96ae0-5c25-4d74-9f10-84e21d1f6971" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/.idea/.gitignore" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/Backend.iml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/modules.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Controller/loginController.go" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Database/DAO/loginDAO.go" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Models/GormModels/loginUser.go" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Routers/login.go" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Utils/utilityFunctions.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/dataSources/c26e4ff1-0f93-4efc-b289-8e77dd6bce11.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/dataSources/c26e4ff1-0f93-4efc-b289-8e77dd6bce11/storage_v2/_src_/schema/main.uQUzAA.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/dataSources/cedef0cf-7448-4155-9ab9-3d5f75b8b6e4.xml" beforeDir="false" />
+      <change afterPath="$PROJECT_DIR$/Controller/settingsController.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Models/loginInfo.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Routers/settings.go" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Controller/usersController.go" beforeDir="false" afterPath="$PROJECT_DIR$/Controller/usersController.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Database/DAO/usersDAO.go" beforeDir="false" afterPath="$PROJECT_DIR$/Database/DAO/usersDAO.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Database/DAO/loginDAO.go" beforeDir="false" afterPath="$PROJECT_DIR$/Database/DAO/loginDAO.go" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Database/TestHR" beforeDir="false" afterPath="$PROJECT_DIR$/Database/TestHR" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Models/GormModels/loginUser.go" beforeDir="false" afterPath="$PROJECT_DIR$/Models/GormModels/loginUser.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Utils/ErrorHandler/ErrorResponse/badRequestResponse.go" beforeDir="false" afterPath="$PROJECT_DIR$/Utils/ErrorHandler/ErrorResponse/badRequestResponse.go" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Utils/sendMail.go" beforeDir="false" afterPath="$PROJECT_DIR$/Utils/sendMail.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/go.mod" beforeDir="false" afterPath="$PROJECT_DIR$/go.mod" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/go.sum" beforeDir="false" afterPath="$PROJECT_DIR$/go.sum" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/main" beforeDir="false" afterPath="$PROJECT_DIR$/main" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/main.go" beforeDir="false" afterPath="$PROJECT_DIR$/main.go" afterDir="false" />
     </list>
@@ -58,7 +49,7 @@
     <option name="stateVersion" value="1" />
   </component>
   <component name="ProblemsViewState">
-    <option name="selectedTabId" value="ProjectErrors" />
+    <option name="selectedTabId" value="CurrentFile" />
   </component>
   <component name="ProjectId" id="24eVXbjIHvejMhWre4LbFgE2wvE" />
   <component name="ProjectLevelVcsManager" settingsEditedManually="true" />

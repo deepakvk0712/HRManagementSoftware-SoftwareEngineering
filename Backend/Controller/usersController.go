@@ -18,7 +18,7 @@ func RegisterHR(w http.ResponseWriter, req *http.Request) {
 	if err := json.NewDecoder(req.Body).Decode(&u); err != nil {
 		fmt.Println(err)
 
-		errorResponses.SendBadRequestResponse(w)
+		errorResponses.SendBadRequestResponse(w, "")
 
 		return
 	}
@@ -46,6 +46,9 @@ func RegisterHR(w http.ResponseWriter, req *http.Request) {
 
 		return
 	}
+
+	fmt.Println("Password ", tempPassword)
+	fmt.Println("Hashed Password", hashedPassword)
 
 	welcomeMail := models.MailTemplate{
 		From:        "HR Admin",

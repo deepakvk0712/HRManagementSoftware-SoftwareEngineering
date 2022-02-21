@@ -4,6 +4,7 @@ import (
 	"fmt"
 	gormModels "hrtool.com/HRManagementSoftware-SoftwareEngineering/Backend/Models/GormModels"
 	utils "hrtool.com/HRManagementSoftware-SoftwareEngineering/Backend/Utils"
+	"strings"
 	"time"
 )
 
@@ -32,6 +33,29 @@ func DeleteLoginDAO(email string) int {
 	if result.Error != nil {
 		fmt.Println(result.Error)
 
+		return 0
+	}
+
+	return 1
+}
+
+func GetPasswordDAO(email string) (string, int) {
+	var password string
+	row := utils.Db.Raw("SELECT PASSWORD FROM LOGIN_USERS WHERE LOWER(EMAIL) = ?", strings.ToLower(email)).Row()
+	if row.Err() != nil {
+		return "", 0
+	}
+
+	row.Scan(&password)
+
+	fmt.Println(password)
+
+	return password, 1
+}
+
+func UpdatePasswordDAO(email, password string) int {
+	row := utils.Db.Model(&gormModels.LoginUser{}).Where("EMAIL = ?", email).Update("PASSWORD", password)
+	if row.Error != nil {
 		return 0
 	}
 

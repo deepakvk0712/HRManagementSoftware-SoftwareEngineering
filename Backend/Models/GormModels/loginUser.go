@@ -3,8 +3,8 @@ package gormModels
 import "time"
 
 type LoginUser struct {
-	Email     string    `json:"email"`
-	Password  string    `json:"password"`
-	CreatedTS time.Time `json:"createdTS"`
-	UpdatedTS time.Time `json:"updatedTS"`
+	Email     string    `json:"email";gorm:"type:varchar(32)"`
+	Password  string    `json:"password";gorm:"type:varchar(32)"`
+	CreatedTS time.Time `json:"createdTS";gorm:"type:timestamp"`
+	UpdatedTS time.Time `json:"updatedTS";gorm:"type:timestamp"`
 }
