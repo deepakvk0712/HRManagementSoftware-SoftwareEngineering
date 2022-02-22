@@ -48,8 +48,6 @@ func GetPasswordDAO(email string) (string, int) {
 
 	row.Scan(&password)
 
-	fmt.Println(password)
-
 	return password, 1
 }
 

@@ -9,11 +9,11 @@ import (
 	errorResponses "hrtool.com/HRManagementSoftware-SoftwareEngineering/Backend/Utils/ErrorHandler/ErrorResponse"
 	"net/http"
 	"os"
-	"strings"
 )
 
 func RegisterHR(w http.ResponseWriter, req *http.Request) {
 	u := models.User{}
+	var email string
 
 	if err := json.NewDecoder(req.Body).Decode(&u); err != nil {
 		fmt.Println(err)
@@ -23,19 +23,16 @@ func RegisterHR(w http.ResponseWriter, req *http.Request) {
 		return
 	}
 
-	emailSlice := strings.Split(u.PersonalEmail, "@")
-	email := emailSlice[0] + os.Getenv("EMAIL_DOMAIN")
-	tempPassword := utils.GenerateRandomString(len(email))
+	tempPassword := utils.GenerateRandomString(len(u.PersonalEmail))
 
 	hashedPassword, err := utils.HashPassword(tempPassword)
-
 	if err == 0 {
 		errorResponses.SendInternalServerErrorResponse(w)
 
 		return
 	}
 
-	if Dao.CreateUserDAO(u, email) == 0 {
+	if email, err = Dao.CreateUserDAO(u, u.PersonalEmail); err == 0 {
 		errorResponses.SendInternalServerErrorResponse(w)
 
 		return

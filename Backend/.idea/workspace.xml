@@ -5,18 +5,12 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="92e96ae0-5c25-4d74-9f10-84e21d1f6971" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/Controller/settingsController.go" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Models/loginInfo.go" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Routers/settings.go" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Controller/usersController.go" beforeDir="false" afterPath="$PROJECT_DIR$/Controller/usersController.go" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Database/DAO/loginDAO.go" beforeDir="false" afterPath="$PROJECT_DIR$/Database/DAO/loginDAO.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Database/DAO/usersDAO.go" beforeDir="false" afterPath="$PROJECT_DIR$/Database/DAO/usersDAO.go" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Database/TestHR" beforeDir="false" afterPath="$PROJECT_DIR$/Database/TestHR" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Models/GormModels/loginUser.go" beforeDir="false" afterPath="$PROJECT_DIR$/Models/GormModels/loginUser.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Utils/ErrorHandler/ErrorResponse/badRequestResponse.go" beforeDir="false" afterPath="$PROJECT_DIR$/Utils/ErrorHandler/ErrorResponse/badRequestResponse.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Utils/sendMail.go" beforeDir="false" afterPath="$PROJECT_DIR$/Utils/sendMail.go" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/main" beforeDir="false" afterPath="$PROJECT_DIR$/main" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main.go" beforeDir="false" afterPath="$PROJECT_DIR$/main.go" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
