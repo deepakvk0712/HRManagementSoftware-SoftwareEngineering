@@ -16,5 +16,6 @@ type JWTParams struct {
 // Implemented this to avoid error while generating token with claim
 func (J JWTClaim) Valid() error {
 	//TODO implement me
-	panic("implement me")
+	//panic("implement me")
+	return nil
 }
