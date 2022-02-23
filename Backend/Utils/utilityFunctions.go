@@ -1,7 +1,10 @@
 package utils
 
 import (
+	"errors"
+	"github.com/dgrijalva/jwt-go"
 	"golang.org/x/crypto/bcrypt"
+	models "hrtool.com/HRManagementSoftware-SoftwareEngineering/Backend/Models"
 	"math/rand"
 	"time"
 )
@@ -27,4 +30,44 @@ func HashPassword(password string) (string, int) {
 	}
 
 	return string(hashedPassword), 1
+}
+
+func GenerateAccessToken(email string) (string, error) {
+	claims := &models.JWTClaim{
+		Email: email,
+		StandardClaim: jwt.StandardClaims{
+			ExpiresAt: time.Now().Local().Add(time.Minute * time.Duration(LoginJWT.LoginTimeout)).Unix(),
+			Issuer:    LoginJWT.Issuer,
+		},
+	}
+
+	token := jwt.NewWithClaims(jwt.SigningMethodHS256, claims)
+
+	signedToken, err := token.SignedString([]byte(LoginJWT.SecretKey))
+	if err != nil {
+		return "", err
+	}
+
+	return signedToken, err
+}
+
+func ValidateToken(signedToken string) (*models.JWTClaim, error) {
+	token, err := jwt.ParseWithClaims(signedToken, &models.JWTClaim{}, func(token *jwt.Token) (interface{}, error) {
+		return []byte(LoginJWT.SecretKey), nil
+	})
+
+	if err != nil {
+		return &models.JWTClaim{}, err
+	}
+
+	claims, ok := token.Claims.(*models.JWTClaim)
+	if !ok {
+		return &models.JWTClaim{}, errors.New("failed to parse")
+	}
+
+	if claims.StandardClaim.ExpiresAt < time.Now().Local().Unix() {
+		return &models.JWTClaim{}, errors.New("expired")
+	}
+
+	return claims, nil
 }

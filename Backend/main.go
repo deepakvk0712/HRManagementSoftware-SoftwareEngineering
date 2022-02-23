@@ -1,6 +1,8 @@
 package main
 
 import (
+	"hrtool.com/HRManagementSoftware-SoftwareEngineering/Backend/Controller"
+	middleware "hrtool.com/HRManagementSoftware-SoftwareEngineering/Backend/Middleware"
 	"hrtool.com/HRManagementSoftware-SoftwareEngineering/Backend/Routers"
 	utils "hrtool.com/HRManagementSoftware-SoftwareEngineering/Backend/Utils"
 	"log"
@@ -15,8 +17,10 @@ func main() {
 
 	router := mux.NewRouter()
 
-	router.HandleFunc("/", home)
-	router.HandleFunc("/login", home)
+	postRequest := router.Methods(http.MethodPost).Subrouter()
+	postRequest.HandleFunc("/login", Controller.Login)
+	postRequest.Use(middleware.ValidateUser)
+	postRequest.Use(middleware.Authorize)
 
 	mount(router, "/register", Routers.Router())
 	mount(router, "/settings", Routers.SettingsRouter())
