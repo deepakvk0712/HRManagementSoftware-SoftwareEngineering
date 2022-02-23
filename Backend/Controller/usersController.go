@@ -12,6 +12,13 @@ import (
 )
 
 func RegisterHR(w http.ResponseWriter, req *http.Request) {
+	userRole := req.Context().Value("role").(byte)
+	if userRole&utils.IsHR != utils.IsHR {
+		errorResponses.SendForbiddenRequestResponse(w)
+
+		return
+	}
+
 	u := models.User{}
 	var email string
 
@@ -38,7 +45,15 @@ func RegisterHR(w http.ResponseWriter, req *http.Request) {
 		return
 	}
 
-	if Dao.CreateLoginDAO(email, hashedPassword) == 0 {
+	var role byte = utils.IsEmployee
+	if u.IsHR {
+		role = role | utils.IsHR
+	}
+	if u.IsManager {
+		role = role | utils.IsManager
+	}
+
+	if Dao.CreateLoginDAO(email, hashedPassword, role) == 0 {
 		errorResponses.SendInternalServerErrorResponse(w)
 
 		return

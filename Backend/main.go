@@ -10,6 +10,7 @@ import (
 	"strings"
 
 	"github.com/gorilla/mux"
+	"github.com/rs/cors"
 )
 
 func main() {
@@ -34,7 +35,14 @@ func main() {
 	mount(router, "/register", Routers.Router())
 	mount(router, "/settings", Routers.SettingsRouter())
 
-	log.Fatal(http.ListenAndServe(":8080", router))
+	c := cors.New(cors.Options{
+		AllowedOrigins: []string{"*"},
+		//AllowCredentials: true,
+	})
+
+	handler := c.Handler(router)
+	log.Fatal(http.ListenAndServe(":8080", handler))
+	//log.Fatal(http.ListenAndServe(":8080", router))
 }
 
 func mount(r *mux.Router, path string, handler http.Handler) {

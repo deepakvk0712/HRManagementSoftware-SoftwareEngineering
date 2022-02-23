@@ -2,18 +2,20 @@ package Dao
 
 import (
 	"fmt"
+	models "hrtool.com/HRManagementSoftware-SoftwareEngineering/Backend/Models"
 	gormModels "hrtool.com/HRManagementSoftware-SoftwareEngineering/Backend/Models/GormModels"
 	utils "hrtool.com/HRManagementSoftware-SoftwareEngineering/Backend/Utils"
 	"strings"
 	"time"
 )
 
-func CreateLoginDAO(email, password string) int {
+func CreateLoginDAO(email, password string, role byte) int {
 	loginUser := gormModels.LoginUser{
 		Email:     email,
 		Password:  password,
 		CreatedTS: time.Now(),
 		UpdatedTS: time.Now(),
+		Role:      role,
 	}
 
 	result := utils.Db.Create(&loginUser)
@@ -37,6 +39,19 @@ func DeleteLoginDAO(email string) int {
 	}
 
 	return 1
+}
+
+func GetUserDetailsDAO(email string) (models.UserDetails, int) {
+	userDetails := models.UserDetails{}
+
+	row := utils.Db.Raw("SELECT EMAIL, PASSWORD, ROLE FROM LOGIN_USERS WHERE LOWER(EMAIL) = ?", strings.ToLower(email)).Row()
+	if row.Err() != nil {
+		return userDetails, 0
+	}
+
+	row.Scan(&userDetails.Email, &userDetails.Password, &userDetails.Role)
+
+	return userDetails, 1
 }
 
 func GetPasswordDAO(email string) (string, int) {

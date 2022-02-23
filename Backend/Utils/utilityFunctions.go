@@ -32,13 +32,14 @@ func HashPassword(password string) (string, int) {
 	return string(hashedPassword), 1
 }
 
-func GenerateAccessToken(email string) (string, error) {
+func GenerateAccessToken(email string, role byte) (string, error) {
 	claims := &models.JWTClaim{
 		Email: email,
 		StandardClaim: jwt.StandardClaims{
 			ExpiresAt: time.Now().Local().Add(time.Minute * time.Duration(LoginJWT.LoginTimeout)).Unix(),
 			Issuer:    LoginJWT.Issuer,
 		},
+		Role: role,
 	}
 
 	token := jwt.NewWithClaims(jwt.SigningMethodHS256, claims)
