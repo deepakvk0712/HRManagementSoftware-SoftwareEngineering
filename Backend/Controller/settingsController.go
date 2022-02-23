@@ -13,6 +13,9 @@ import (
 
 func ChangePassword(w http.ResponseWriter, req *http.Request) {
 	loginInfo := models.ChangeLoginInfo{}
+	role := req.Context().Value("role").(byte)
+
+	fmt.Println(role)
 
 	if err := json.NewDecoder(req.Body).Decode(&loginInfo); err != nil {
 		fmt.Println(err)
@@ -22,14 +25,14 @@ func ChangePassword(w http.ResponseWriter, req *http.Request) {
 		return
 	}
 
-	dbPassword, err := Dao.GetPasswordDAO(loginInfo.Email)
+	dbUser, err := Dao.GetUserDetailsDAO(loginInfo.Email)
 	if err == 0 {
 		errorResponses.SendInternalServerErrorResponse(w)
 
 		return
 	}
 
-	if err := bcrypt.CompareHashAndPassword([]byte(dbPassword), []byte(loginInfo.OldPassword)); err != nil {
+	if err := bcrypt.CompareHashAndPassword([]byte(dbUser.Password), []byte(loginInfo.OldPassword)); err != nil {
 		fmt.Println("Passwords do not match")
 
 		errorResponses.SendBadRequestResponse(w, "Passwords do not match")

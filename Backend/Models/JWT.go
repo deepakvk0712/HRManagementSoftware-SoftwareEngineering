@@ -5,6 +5,7 @@ import "github.com/dgrijalva/jwt-go"
 type JWTClaim struct {
 	Email         string
 	StandardClaim jwt.StandardClaims
+	Role          byte
 }
 
 type JWTParams struct {

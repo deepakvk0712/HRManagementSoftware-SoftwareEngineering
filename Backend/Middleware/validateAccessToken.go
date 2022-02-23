@@ -35,6 +35,7 @@ func ValidateAccessToken(next http.Handler) http.Handler {
 		}
 
 		ctx := context.WithValue(req.Context(), "email", claims.Email)
+		ctx = context.WithValue(ctx, "role", claims.Role)
 		req = req.WithContext(ctx)
 
 		next.ServeHTTP(w, req)

@@ -11,8 +11,9 @@ import (
 
 func Login(w http.ResponseWriter, req *http.Request) {
 	userLogin := req.Context().Value("user").(models.UserLogin)
+	role := req.Context().Value("role").(byte)
 
-	token, err := utils.GenerateAccessToken(userLogin.Email)
+	token, err := utils.GenerateAccessToken(userLogin.Email, role)
 	if err != nil {
 		fmt.Println(err)
 
