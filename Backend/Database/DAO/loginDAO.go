@@ -51,6 +51,22 @@ func GetPasswordDAO(email string) (string, int) {
 	return password, 1
 }
 
+func GetEmailDAO(email string) (string, int) {
+	var count int
+	row := utils.Db.Raw("SELECT COUNT(1) FROM LOGIN_USERS WHERE LOWER(EMAIL) = ?", strings.ToLower(email)).Row()
+	if row.Err() != nil {
+		return "", 0
+	}
+
+	row.Scan(&count)
+
+	if count == 0 {
+		return "", 0
+	}
+
+	return email, 1
+}
+
 func UpdatePasswordDAO(email, password string) int {
 	row := utils.Db.Model(&gormModels.LoginUser{}).Where("EMAIL = ?", email).Update("PASSWORD", password)
 	if row.Error != nil {

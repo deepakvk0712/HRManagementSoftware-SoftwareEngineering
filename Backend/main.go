@@ -1,6 +1,8 @@
 package main
 
 import (
+	"hrtool.com/HRManagementSoftware-SoftwareEngineering/Backend/Controller"
+	middleware "hrtool.com/HRManagementSoftware-SoftwareEngineering/Backend/Middleware"
 	"hrtool.com/HRManagementSoftware-SoftwareEngineering/Backend/Routers"
 	utils "hrtool.com/HRManagementSoftware-SoftwareEngineering/Backend/Utils"
 	"log"
@@ -15,8 +17,14 @@ func main() {
 
 	router := mux.NewRouter()
 
-	router.HandleFunc("/", home)
-	router.HandleFunc("/login", home)
+	postRequest := router.Methods(http.MethodPost).Subrouter()
+	postRequest.HandleFunc("/login", Controller.Login)
+	postRequest.Use(middleware.ValidateUser)
+	postRequest.Use(middleware.Authorize)
+
+	getRequest := router.Methods(http.MethodGet).Subrouter()
+	getRequest.HandleFunc("/test", test)
+	getRequest.Use(middleware.ValidateAccessToken)
 
 	mount(router, "/register", Routers.Router())
 	mount(router, "/settings", Routers.SettingsRouter())
@@ -35,4 +43,8 @@ func mount(r *mux.Router, path string, handler http.Handler) {
 
 func home(w http.ResponseWriter, req *http.Request) {
 	w.Write([]byte("Home"))
+}
+
+func test(w http.ResponseWriter, req *http.Request) {
+	w.Write([]byte(req.Context().Value("email").(string)))
 }
