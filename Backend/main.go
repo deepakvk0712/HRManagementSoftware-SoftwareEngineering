@@ -22,9 +22,14 @@ func main() {
 	postRequest.Use(middleware.ValidateUser)
 	postRequest.Use(middleware.Authorize)
 
-	getRequest := router.Methods(http.MethodGet).Subrouter()
-	getRequest.HandleFunc("/test", test)
-	getRequest.Use(middleware.ValidateAccessToken)
+	/*
+		//  Test router
+
+		getRequest := router.Methods(http.MethodGet).Subrouter()
+		getRequest.HandleFunc("/test", test)
+		getRequest.Use(middleware.ValidateAccessToken)
+
+	*/
 
 	mount(router, "/register", Routers.Router())
 	mount(router, "/settings", Routers.SettingsRouter())
@@ -45,6 +50,11 @@ func home(w http.ResponseWriter, req *http.Request) {
 	w.Write([]byte("Home"))
 }
 
-func test(w http.ResponseWriter, req *http.Request) {
-	w.Write([]byte(req.Context().Value("email").(string)))
-}
+/*
+Test router functionality
+//func test(w http.ResponseWriter, req *http.Request) {
+//	w.Write([]byte(req.Context().Value("email").(string)))
+//}
+
+
+*/

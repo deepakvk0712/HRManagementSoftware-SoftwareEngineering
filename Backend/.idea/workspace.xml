@@ -5,10 +5,9 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="92e96ae0-5c25-4d74-9f10-84e21d1f6971" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/dataSources/ae6c33b0-c355-407e-ae18-369c33a7cccb.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dataSources/ae6c33b0-c355-407e-ae18-369c33a7cccb.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Models/JWT.go" beforeDir="false" afterPath="$PROJECT_DIR$/Models/JWT.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main" beforeDir="false" afterPath="$PROJECT_DIR$/main" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Database/TestHR" beforeDir="false" afterPath="$PROJECT_DIR$/Database/TestHR" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Routers/settings.go" beforeDir="false" afterPath="$PROJECT_DIR$/Routers/settings.go" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/main.go" beforeDir="false" afterPath="$PROJECT_DIR$/main.go" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
