@@ -11,11 +11,12 @@ import (
 
 func CreateLoginDAO(email, password string, role byte) int {
 	loginUser := gormModels.LoginUser{
-		Email:     email,
-		Password:  password,
-		CreatedTS: time.Now(),
-		UpdatedTS: time.Now(),
-		Role:      role,
+		Email:      email,
+		Password:   password,
+		CreatedTS:  time.Now(),
+		UpdatedTS:  time.Now(),
+		Role:       role,
+		FirstLogin: true,
 	}
 
 	result := utils.Db.Create(&loginUser)
@@ -44,13 +45,13 @@ func DeleteLoginDAO(email string) int {
 func GetUserDetailsDAO(email string) (models.UserDetails, int) {
 	userDetails := models.UserDetails{}
 
-	row := utils.Db.Raw("SELECT EMAIL, PASSWORD, ROLE FROM LOGIN_USERS WHERE LOWER(EMAIL) = ?", strings.ToLower(email)).Row()
+	row := utils.Db.Raw("SELECT EMAIL, PASSWORD, ROLE, FIRST_LOGIN FROM LOGIN_USERS WHERE LOWER(EMAIL) = ?", strings.ToLower(email)).Row()
 	if row.Err() != nil {
+		fmt.Println(row)
 		return userDetails, 0
 	}
 
-	row.Scan(&userDetails.Email, &userDetails.Password, &userDetails.Role)
-
+	row.Scan(&userDetails.Email, &userDetails.Password, &userDetails.Role, &userDetails.FirstLogin)
 	return userDetails, 1
 }
 
@@ -84,6 +85,15 @@ func GetEmailDAO(email string) (string, int) {
 
 func UpdatePasswordDAO(email, password string) int {
 	row := utils.Db.Model(&gormModels.LoginUser{}).Where("EMAIL = ?", email).Update("PASSWORD", password)
+	if row.Error != nil {
+		return 0
+	}
+
+	return 1
+}
+
+func UpdateFirstLoginDAO(email string) int {
+	row := utils.Db.Model(&gormModels.LoginUser{}).Where("EMAIL = ?", email).Update("FIRST_LOGIN", false)
 	if row.Error != nil {
 		return 0
 	}

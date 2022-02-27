@@ -38,6 +38,7 @@ func Authorize(next http.Handler) http.Handler {
 		}
 
 		ctx := context.WithValue(req.Context(), "role", dbUser.Role)
+		ctx = context.WithValue(ctx, "firstLogin", dbUser.FirstLogin)
 		req = req.WithContext(ctx)
 
 		next.ServeHTTP(w, req)

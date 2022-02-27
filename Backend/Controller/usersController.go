@@ -83,7 +83,15 @@ func RegisterHR(w http.ResponseWriter, req *http.Request) {
 
 	res := models.JsonResponse{}
 
-	data, jsonError := json.Marshal(u)
+	resData := struct {
+		Email    string
+		Password string
+	}{
+		Email:    email,
+		Password: tempPassword,
+	}
+
+	data, jsonError := json.Marshal(resData)
 
 	if jsonError != nil {
 		fmt.Println(jsonError)
