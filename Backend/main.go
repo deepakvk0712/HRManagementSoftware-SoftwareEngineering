@@ -36,8 +36,10 @@ func main() {
 	mount(router, "/settings", Routers.SettingsRouter())
 
 	c := cors.New(cors.Options{
-		AllowedOrigins: []string{"*"},
-		//AllowCredentials: true,
+		AllowedOrigins:   []string{"*"},
+		AllowCredentials: true,
+		AllowedHeaders:   []string{"Accept", "Accept-Language", "Content-Type", "Content-Language", "Origin", "Referer", "Authorization"},
+		AllowedMethods:   []string{"GET", "POST", "PUT"},
 	})
 
 	handler := c.Handler(router)
