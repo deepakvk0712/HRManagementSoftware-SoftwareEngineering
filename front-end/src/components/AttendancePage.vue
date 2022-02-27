@@ -1,0 +1,295 @@
+<template>
+  <div class="home">
+    <v-container>
+      <NavigationBar/>
+      <v-layout class="d-flex">
+          <v-row>
+              <v-col>
+                  <v-card elevation="4">
+                      <v-card-title class="justify-center">
+                          <strong> Submit Attendance </strong>
+                      </v-card-title>
+
+                        <v-divider></v-divider>
+
+                        <v-date-picker
+                            v-model="date"
+                            scrollable
+                            no-title
+                            full-width
+                        >
+                            <!-- scrollable -->
+                            <!-- no-title -->
+                            <!-- multiple -->
+                            <!-- <v-spacer></v-spacer> -->
+                            <!-- <v-btn
+                                text
+                                color="primary"
+                                @click="menu = false"
+                            >
+                                Cancel
+                            </v-btn>
+                            <v-btn
+                                text
+                                color="primary"
+                                @click="$refs.menu.save(date)"
+                            >
+                                OK
+                            </v-btn> -->
+
+                        </v-date-picker>
+
+                        <v-divider></v-divider>
+
+                        <v-row>
+                        <v-col class="pl-4">
+                            <v-dialog
+                                ref="dialog"
+                                v-model="startTimeFlag"
+                                :return-value.sync="startTime"
+                                persistent
+                                width="290px"
+                            >
+                                <template v-slot:activator="{ on, attrs }">
+                                    <v-text-field
+                                    v-model="startTime"
+                                    label="Enter start time"
+                                    prepend-icon="mdi-clock-time-four-outline"
+                                    readonly
+                                    v-bind="attrs"
+                                    v-on="on"
+                                    ></v-text-field>
+                                </template>
+                                <v-time-picker
+                                    v-if="startTimeFlag"
+                                    v-model="startTime"
+                                    full-width
+                                >
+                                    <v-spacer></v-spacer>
+                                    <v-btn
+                                    text
+                                    color="primary"
+                                    @click="startTimeFlag = false"
+                                    >
+                                    Cancel
+                                    </v-btn>
+                                    <v-btn
+                                    text
+                                    color="primary"
+                                    @click="$refs.dialog.save(startTime)"
+                                    >
+                                    OK
+                                    </v-btn>
+                                </v-time-picker>
+                            </v-dialog>
+                        </v-col>
+
+                        <v-col class="pr-4">
+                            <v-dialog
+                                ref="dialog1"
+                                v-model="endTimeFlag"
+                                :return-value.sync="endTime"
+                                persistent
+                                width="290px"
+                                >
+                                <template v-slot:activator="{ on, attrs }">
+                                    <v-text-field
+                                    v-model="endTime"
+                                    label="Enter end time"
+                                    prepend-icon="mdi-clock-time-four-outline"
+                                    readonly
+                                    v-bind="attrs"
+                                    v-on="on"
+                                    ></v-text-field>
+                                </template>
+                                <v-time-picker
+                                    v-if="endTimeFlag"
+                                    v-model="endTime"
+                                    full-width
+                                >
+                                    <v-spacer></v-spacer>
+                                    <v-btn
+                                    text
+                                    color="primary"
+                                    @click="endTimeFlag = false"
+                                    >
+                                    Cancel
+                                    </v-btn>
+                                    <v-btn
+                                    text
+                                    color="primary"
+                                    @click="$refs.dialog1.save(endTime)"
+                                    >
+                                    OK
+                                    </v-btn>
+                                </v-time-picker>
+                            </v-dialog>
+                        </v-col>
+                        </v-row>
+
+                        <v-row>
+                            <v-col class="py-0 mb-4 text-center">
+                                <v-btn @click="resetFields()">Reset </v-btn>
+                            </v-col>
+                            <v-col class="py-0 mb-4 text-center">
+                                <v-btn @click="submit()">Submit</v-btn>
+                            </v-col>
+                        </v-row>
+                  </v-card>
+                  
+              </v-col>
+
+              <v-col>
+                  <!-- stats -->
+                  <v-card elevation="4">
+                    <v-card-title class="justify-center">
+                        <strong> Current Attendance Stats </strong>
+                    </v-card-title>
+
+                    <v-divider></v-divider>
+
+                    <v-row>
+                        <v-col class="ml-4 pb-0">
+                            <v-menu
+                                ref="menu1"
+                                v-model="menu1"
+                                :close-on-content-click="false"
+                                transition="scale-transition"
+                                offset-y
+                                min-width="auto"
+                            >
+                                <template v-slot:activator="{ on, attrs }">
+                                <v-text-field
+                                    v-model="filterStartDate"
+                                    label="Filter start date"
+                                    prepend-icon="mdi-calendar"
+                                    readonly
+                                    v-bind="attrs"
+                                    v-on="on"
+                                ></v-text-field>
+                                </template>
+                                <v-date-picker
+                                v-model="filterStartDate"
+                                :active-picker.sync="activePicker"
+                                :max="(new Date(Date.now() - (new Date()).getTimezoneOffset() * 60000)).toISOString().substr(0, 10)"
+                                min="1950-01-01"
+                                @change="save"
+                                ></v-date-picker>
+                            </v-menu>
+                        </v-col>
+
+                        <v-col class="mr-4 pb-0">
+                            <v-menu
+                                ref="menu2"
+                                v-model="menu2"
+                                :close-on-content-click="false"
+                                transition="scale-transition"
+                                offset-y
+                                min-width="auto"
+                            >
+                                <template v-slot:activator="{ on, attrs }">
+                                <v-text-field
+                                    v-model="filterEndDate"
+                                    label="Filter end date"
+                                    prepend-icon="mdi-calendar"
+                                    readonly
+                                    v-bind="attrs"
+                                    v-on="on"
+                                ></v-text-field>
+                                </template>
+                                <v-date-picker
+                                v-model="filterEndDate"
+                                :active-picker.sync="activePicker"
+                                :max="(new Date(Date.now() - (new Date()).getTimezoneOffset() * 60000)).toISOString().substr(0, 10)"
+                                min="1950-01-01"
+                                @change="save"
+                                ></v-date-picker>
+                            </v-menu>
+                        </v-col>
+                    </v-row>
+
+                    <v-row class="py-0 my-0 mr-2 text-right">
+                        <v-col>
+                            <v-btn @click="filter()"> Filter </v-btn>
+                        </v-col>
+                    </v-row>
+
+                    <v-divider></v-divider>
+
+                    <v-row>
+                        <v-card-subtitle class="justify-center">
+                            <strong> Filtered Stats </strong>
+                            <!-- Next code goes here -->
+                        </v-card-subtitle>
+                    </v-row>
+                  </v-card>
+              </v-col>
+          </v-row>
+      </v-layout>
+      <PageBottom/>
+    </v-container>
+  </div>
+</template>
+
+<script>
+import NavigationBar from '../components/NavigationBar.vue'
+import PageBottom from './PageBottom.vue'
+
+export default {
+  name: 'attendancePage',
+  components: {
+    NavigationBar, 
+    PageBottom,
+  },
+  data: () => ({
+    startTime : null,
+    endTime : null,
+    startTimeFlag : false,
+    endTimeFlag : false,
+    date : null,
+    filterStartDate : null,
+    filterEndDate : null,
+
+
+  }),
+
+  methods : {
+        resetFields() {
+            this.date = null
+            this.startTime = null
+            this.endTime = null
+        },
+
+        submit() {
+            // const reqObj = {
+            //     "Date" : this.date,
+            //     "startTime" : this.startTime,
+            //     "endTime" : this.endTime,
+            // }
+
+            // this.$axios.post("http://localhost:8080/login", reqObj)
+            //     .then(response => {
+            //         console.log(response)
+            //         this.closePopup = false
+            //         // this.$router.push('/landing')
+                    
+            //     })
+        },
+
+        filter() {
+            // const reqObj = {
+            //     "filterStartDate" : this.filterStartDate,
+            //     "filterEndDate" : this.filterEndDate,
+            // }
+
+            // this.$axios.post("http://localhost:8080/login", reqObj)
+            //     .then(response => {
+            //         console.log(response)
+            //         this.closePopup = false
+            //         // this.$router.push('/landing')
+                    
+            //     })
+        }
+  }
+}
+</script>
