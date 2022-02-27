@@ -2,36 +2,36 @@
   <div class="team">
     <v-container>
       <NavigationBar/>
+
+      <div>
+        <p class="h1 text-left font-weight-black">
+          Required Forms
+        </p>
+      </div>
+      <v-layout row wrap>
+        <v-divider></v-divider>
+      </v-layout>
+
       <v-layout row wrap>
         <v-flex sm6 xs12 md6 lg3>
-          <v-card class="ma-3" >
+          <!-- Add the check to show this form element only if the account type is admin -->
+          <v-card class="ma-3">
             <v-list-item>
               <v-list-item-avatar tile class="mt-n7">
                 <v-sheet color="white" elevation="10">
-                  <v-icon color="#D22B2B" style="font-size: 48px; margin-top: 15px" large
-                    >person</v-icon
-                  >
+                  <v-icon color="#D22B2B" style="font-size: 44px; margin-top: 10px" large>person</v-icon>
                 </v-sheet>
               </v-list-item-avatar>
               <v-list-item-content>
-                <div class="text-right mb-1" style="font-size: 20px">
-                  Leave Information
-                </div>
+                <div class="text-right mb-1" style="font-size: 20px">Register Employee</div>
                 <v-list-item-title class="text-right"
-                  >Paid Leave: {{ paidLeavesRemaining }}/{{
-                    maxPaidLeave
-                  }}</v-list-item-title
-                >
-                <v-list-item-title class="text-right"
-                  >Un-Paid Leave: {{ unpaidLeavesRemaining }}/{{
-                    maxUnpaidLeaves
-                  }}</v-list-item-title
+                  >Register new employee</v-list-item-title
                 >
                 <div><v-divider></v-divider></div>
               </v-list-item-content>
             </v-list-item>
             <v-card-actions>
-              <ApplyLeavePopup style="margin:5px;"/>
+              <RegisterEmployee style="margin:15px;"/>
             </v-card-actions>
           </v-card>
         </v-flex>
@@ -78,6 +78,7 @@
             </v-card-actions>
           </v-card>
         </v-flex>
+        
         <!-- <v-flex xs12 sm6 md4 lg3 v-for="person in team" :key="person.name">
           <v-card class="text-center ma-3">
             <v-responsive class="pt-4">
@@ -98,6 +99,55 @@
           </v-card>
         </v-flex> -->
       </v-layout>
+
+      <v-layout class="mt-4" row wrap>
+        <v-divider></v-divider>
+      </v-layout>
+
+      <div class="mt-4">
+        <p class="text-left font-weight-black">
+          Quick Links
+        </p>
+      </div>
+      <v-layout row wrap>
+        <v-flex sm6 xs12 md6 lg3>
+          <v-card class="ma-3" >
+            <v-list-item>
+              <v-list-item-avatar tile class="mt-n7">
+                <v-sheet color="white" elevation="10">
+                  <v-icon color="#D22B2B" style="font-size: 48px; margin-top: 15px" large
+                    >person</v-icon
+                  >
+                </v-sheet>
+              </v-list-item-avatar>
+              <v-list-item-content>
+                <div class="text-right mb-1" style="font-size: 20px">
+                  Leave Information
+                </div>
+                <v-list-item-title class="text-right"
+                  >Paid Leave: {{ paidLeavesRemaining }}/{{
+                    maxPaidLeave
+                  }}</v-list-item-title
+                >
+                <v-list-item-title class="text-right"
+                  >Un-Paid Leave: {{ unpaidLeavesRemaining }}/{{
+                    maxUnpaidLeaves
+                  }}</v-list-item-title
+                >
+                <div><v-divider></v-divider></div>
+              </v-list-item-content>
+            </v-list-item>
+            <v-card-actions>
+              <ApplyLeavePopup style="margin:5px;"/>
+            </v-card-actions>
+          </v-card>
+        </v-flex>
+      </v-layout>
+
+      <v-layout class="mt-4" row wrap>
+        <v-divider></v-divider>
+      </v-layout>
+      
       <PageBottom/>
     </v-container>
   </div>
@@ -109,11 +159,12 @@ import OnboardingFormPopup from '../Popups/OnboardingFormPopup.vue'
 import FinancialFormPopup from '../Popups/FinancialFormPopup.vue'
 import NavigationBar from './NavigationBar.vue'
 import PageBottom from './PageBottom.vue'
+import RegisterEmployee from '../Popups/HRRegisterEmployee.vue'
 
 export default {
   name: "LandingPage",
   components: {
-    ApplyLeavePopup, OnboardingFormPopup, FinancialFormPopup, NavigationBar, PageBottom,
+    ApplyLeavePopup, OnboardingFormPopup, FinancialFormPopup, NavigationBar, PageBottom, RegisterEmployee,
   },
   data: () => ({
     team: [

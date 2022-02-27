@@ -10,9 +10,10 @@
                     <v-card width = "600" class ="justify-center">
                         <v-card-title> Login </v-card-title>
                         <v-card-text class="text-center">
-                            <v-text-field label = "Username" prepend-icon="mdi-account-circle"/>
+                            <v-text-field label = "Username" v-model="userName" prepend-icon="mdi-account-circle"/>
                             <v-text-field label = "Password" 
                             :type="showPassword ? 'text' : 'password'"
+                            v-model="password"
                             prepend-icon="mdi-lock"
                             :append-icon="showPassword ? 'mdi-eye' : 'mdi-eye-off'"
                             @click-append="showPassword = !showPassword"/>
@@ -21,8 +22,9 @@
                         <v-divider></v-divider>
 
                         <v-card-actions>
-                            <v-btn to="/signup" color = "#89CFF0"> SignUp </v-btn>
-                            <v-btn to="/landing" color = "#6495ED"> Login </v-btn>
+                            <v-btn to="/signup" color = "#89CFF0" > SignUp </v-btn>
+                            <v-btn  color = "#6495ED" @click="login"> Login </v-btn> 
+                            <!-- to="/landing" -->
                         </v-card-actions>
                     </v-card>
                 </v-row>
@@ -36,7 +38,30 @@
 export default {
     name: "LoginPage",
     data: () => ({
-      showPassword:false
+      showPassword:false,
+      userName : "",
+      password : "",
     }),
+
+    methods : {
+        login() {
+            const requestObj = {
+                "email" : this.userName,
+                "password" : this.password
+            }
+
+            this.$axios.post("http://localhost:8080/login", requestObj)
+                .then(response => {
+                    console.log(response)
+                    this.$router.push('/landing')
+                    let token = response.data.token;
+                    this.$axios.defaults.headers.common["Authorization"] = "Bearer " + token;
+                    
+                    //Make a call to fetch the contents of the landing page here.
+                })
+        },
+
+    }
+
 }
 </script>

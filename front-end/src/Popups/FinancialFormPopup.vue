@@ -31,7 +31,7 @@
               prepend-icon="edit"
               :rules="inputRules"
             ></v-text-field>
-            <v-col class="d-flex" cols="12" sm="6">
+            <!-- <v-col class="d-flex" cols="12" sm="6">
                 <v-select
                 :items="typeOfAccount"
                 label="Account Type"
@@ -39,7 +39,7 @@
                 outlined
                 v-model="accountType"
                 ></v-select>
-            </v-col>
+            </v-col> -->
           </v-card-text>
           
           <v-card-actions>
@@ -51,7 +51,7 @@
               color="green darken-1"
               text
               outlined
-              @click="closePopup = false"
+              @click="submit()"
               >Submit</v-btn
             >
           </v-card-actions>
@@ -64,16 +64,33 @@
 <script>
 export default {
   data: () => ({
-    leaveTypeSelection:1,
     closePopup: false,
-    typeOfAccount : [
-        'Checking Account', 'Savings Account',
-    ],
+    // typeOfAccount : [
+    //     'Checking Account', 'Savings Account',
+    // ],
     inputRules: [(v) => v.length >= 3 || "Minimum lenght is 3 charachters"],
     bankName : "",
     routingNumber : "",
     accountNumber : "",
-    accountType : "",
+    // accountType : "",
   }),
+
+  methods: {
+    submit() {
+      const requestObj = {
+        "Bank" : this.bankName,
+        "RoutingNumber" : this.routingNumber,
+        "AccountNumber" : this.accountNumber,
+      }
+      // closePopup = false
+      this.$axios.post("http://localhost:8080/login", requestObj)
+        .then(response => {
+            console.log(response)
+            this.closePopup = false
+            // this.$router.push('/landing')
+            
+        })
+    }
+  }
 };
 </script>

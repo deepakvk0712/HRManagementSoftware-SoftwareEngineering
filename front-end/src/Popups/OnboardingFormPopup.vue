@@ -14,8 +14,13 @@
         <v-form class="px-3" ref="form">
           <v-card-text>
             <v-text-field
-              label="Prefered Name"
-              v-model="preferedName"
+              label="First Name"
+              v-model="FirstName"
+              prepend-icon="person"
+            ></v-text-field>
+            <v-text-field
+              label="Last Name"
+              v-model="LastName"
               prepend-icon="person"
             ></v-text-field>
 
@@ -69,9 +74,15 @@
             <v-col class="d-flex" cols="12" sm="6">
                 <VueTelInputVuetify v-model = "mobileNumber" label="Mobile Number"/>
             </v-col>
-            <v-col class="d-flex" cols="12" sm="6">
+
+            <v-text-field
+              label="Alternate Email"
+              v-model="alternateEmail"
+              prepend-icon="person"
+            ></v-text-field>
+            <!-- <v-col class="d-flex" cols="12" sm="6">
                 <VueTelInputVuetify v-model = "alternateNumber" label="Alternate Number"/>
-            </v-col>
+            </v-col> -->
 
           </v-card-text>
           
