@@ -1,23 +1,23 @@
 package main
 
 import (
+	"hrtool.com/HRManagementSoftware-SoftwareEngineering/Backend/Routers"
+	utils "hrtool.com/HRManagementSoftware-SoftwareEngineering/Backend/Utils"
 	"log"
 	"net/http"
 	"strings"
-
-	register "github.com/dstejas19/HRManagementSoftware-SoftwareEngineering/Backend/Register"
-	utils "github.com/dstejas19/HRManagementSoftware-SoftwareEngineering/Backend/Utils"
 
 	"github.com/gorilla/mux"
 )
 
 func main() {
 	utils.Init()
+
 	router := mux.NewRouter()
 
 	router.HandleFunc("/", home)
 
-	mount(router, "/register", register.Router())
+	mount(router, "/register", Routers.Router())
 
 	log.Fatal(http.ListenAndServe(":8080", router))
 }

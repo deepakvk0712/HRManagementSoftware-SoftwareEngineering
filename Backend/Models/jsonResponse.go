@@ -3,8 +3,7 @@ package models
 import (
 	"encoding/json"
 	"fmt"
-
-	errorHandler "github.com/dstejas19/HRManagementSoftware-SoftwareEngineering/Backend/ErrorHandler"
+	"hrtool.com/HRManagementSoftware-SoftwareEngineering/Backend/Utils/ErrorHandler"
 )
 
 type JsonResponse struct {

@@ -1,5 +1,9 @@
 package utils
 
+import "github.com/joho/godotenv"
+
 func Init() {
-	// errors.InternalServerErrorJSON = errors.InternalServerError.ToJSON()
+	godotenv.Load("./secrets.env")
+	ConnectToDb()
+
 }
