@@ -32,7 +32,7 @@ func main() {
 
 	*/
 
-	mount(router, "/register", Routers.Router())
+	mount(router, "/users", Routers.Router())
 	mount(router, "/settings", Routers.SettingsRouter())
 
 	c := cors.New(cors.Options{

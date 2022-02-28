@@ -12,7 +12,8 @@ func Router() *mux.Router {
 	fmt.Println("Hey")
 	router := mux.NewRouter()
 
-	router.Path("/HR").Methods(http.MethodPost).HandlerFunc(Controller.RegisterHR)
+	router.Path("/registerHR").Methods(http.MethodPost).HandlerFunc(Controller.RegisterHR)
+	router.Path("/profile").Methods(http.MethodGet).HandlerFunc(Controller.GetProfile)
 	router.Use(middleware.ValidateAccessToken)
 
 	return router

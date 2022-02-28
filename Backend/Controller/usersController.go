@@ -84,8 +84,8 @@ func RegisterHR(w http.ResponseWriter, req *http.Request) {
 	res := models.JsonResponse{}
 
 	resData := struct {
-		Email    string
-		Password string
+		Email    string `json:"email"`
+		Password string `json:"password"`
 	}{
 		Email:    email,
 		Password: tempPassword,
@@ -105,7 +105,40 @@ func RegisterHR(w http.ResponseWriter, req *http.Request) {
 	res.Data = string(data)
 
 	jsonResponse, jsonError := json.Marshal(res)
+	if jsonError != nil {
+		fmt.Println(jsonError)
 
+		errorResponses.SendInternalServerErrorResponse(w)
+		return
+	}
+
+	utils.MessageHandler(w, jsonResponse, http.StatusCreated)
+}
+
+func GetProfile(w http.ResponseWriter, req *http.Request) {
+	email := req.Context().Value("email").(string)
+
+	profileDetails, err := Dao.GetProfileDetails(email)
+	if err == 0 {
+		errorResponses.SendInternalServerErrorResponse(w)
+
+		return
+	}
+
+	data, jsonError := json.Marshal(profileDetails)
+	if jsonError != nil {
+		fmt.Println(err)
+
+		errorResponses.SendInternalServerErrorResponse(w)
+		return
+	}
+
+	res := models.JsonResponse{}
+	res.Error = ""
+	res.Msg = ""
+	res.Data = string(data)
+
+	jsonResponse, jsonError := json.Marshal(res)
 	if jsonError != nil {
 		fmt.Println(jsonError)
 

@@ -34,15 +34,15 @@ func Login(w http.ResponseWriter, req *http.Request) {
 
 	res := models.JsonResponse{}
 
-	msg := struct {
-		AccessToken string
-		FirstLogin  bool
+	Msg := struct {
+		AccessToken string `json:"accessToken"`
+		FirstLogin  bool   `json:"firstLogin"`
 	}{
 		AccessToken: token,
 		FirstLogin:  firstLogin,
 	}
 
-	data, jsonError := json.Marshal(msg)
+	data, jsonError := json.Marshal(Msg)
 
 	if jsonError != nil {
 		fmt.Println(jsonError)
