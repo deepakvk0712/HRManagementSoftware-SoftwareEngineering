@@ -83,6 +83,7 @@ func UpdateEmployeeDao(user gormModels.User) int {
 		"Nationality",
 		"Pronouns",
 		"UpdatedTS",
+		"IsOnboard",
 	).Where("Employee_ID = ?", user.EmployeeID).Updates(gormModels.User{
 		DriversLicense:  user.DriversLicense,
 		SSN:             user.SSN,
@@ -99,7 +100,8 @@ func UpdateEmployeeDao(user gormModels.User) int {
 		Citizenship:     user.Citizenship,
 		Nationality:     user.Nationality,
 		Pronouns:        user.Pronouns,
-		UpdatedTS:       updateTime})
+		UpdatedTS:       updateTime,
+		IsOnboard:       true})
 	if result.Error != nil {
 		fmt.Println(result.Error)
 		return 0
@@ -118,11 +120,13 @@ func UpdateEmployeeBankingDao(user gormModels.User) int {
 		"RoutingNumber",
 		"AccountNumber",
 		"Bank",
-		"UpdatedTS").Where("Employee_ID = ?", user.EmployeeID).Updates(gormModels.User{
+		"UpdatedTS",
+		"IsFinance").Where("Employee_ID = ?", user.EmployeeID).Updates(gormModels.User{
 		RoutingNumber: user.RoutingNumber,
 		AccountNumber: user.AccountNumber,
 		Bank:          user.Bank,
-		UpdatedTS:     updateTime})
+		UpdatedTS:     updateTime,
+		IsFinance:     true})
 
 	if result.Error != nil {
 		fmt.Println(result.Error)

@@ -37,4 +37,6 @@ type User struct {
 	Bank          string    `json:"Bank"`
 	CreatedTS     time.Time `json:"createdTs"`
 	UpdatedTS     time.Time `json:"updatedTs"`
+	IsOnboard     bool      `json:"IsOnboard"`
+	IsFinance     bool      `json:"IsFinance"`
 }
