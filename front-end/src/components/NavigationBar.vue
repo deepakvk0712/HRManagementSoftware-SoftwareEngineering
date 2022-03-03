@@ -44,7 +44,7 @@ export default {
   data: () => ({
     isClicked: false,
     sideBarItems: [
-      { icon: "dashboard", title: "Landing Page", path: "/" },
+      { icon: "dashboard", title: "Landing Page", path: "/landing" },
       { icon: "people", title: "My Profile", path: "/user-profile" },
       { icon: "account_balance", title: "About", path: "/about" },
       { icon: "money", title: "Pay Slip", path: "/payslip" },

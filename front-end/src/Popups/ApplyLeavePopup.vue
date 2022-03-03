@@ -9,17 +9,19 @@
       </template>
       <v-card>
         <v-card-title>
-          <span class="headline">Leave Application</span>
+          <span id="leaveApplyHead" class="headline">Leave Application</span>
         </v-card-title>
         <v-form class="px-3" ref="form">
           <v-card-text>
             <v-text-field
+              id="leaveApplySubjectInput"
               label="Subject"
               v-model="leaveApplicationTitle"
               prepend-icon="exit_to_app"
               :rules="inputRules"
             ></v-text-field>
             <v-textarea
+              id="leaveApplyReasonInput"
               label="Please state reason for requesting leave."
               v-model="leaveRequestDescription"
               prepend-icon="edit"
@@ -27,6 +29,7 @@
             ></v-textarea>
             <v-col cols="12" lg="6">
               <v-menu
+                id="leaveApplyInput"
                 ref="menu1"
                 v-model="menu1"
                 :close-on-content-click="false"
@@ -57,6 +60,7 @@
                   ></v-text-field>
                 </template>
                 <v-date-picker
+                  id="leaveApplyEndDateInput"
                   v-model="date"
                   no-title
                   @input="menu1 = false"
@@ -66,6 +70,7 @@
           </v-card-text>
           <v-col class="d-flex" cols="12" sm="6">
             <v-select
+              id="leaveApplyLeaveTypeInput"
               :items="dropdownItems"
               label="Leave Type"
               dense
@@ -75,10 +80,11 @@
           </v-col>
           <v-card-actions>
             <v-spacer></v-spacer>
-            <v-btn color="grey darken-1" text @click="closePopup = false"
+            <v-btn id="leaveApplyCancelInput" color="grey darken-1" text @click="closePopup = false"
               >Cancel</v-btn
             >
             <v-btn
+              id="leaveApplySubmitInput"
               color="green darken-1"
               text
               outlined

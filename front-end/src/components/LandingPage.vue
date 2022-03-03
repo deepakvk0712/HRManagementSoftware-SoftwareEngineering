@@ -4,7 +4,7 @@
       <NavigationBar/>
 
       <div>
-        <p class="h1 text-left font-weight-black">
+        <p class="h1 text-left font-weight-black quicklink1">
           Required Forms
         </p>
       </div>
@@ -23,8 +23,8 @@
                 </v-sheet>
               </v-list-item-avatar>
               <v-list-item-content>
-                <div class="text-right mb-1" style="font-size: 20px">Register Employee</div>
-                <v-list-item-title class="text-right"
+                <div id="regEmpHead" class="text-right mb-1" style="font-size: 20px">Register Employee</div>
+                <v-list-item-title id="subRegEmpHead" class="text-right"
                   >Register new employee</v-list-item-title
                 >
                 <div><v-divider></v-divider></div>
@@ -44,8 +44,8 @@
                 </v-sheet>
               </v-list-item-avatar>
               <v-list-item-content>
-                <div class="text-right mb-1" style="font-size: 20px">Onboarding Form</div>
-                <v-list-item-title class="text-right"
+                <div id="onboardForm" class="text-right mb-1" style="font-size: 20px">Onboarding Form</div>
+                <v-list-item-title id="subOnboardForm" class="text-right"
                   >Employee Input Needed</v-list-item-title
                 >
                 <div><v-divider></v-divider></div>
@@ -66,8 +66,8 @@
                 </v-sheet>
               </v-list-item-avatar>
               <v-list-item-content>
-                <div class="text-right mb-1" style="font-size: 20px">Financial Form</div>
-                <v-list-item-title class="text-right"
+                <div id="finForm" class="text-right mb-1" style="font-size: 20px">Financial Form</div>
+                <v-list-item-title id="subFinForm" class="text-right"
                   >Banking Information</v-list-item-title
                 >
                 <div><v-divider></v-divider></div>
@@ -105,7 +105,7 @@
       </v-layout>
 
       <div class="mt-4">
-        <p class="text-left font-weight-black">
+        <p class="text-left font-weight-black quicklink2">
           Quick Links
         </p>
       </div>

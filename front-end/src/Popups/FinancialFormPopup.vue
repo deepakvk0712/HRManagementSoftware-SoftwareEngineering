@@ -9,23 +9,26 @@
       </template>
       <v-card>
         <v-card-title>
-          <span class="headline">Banking Information</span>
+          <span id="finCardHead" class="headline">Banking Information</span>
         </v-card-title>
         <v-form class="px-3" ref="form">
           <v-card-text>
             <v-text-field
+              id="bankNameInput"
               label="Enter Bank Name"
               v-model="bankName"
               prepend-icon="edit"
               :rules="inputRules"
             ></v-text-field>
             <v-text-field
+              id="routingNumberInput"
               label="Enter Routing Number"
               v-model="routingNumber"
               prepend-icon="edit"
               :rules="inputRules"
             ></v-text-field>
             <v-text-field
+              id="accountNumberInput"
               label="Enter Account Number"
               v-model="accountNumber"
               prepend-icon="edit"
@@ -44,10 +47,11 @@
           
           <v-card-actions>
             <v-spacer></v-spacer>
-            <v-btn color="grey darken-1" text @click="closePopup = false"
+            <v-btn id="finCancelButton" color="grey darken-1" text @click="closePopup = false"
               >Cancel</v-btn
             >
             <v-btn
+              id = "finSubmitButton"
               color="green darken-1"
               text
               outlined
