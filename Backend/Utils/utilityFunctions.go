@@ -6,6 +6,7 @@ import (
 	"golang.org/x/crypto/bcrypt"
 	models "hrtool.com/HRManagementSoftware-SoftwareEngineering/Backend/Models"
 	"math/rand"
+	"strings"
 	"time"
 )
 
@@ -71,4 +72,10 @@ func ValidateToken(signedToken string) (*models.JWTClaim, error) {
 	}
 
 	return claims, nil
+}
+
+func GetUsername(email string) string {
+	emailSlice := strings.Split(email, "@")
+
+	return emailSlice[0]
 }

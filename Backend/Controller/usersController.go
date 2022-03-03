@@ -83,7 +83,15 @@ func RegisterHR(w http.ResponseWriter, req *http.Request) {
 
 	res := models.JsonResponse{}
 
-	data, jsonError := json.Marshal(u)
+	resData := struct {
+		Email    string `json:"email"`
+		Password string `json:"password"`
+	}{
+		Email:    email,
+		Password: tempPassword,
+	}
+
+	data, jsonError := json.Marshal(resData)
 
 	if jsonError != nil {
 		fmt.Println(jsonError)
@@ -97,7 +105,6 @@ func RegisterHR(w http.ResponseWriter, req *http.Request) {
 	res.Data = string(data)
 
 	jsonResponse, jsonError := json.Marshal(res)
-
 	if jsonError != nil {
 		fmt.Println(jsonError)
 
@@ -126,6 +133,75 @@ func CreateEmployee(w http.ResponseWriter, r *http.Request) {
 
 	jsonResponse, jsonError := json.Marshal(res)
 
+	if jsonError != nil {
+		fmt.Println(jsonError)
+
+		errorResponses.SendInternalServerErrorResponse(w)
+		return
+	}
+
+	utils.MessageHandler(w, jsonResponse, http.StatusCreated)
+}
+
+func GetProfile(w http.ResponseWriter, req *http.Request) {
+	email := req.Context().Value("email").(string)
+
+	profileDetails, err := Dao.GetProfileDetails(email)
+	if err == 0 {
+		errorResponses.SendInternalServerErrorResponse(w)
+
+		return
+	}
+
+	data, jsonError := json.Marshal(profileDetails)
+	if jsonError != nil {
+		fmt.Println(err)
+
+		errorResponses.SendInternalServerErrorResponse(w)
+		return
+	}
+
+	res := models.JsonResponse{}
+	res.Error = ""
+	res.Msg = ""
+	res.Data = string(data)
+
+	jsonResponse, jsonError := json.Marshal(res)
+	if jsonError != nil {
+		fmt.Println(jsonError)
+
+		errorResponses.SendInternalServerErrorResponse(w)
+		return
+	}
+
+	utils.MessageHandler(w, jsonResponse, http.StatusCreated)
+}
+
+func UpdateProfile(w http.ResponseWriter, req *http.Request) {
+	email := req.Context().Value("email").(string)
+
+	userProfile := models.ProfileDetails{}
+	if err := json.NewDecoder(req.Body).Decode(&userProfile); err != nil {
+		fmt.Println(err)
+
+		errorResponses.SendBadRequestResponse(w, "")
+
+		return
+	}
+
+	err := Dao.UpdateProfileDetails(userProfile, email)
+	if err == 0 {
+		errorResponses.SendInternalServerErrorResponse(w)
+
+		return
+	}
+
+	res := models.JsonResponse{}
+	res.Error = ""
+	res.Msg = "Details updated successfully"
+	res.Data = ""
+
+	jsonResponse, jsonError := json.Marshal(res)
 	if jsonError != nil {
 		fmt.Println(jsonError)
 

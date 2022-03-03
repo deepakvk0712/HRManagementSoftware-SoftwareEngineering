@@ -63,3 +63,22 @@ func DeleteUserDAO(email string) int {
 
 	return 1
 }
+
+func GetProfileDetails(email string) (models.ProfileDetails, int) {
+	profileDetails := models.ProfileDetails{}
+
+	row := utils.Db.Raw("SELECT FIRST_NAME, LAST_NAME, TITLE, ABOUT_ME FROM USERS WHERE LOWER(OFFICIAL_EMAIL) = ?", strings.ToLower(email)).Row()
+	if row.Err() != nil {
+		fmt.Println(row)
+		return profileDetails, 0
+	}
+
+	row.Scan(&profileDetails.FirstName, &profileDetails.LastName, &profileDetails.Title, &profileDetails.AboutMe)
+	return profileDetails, 1
+}
+
+func UpdateProfileDetails(userProfile models.ProfileDetails, email string) int {
+	utils.Db.Exec("UPDATE USERS SET FIRST_NAME = ?, LAST_NAME = ?, TITLE = ?, ABOUT_ME = ?WHERE LOWER(OFFICIAL_EMAIL) = ?", userProfile.FirstName, userProfile.LastName, userProfile.Title, userProfile.AboutMe, strings.ToLower(email))
+
+	return 1
+}

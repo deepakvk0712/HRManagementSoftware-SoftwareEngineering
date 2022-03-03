@@ -3,47 +3,25 @@ package Controller
 import (
 	"encoding/json"
 	"fmt"
-	Dao "hrtool.com/HRManagementSoftware-SoftwareEngineering/Backend/Database/DAO"
 	models "hrtool.com/HRManagementSoftware-SoftwareEngineering/Backend/Models"
 	utils "hrtool.com/HRManagementSoftware-SoftwareEngineering/Backend/Utils"
 	errorResponses "hrtool.com/HRManagementSoftware-SoftwareEngineering/Backend/Utils/ErrorHandler/ErrorResponse"
 	"net/http"
 )
 
-func Login(w http.ResponseWriter, req *http.Request) {
-	userLogin := req.Context().Value("user").(models.UserLogin)
+func GetDashboard(w http.ResponseWriter, req *http.Request) {
 	role := req.Context().Value("role").(byte)
-	firstLogin := req.Context().Value("firstLogin").(bool)
-
-	if firstLogin {
-		if err := Dao.UpdateFirstLoginDAO(userLogin.Email); err == 0 {
-			errorResponses.SendInternalServerErrorResponse(w)
-
-			return
-		}
-	}
-
-	token, err := utils.GenerateAccessToken(userLogin.Email, role)
-	if err != nil {
-		fmt.Println(err)
-
-		errorResponses.SendInternalServerErrorResponse(w)
-
-		return
-	}
-
-	res := models.JsonResponse{}
+	email := req.Context().Value("email").(string)
 
 	Msg := struct {
-		AccessToken string `json:"accessToken"`
-		FirstLogin  bool   `json:"firstLogin"`
+		AccountType byte   `json:"accountType"`
+		Username    string `json:"username"`
 	}{
-		AccessToken: token,
-		FirstLogin:  firstLogin,
+		AccountType: role,
+		Username:    utils.GetUsername(email),
 	}
 
 	data, jsonError := json.Marshal(Msg)
-
 	if jsonError != nil {
 		fmt.Println(jsonError)
 
@@ -51,12 +29,13 @@ func Login(w http.ResponseWriter, req *http.Request) {
 		return
 	}
 
+	res := models.JsonResponse{}
+
 	res.Error = ""
-	res.Msg = "Logged in successfully"
+	res.Msg = ""
 	res.Data = string(data)
 
 	jsonResponse, jsonError := json.Marshal(res)
-
 	if jsonError != nil {
 		fmt.Println(jsonError)
 
