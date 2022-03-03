@@ -115,6 +115,34 @@ func RegisterHR(w http.ResponseWriter, req *http.Request) {
 	utils.MessageHandler(w, jsonResponse, http.StatusCreated)
 }
 
+func CreateEmployee(w http.ResponseWriter, r *http.Request) {
+	//w.Header().Set("Content-Type", "application/json")
+
+	var employee models.Employee
+	_ = json.NewDecoder(r.Body).Decode(&employee) //decode json from the front end and convert to employee
+	fmt.Println(employee)
+	/*
+		Database operation
+	*/
+	//json.NewEncoder(w).Encode(employee)
+	res := models.JsonResponse{}
+
+	res.Error = ""
+	res.Msg = "Employee record created"
+	res.Data = ""
+
+	jsonResponse, jsonError := json.Marshal(res)
+
+	if jsonError != nil {
+		fmt.Println(jsonError)
+
+		errorResponses.SendInternalServerErrorResponse(w)
+		return
+	}
+
+	utils.MessageHandler(w, jsonResponse, http.StatusCreated)
+}
+
 func GetProfile(w http.ResponseWriter, req *http.Request) {
 	email := req.Context().Value("email").(string)
 
@@ -149,24 +177,31 @@ func GetProfile(w http.ResponseWriter, req *http.Request) {
 	utils.MessageHandler(w, jsonResponse, http.StatusCreated)
 }
 
-func CreateEmployee(w http.ResponseWriter, r *http.Request) {
-	//w.Header().Set("Content-Type", "application/json")
+func UpdateProfile(w http.ResponseWriter, req *http.Request) {
+	email := req.Context().Value("email").(string)
 
-	var employee models.Employee
-	_ = json.NewDecoder(r.Body).Decode(&employee) //decode json from the front end and convert to employee
-	fmt.Println(employee)
-	/*
-		Database operation
-	*/
-	//json.NewEncoder(w).Encode(employee)
+	userProfile := models.ProfileDetails{}
+	if err := json.NewDecoder(req.Body).Decode(&userProfile); err != nil {
+		fmt.Println(err)
+
+		errorResponses.SendBadRequestResponse(w, "")
+
+		return
+	}
+
+	err := Dao.UpdateProfileDetails(userProfile, email)
+	if err == 0 {
+		errorResponses.SendInternalServerErrorResponse(w)
+
+		return
+	}
+
 	res := models.JsonResponse{}
-
 	res.Error = ""
-	res.Msg = "Employee record created"
+	res.Msg = "Details updated successfully"
 	res.Data = ""
 
 	jsonResponse, jsonError := json.Marshal(res)
-
 	if jsonError != nil {
 		fmt.Println(jsonError)
 

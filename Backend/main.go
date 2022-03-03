@@ -34,6 +34,7 @@ func main() {
 
 	mount(router, "/users", Routers.Router())
 	mount(router, "/settings", Routers.SettingsRouter())
+	mount(router, "/dashboard", Routers.DashboardRouter())
 
 	c := cors.New(cors.Options{
 		AllowedOrigins:   []string{"*"},
