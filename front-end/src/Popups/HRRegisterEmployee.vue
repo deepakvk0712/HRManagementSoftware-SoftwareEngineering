@@ -9,53 +9,61 @@
       </template>
       <v-card>
         <v-card-title>
-          <span class="headline">HR Register Employee</span>
+          <span id="regEmployeeHead" class="headline">HR Register Employee</span>
         </v-card-title>
         <v-form class="px-3" ref="form">
           <v-card-text>
             <v-text-field
+              id="regEmpNameInput"
               label="Enter employee first name"
               v-model="firstName"
               prepend-icon="edit"
               :rules="inputRules"
             ></v-text-field>
             <v-text-field
+              id="regEmpLastNameInput"
               label="Enter employee last name"
               v-model="lastName"
               prepend-icon="edit"
               :rules="inputRules"
             ></v-text-field>
             <v-text-field
+              id="regEmpBusUnitInput"
               label="Enter buissness unit"
               v-model="businessUnit"
               prepend-icon="edit"
               :rules="inputRules"
             ></v-text-field>
             <v-text-field
+              id="regEmpTitleInput"
               label="Enter employee title"
               v-model="title"
               prepend-icon="edit"
               :rules="inputRules"
             ></v-text-field>
             <v-text-field
+              id="regEmpTypeInput"
               label="Enter employee type"
               v-model="type"
               prepend-icon="edit"
               :rules="inputRules"
             ></v-text-field>
             <v-text-field
-                v-model="managerId"
-                hide-details
-                single-line
-                type="number"
+              id = "regEmpManagerIdInput"
+              v-model="managerId"
+              hide-details
+              single-line
+              type="number"
             />
             <v-text-field
+              id="regEmpGradeInput"
               label="Enter employee grade"
               v-model="grade"
               prepend-icon="edit"
               :rules="inputRules"
             ></v-text-field>
             <v-text-field
+              id="regEmpLocationInput"
               label="Enter employee location"
               v-model="location"
               prepend-icon="edit"
@@ -63,6 +71,7 @@
             ></v-text-field>
             <v-col class="d-flex" cols="12" sm="6">
                 <v-select
+                id="regEmpCountryInput"
                 :items="countries"
                 label="Enter country"
                 dense
@@ -71,6 +80,7 @@
                 ></v-select>
             </v-col>
             <v-text-field
+              id= "regEmpPersEmailInput"
               label="Enter employee personal email"
               v-model="personalEmail"
               prepend-icon="edit"
@@ -80,10 +90,11 @@
           
           <v-card-actions>
             <v-spacer></v-spacer>
-            <v-btn color="grey darken-1" text @click="closePopup = false"
+            <v-btn id="regEmpCancelButton" color="grey darken-1" text @click="closePopup = false"
               >Cancel</v-btn
             >
             <v-btn
+              id="regEmpSubmitButton"
               color="green darken-1"
               text
               outlined
