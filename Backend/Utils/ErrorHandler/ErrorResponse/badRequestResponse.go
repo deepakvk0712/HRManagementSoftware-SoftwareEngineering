@@ -8,7 +8,7 @@ import (
 	utils "hrtool.com/HRManagementSoftware-SoftwareEngineering/Backend/Utils"
 )
 
-func SendBadRequestResponse(w http.ResponseWriter) {
+func SendBadRequestResponse(w http.ResponseWriter, msg string) {
 
 	badRequestError := errors.BadServerError
 
@@ -16,7 +16,7 @@ func SendBadRequestResponse(w http.ResponseWriter) {
 
 	message.Error = badRequestError.Err
 	message.Data = ""
-	message.Msg = ""
+	message.Msg = msg
 
 	res := message.ToJSON()
 
