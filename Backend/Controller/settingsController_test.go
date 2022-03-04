@@ -3,7 +3,6 @@ package Controller
 import (
 	"bytes"
 	"encoding/json"
-	"fmt"
 	"github.com/gorilla/mux"
 	"github.com/stretchr/testify/assert"
 	middleware "hrtool.com/HRManagementSoftware-SoftwareEngineering/Backend/Middleware"
@@ -13,61 +12,6 @@ import (
 	"net/http/httptest"
 	"testing"
 )
-
-//func TestSignUp(t *testing.T) {
-//	var actualResult models.User
-//
-//	user := models.User{
-//		Name:     "Test User",
-//		Email:    "jwt@email.com",
-//		Password: "secret",
-//	}
-//
-//	payload, err := json.Marshal(&user)
-//	assert.NoError(t, err)
-//
-//	request, err := http.NewRequest("POST", "/api/public/signup", bytes.NewBuffer(payload))
-//	assert.NoError(t, err)
-//
-//	w := httptest.NewRecorder()
-//
-//	c, _ := gin.CreateTestContext(w)
-//	c.Request = request
-//
-//	err = database.InitDatabase()
-//	assert.NoError(t, err)
-//
-//	database.GlobalDB.AutoMigrate(&models.User{})
-//
-//	Signup(c)
-//
-//	assert.Equal(t, 200, w.Code)
-//
-//	err = json.Unmarshal(w.Body.Bytes(), &actualResult)
-//	assert.NoError(t, err)
-//
-//	assert.Equal(t, user.Name, actualResult.Name)
-//	assert.Equal(t, user.Email, actualResult.Email)
-//}
-//
-//func TestSignUpInvalidJSON(t *testing.T) {
-//	user := "test"
-//
-//	payload, err := json.Marshal(&user)
-//	assert.NoError(t, err)
-//
-//	request, err := http.NewRequest("POST", "/api/public/signup", bytes.NewBuffer(payload))
-//	assert.NoError(t, err)
-//
-//	w := httptest.NewRecorder()
-//
-//	c, _ := gin.CreateTestContext(w)
-//	c.Request = request
-//
-//	Signup(c)
-//
-//	assert.Equal(t, 400, w.Code)
-//}
 
 func TestChangePassword(t *testing.T) {
 	router := mux.NewRouter()
@@ -160,12 +104,7 @@ func TestChangePassword(t *testing.T) {
 		var target targetType
 
 		json.NewDecoder(w.Body).Decode(&response)
-
-		fmt.Println(response.Data)
-
 		json.Unmarshal([]byte(response.Data), &target)
-
-		fmt.Println("target   ", target)
 
 		updatedUser := models.ChangeLoginInfo{
 			Email:       "dstejas191@hrtools.com",
@@ -176,14 +115,32 @@ func TestChangePassword(t *testing.T) {
 		payload, err = json.Marshal(&updatedUser)
 		assert.NoError(t, err)
 
-		fmt.Println(target.AccessToken)
-
 		passwordRequest, err := http.NewRequest("PUT", "/resetPassword", bytes.NewBuffer(payload))
 		passwordRequest.Header.Set("Content-Type", "application/json")
 		passwordRequest.Header.Set("Authorization", "Bearer "+target.AccessToken)
 		assert.NoError(t, err)
 
 		w = httptest.NewRecorder()
+
+		router.ServeHTTP(w, passwordRequest)
+		assert.Equal(t, 401, w.Code)
+	})
+
+	t.Run("Cannot change password if user is not authenticated", func(t *testing.T) {
+		updatedUser := models.ChangeLoginInfo{
+			Email:       "dstejas191@hrtools.com",
+			OldPassword: "123",
+			NewPassword: "123",
+		}
+
+		payload, err := json.Marshal(&updatedUser)
+		assert.NoError(t, err)
+
+		passwordRequest, err := http.NewRequest("PUT", "/resetPassword", bytes.NewBuffer(payload))
+		passwordRequest.Header.Set("Content-Type", "application/json")
+		assert.NoError(t, err)
+
+		w := httptest.NewRecorder()
 
 		router.ServeHTTP(w, passwordRequest)
 		assert.Equal(t, 401, w.Code)

@@ -5,12 +5,12 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="92e96ae0-5c25-4d74-9f10-84e21d1f6971" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/Controller/usersController_test.go" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/../.gitignore" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Controller/settingsController_test.go" beforeDir="false" afterPath="$PROJECT_DIR$/Controller/settingsController_test.go" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Database/TestHR" beforeDir="false" afterPath="$PROJECT_DIR$/Database/TestHR" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Middleware/userValidation.go" beforeDir="false" afterPath="$PROJECT_DIR$/Middleware/userValidation.go" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Utils/init.go" beforeDir="false" afterPath="$PROJECT_DIR$/Utils/init.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main.go" beforeDir="false" afterPath="$PROJECT_DIR$/main.go" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
