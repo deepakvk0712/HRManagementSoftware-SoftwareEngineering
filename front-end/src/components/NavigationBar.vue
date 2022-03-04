@@ -15,7 +15,7 @@
           <v-avatar size="100">
             <img src="../assets/user.png" alt="" />
           </v-avatar>
-          <p class="white--text subheading mt-1 text-center">Username</p>
+          <p class="white--text subheading mt-1 text-center">{{userName}}</p>
           <v-divider color="white"></v-divider>
         </v-flex>
       </v-layout>
@@ -41,6 +41,11 @@
 
 <script>
 export default {
+  props: {
+    userName : {
+      type: String,
+    }
+  },
   data: () => ({
     isClicked: false,
     sideBarItems: [

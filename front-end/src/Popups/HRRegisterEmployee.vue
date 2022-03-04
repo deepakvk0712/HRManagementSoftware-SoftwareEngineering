@@ -19,6 +19,7 @@
               v-model="firstName"
               prepend-icon="edit"
               :rules="inputRules"
+              required
             ></v-text-field>
             <v-text-field
               id="regEmpLastNameInput"
@@ -26,6 +27,7 @@
               v-model="lastName"
               prepend-icon="edit"
               :rules="inputRules"
+              required
             ></v-text-field>
             <v-text-field
               id="regEmpBusUnitInput"
@@ -33,6 +35,7 @@
               v-model="businessUnit"
               prepend-icon="edit"
               :rules="inputRules"
+              required
             ></v-text-field>
             <v-text-field
               id="regEmpTitleInput"
@@ -40,6 +43,7 @@
               v-model="title"
               prepend-icon="edit"
               :rules="inputRules"
+              required
             ></v-text-field>
             <v-text-field
               id="regEmpTypeInput"
@@ -47,13 +51,17 @@
               v-model="type"
               prepend-icon="edit"
               :rules="inputRules"
+              required
             ></v-text-field>
             <v-text-field
               id = "regEmpManagerIdInput"
               v-model="managerId"
               hide-details
+              label="Enter Manager ID"
+              prepend-icon="edit"
               single-line
               type="number"
+              required
             />
             <v-text-field
               id="regEmpGradeInput"
@@ -61,6 +69,7 @@
               v-model="grade"
               prepend-icon="edit"
               :rules="inputRules"
+              required
             ></v-text-field>
             <v-text-field
               id="regEmpLocationInput"
@@ -68,6 +77,7 @@
               v-model="location"
               prepend-icon="edit"
               :rules="inputRules"
+              required
             ></v-text-field>
             <v-col class="d-flex" cols="12" sm="6">
                 <v-select
@@ -77,6 +87,7 @@
                 dense
                 outlined
                 v-model="country"
+                required
                 ></v-select>
             </v-col>
             <v-text-field
@@ -85,7 +96,32 @@
               v-model="personalEmail"
               prepend-icon="edit"
               :rules="inputRules"
+              required
             ></v-text-field>
+
+            <v-col class="d-flex" cols="12" sm="6">
+                <v-select
+                id="regEmpIsHrInput"
+                :items="HrPossibility"
+                label="Is this a new HR?"
+                dense
+                outlined
+                v-model="IsHR"
+                required
+                ></v-select>
+            </v-col>
+
+            <v-col class="d-flex" cols="12" sm="6">
+                <v-select
+                id="regEmpIsManagerInput"
+                :items="ManagerPossibility"
+                label="Is this a new Manger?"
+                dense
+                outlined
+                v-model="IsManager"
+                required
+                ></v-select>
+            </v-col>
           </v-card-text>
           
           <v-card-actions>
@@ -112,45 +148,47 @@
 export default {
   data: () => ({
     closePopup: false,
+    countries : ['United States', 'India', 'France', 'Canada', 'United Kingdom', 'Bangladesh', 'Australia', 'Germany', 'Russia',],
     inputRules: [(v) => v.length >= 3 || "Minimum lenght is 3 charachters"],
     firstName : "",
     lastName : "",
     businessUnit : "",
-    managerId : 0,
+    managerId: null,
     title : "",
     type : "",
     grade : "",
     location : "",
     country : "",
     personalEmail : "",
+    IsHR:false,
+    HrPossibility : [true, false],
+    IsManager: false,
+    ManagerPossibility: [true, false],
   }),
 
   methods : {
         submit() {
-            const requestObj = {
-                "firstName" : this.firstName,
-                "lastName" : this.lastName,
-                "businessUnit" : this.businessUnit,
-                "managerId" : this.managerId, //not added
-                "title" : this.title,
-                "type" : this.type,
-                "grade" : this.grade,
-                "location" : this.location,
-                "country" : this.country,
-                "personalEmail" : this.personalEmail,
-            }
-            // closePopup = false
-            this.$axios.post("http://localhost:8080/register/HR", requestObj)
-                .then(response => {
-                    console.log(response)
-                    this.closePopup = false
-                    // this.$router.push('/landing')
-                    // let token = response.data.token;
-                    // this.$axios.defaults.headers.common["Authorization"] = "Bearer " + token;
-                    
-                })
+          const requestObj = {
+              "firstName" : this.firstName,
+              "lastName" : this.lastName,
+              "businessUnit" : this.businessUnit,
+              "managerId" : this.managerId,
+              "title" : this.title,
+              "type" : this.type,
+              "grade" : this.grade,
+              "location" : this.location,
+              "country" : this.country,
+              "personalEmail" : this.personalEmail,
+              "isHR" : this.IsHR,
+              "isManager" : this.IsManager,
+          }
+          this.$axios.post("http://localhost:8080/users/registerHR", requestObj)
+            .then(response => {
+                console.log(response)
+                this.closePopup = false
+                                  
+            })
         },
-
     }
 };
 </script>

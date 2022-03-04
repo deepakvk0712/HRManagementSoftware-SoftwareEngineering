@@ -1,7 +1,7 @@
 <template>
   <div class="team">
     <v-container>
-      <NavigationBar/>
+      <NavigationBar v-bind:userName="this.$store.state.userName"/>
 
       <div>
         <p class="h1 text-left font-weight-black quicklink1">
@@ -13,28 +13,6 @@
       </v-layout>
 
       <v-layout row wrap>
-        <v-flex sm6 xs12 md6 lg3>
-          <!-- Add the check to show this form element only if the account type is admin -->
-          <v-card class="ma-3">
-            <v-list-item>
-              <v-list-item-avatar tile class="mt-n7">
-                <v-sheet color="white" elevation="10">
-                  <v-icon color="#D22B2B" style="font-size: 44px; margin-top: 10px" large>person</v-icon>
-                </v-sheet>
-              </v-list-item-avatar>
-              <v-list-item-content>
-                <div id="regEmpHead" class="text-right mb-1" style="font-size: 20px">Register Employee</div>
-                <v-list-item-title id="subRegEmpHead" class="text-right"
-                  >Register new employee</v-list-item-title
-                >
-                <div><v-divider></v-divider></div>
-              </v-list-item-content>
-            </v-list-item>
-            <v-card-actions>
-              <RegisterEmployee style="margin:15px;"/>
-            </v-card-actions>
-          </v-card>
-        </v-flex>
         <v-flex sm6 xs12 md6 lg3>
           <v-card class="ma-3">
             <v-list-item>
@@ -111,6 +89,29 @@
       </div>
       <v-layout row wrap>
         <v-flex sm6 xs12 md6 lg3>
+          <!-- Add the check to show this form element only if the account type is admin -->
+          <v-card class="ma-3">
+            <v-list-item>
+              <v-list-item-avatar tile class="mt-n7">
+                <v-sheet color="white" elevation="10">
+                  <v-icon color="#D22B2B" style="font-size: 44px; margin-top: 10px" large>person</v-icon>
+                </v-sheet>
+              </v-list-item-avatar>
+              <v-list-item-content>
+                <div id="regEmpHead" class="text-right mb-1" style="font-size: 20px">Register Employee</div>
+                <v-list-item-title id="subRegEmpHead" class="text-right"
+                  >Register new employee</v-list-item-title
+                >
+                <div><v-divider></v-divider></div>
+              </v-list-item-content>
+            </v-list-item>
+            <v-card-actions>
+              <RegisterEmployee style="margin:15px;"/>
+            </v-card-actions>
+          </v-card>
+        </v-flex>
+
+        <v-flex sm6 xs12 md6 lg3>
           <v-card class="ma-3" >
             <v-list-item>
               <v-list-item-avatar tile class="mt-n7">
@@ -163,20 +164,27 @@ import RegisterEmployee from '../Popups/HRRegisterEmployee.vue'
 
 export default {
   name: "LandingPage",
+  async created() {
+    await this.$axios.get('http://localhost:8080/dashboard/')
+      .then(response => {
+        // console.log(response);
+        let respObj = JSON.parse(response.data.data)
+        this.$store.state.userName = respObj.username
+        this.$store.state.accountType = respObj.accountType
+        // console.log(this.$store.state.userName);
+      })
+  },
   components: {
     ApplyLeavePopup, OnboardingFormPopup, FinancialFormPopup, NavigationBar, PageBottom, RegisterEmployee,
   },
   data: () => ({
-    team: [
-      { name: "Iyad", role: "web developer", avatar: "/img1.png" },
-      { name: "Reda", role: "Graphic designer", avatar: "/img2.png" },
-      { name: "Zineb", role: "web developer", avatar: "/img3.png" },
-      { name: "Hu TechGroup", role: "Desktop developer", avatar: "/img4.png" },
-    ],
     maxPaidLeave: 20,
     paidLeavesRemaining: 12,
     maxUnpaidLeaves: 20,
     unpaidLeavesRemaining: 14,
+    isLoading:false,
+    userName : this.$store.state.userName,
+
   }),
 };
 </script>

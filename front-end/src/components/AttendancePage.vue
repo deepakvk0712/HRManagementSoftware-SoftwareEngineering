@@ -1,7 +1,7 @@
 <template>
   <div class="home">
     <v-container>
-      <NavigationBar/>
+      <NavigationBar v-bind:userName="this.$store.state.userName"/>
       <v-layout class="d-flex">
           <v-row>
               <v-col>

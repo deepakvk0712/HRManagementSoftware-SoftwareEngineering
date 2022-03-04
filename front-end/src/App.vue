@@ -1,16 +1,20 @@
 <template>
   <v-app>
-    <v-content class="ma-4">
+    <v-content class="ma-4" v-show="this.$store.state.loader == false">
       <router-view></router-view>
     </v-content>
+    <v-content class="ma-4">
+      <PageLoader v-show="this.$store.state.loader"/>
+    </v-content>
   </v-app>
+  
 </template>
 
 <script>
-
+import PageLoader from '../src/components/PageLoader.vue'
 export default {
   components: {
-
+    PageLoader,
   }
 }
 </script>

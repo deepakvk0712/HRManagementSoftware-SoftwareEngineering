@@ -2,7 +2,7 @@
   <div class="home">
     <v-container>
 
-      <NavigationBar/>
+      <NavigationBar v-bind:userName="this.$store.state.userName"/>
       <v-layout class="d-flex">
         <v-row>
         <v-col>
@@ -103,7 +103,7 @@
                   v-model="firstName"
                   class="pt-0 ps-4 mr-4"
                 ></v-text-field> -->
-                <VueTelInputVuetify style="padding-top:0px;" class="ml-4" v-model = "mobileNumber" label="Mobile Number"/>
+                <VueTelInputVuetify style="padding-top:0px;" class="ml-4" v-model="mobileNumber" label="Mobile Number"/>
               </v-col>
 
               <v-col class="py-0">
@@ -217,6 +217,38 @@ export default {
     states: [
         'California', 'Florida', 'Washington DC', 'Wisconsin', 'Portland', 'Arizona', 'Texas', 'Georgia', 'North Carolina', 'South Carolina', 'Alabama', 'Michigan',
     ],
-  })
+    firstName : "",
+    lastName : "",
+    mobileNumber : null,
+    emailId : "",
+    address : "",
+    city : "",
+    empState : "",
+    zipCode: "",
+    description : "",
+  }),
+
+  methods : {
+    submit() {
+      // const reqObj = {
+      //   "firstName" : this.firstName,
+      //   "lastName" : this.lastName,
+      //   "mobileNumber" : this.mobileNumber,
+      //   "emailId" : this.emailId,
+      //   "address" : this.address,
+      //   "city" : this.city,
+      //   "empState" : this.empState,
+      //   "zipCode" : this.zipCode,
+      //   "descrption" : this.descrption,
+      // }
+
+      //Making a Update call to the backend to update user profile.
+      // this.$axios.put("http://localhost:8080/users/profile", reqObj)
+      //   .then(response => {
+      //       console.log(response)
+                    
+      //   })
+    }
+  },
 }
 </script>
