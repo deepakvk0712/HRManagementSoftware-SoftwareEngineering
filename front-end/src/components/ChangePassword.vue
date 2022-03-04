@@ -2,17 +2,26 @@
   <v-app>
     <!-- <v-parallax dark src="https://cdn.vuetifyjs.com/images/backgrounds/vbanner.jpg" height ="100%" jumbotron> -->
     <validation-observer ref="observer" v-slot="{ invalid }">
-      <form @submit.prevent="submit">
+        <!-- v-slot="{ invalid }" -->
+      <form @submit.prevent="submit()">
         <v-content>
           <v-container fluid pa-0>
+
+            <!-- <v-flex v-if="displayError.length > 0" fluid>
+                xs12 -->
+                <!-- <v-alert width="90%" class="text-center" type="warning" :value="displayError" dismissible -->
+                <!-- >{{displayError}}</v-alert -->
+                <!-- > -->
+            <!-- </v-flex> --> 
+
             <v-row align="center" justify="center" style="height: 100vh" dense>
               <v-card width="600" class="justify-center">
-                <v-card-title>Dont have an account? Signup here </v-card-title>
-                <validation-provider
+                <v-card-title>Change your Password here!</v-card-title>
+                <!-- <validation-provider
                   v-slot="{ errors }"
                   name="Name"
-                  rules="required|max:20"
-                >
+                  rules="required|max:20">
+
                   <v-text-field
                     v-model="username"
                     :counter="20"
@@ -21,7 +30,7 @@
                     required
                     style="margin:25px;"
                   ></v-text-field>
-                </validation-provider>
+                </validation-provider> -->
 
                 <validation-provider
                   v-slot="{ errors }"
@@ -39,15 +48,16 @@
 
                 <validation-provider
                   v-slot="{ errors }"
-                  name="Password"
+                  name="Old Password"
                   rules="required|min:8"
                 >
                   <v-text-field
                     v-model="password"
                     :counter="8"
                     :error-messages="errors"
-                    label="Password"
+                    label="Old Password"
                     type="password"
+                    
                     required
                     style="margin:25px;"
                   >
@@ -62,16 +72,16 @@
 
                 <validation-provider
                   v-slot="{ errors }"
-                  name="Password"
+                  name="New Password"
                   rules="required|min:8"
                 >
                   <v-text-field
-                    v-model="passwordRetype"
+                    v-model="newPassword"
                     :counter="8"
                     :error-messages="errors"
-                    label="Re-type Password"
+                    label="New Password"
                     type="password"
-                    :rules="[matchingPasswords]"
+                    :rules="[notMatchingPasswords]"
                     required
                     style="margin:25px;"
                   >
@@ -85,9 +95,7 @@
                 </validation-provider>
 
                 <v-divider></v-divider>
-                <v-btn class="mr-4" to="/login" type="submit" style="margin:25px;" :disabled="invalid"
-                  >submit</v-btn
-                >
+                <v-btn class="mr-4" type="submit" style="margin:25px;" :disabled="invalid">submit</v-btn>
                 <v-btn @click="clear" style="margin:25px;">clear</v-btn>
               </v-card>
             </v-row>
@@ -100,7 +108,7 @@
 </template>
 
 <script>
-import { required, email, max, min } from "vee-validate/dist/rules";
+import { required, email, min } from "vee-validate/dist/rules";
 import {
   extend,
   ValidationObserver,
@@ -113,10 +121,10 @@ extend("required", {
   ...required,
   message: "{_field_} is required",
 });
-extend("max", {
-  ...max,
-  message: "{_field_} cannot be more than {length} characters",
-});
+// extend("max", {
+//   ...max,
+//   message: "{_field_} cannot be more than {length} characters",
+// });
 
 extend("min", {
   ...min,
@@ -133,31 +141,88 @@ export default {
     ValidationObserver,
   },
   data: () => ({
-    username: "",
+    // username: "",
     email: "",
     password: "",
-    passwordRetype: "",
+    newPassword: "",
     PasswordCheck: false,
     PasswordCheck2: false,
+    // valid: false,
+    // displayError : "",
   }),
   methods: {
+//    async submit() {
+//       const isValid = await this.$refs.observer.validate();
+//       if(isValid){
+//         this.$router.push("/login");
+//       } 
+//     },
+
+    // enableButton() {
+    //     if(this.valid==true && this.invalid==false){
+    //         return false
+    //     }
+    //     else{
+    //         return true
+    //     }
+    // },
+
+    changePassword() {
+            const requestObj = {
+                "email" : this.email,
+                "oldPassword" : this.password,
+                "newPassword" : this.newPassword,
+            }
+
+            this.$axios.post("http://localhost:8080/login", requestObj)
+                .then(response => {
+
+                    let jsonData = JSON.parse(response.data.data)
+                    console.log(jsonData)
+                    
+                    if(response.error == null){
+                        this.$router.push('/login')
+                    }
+                    let token = jsonData.AccessToken
+                    this.$axios.defaults.headers.common["Authorization"] = "Bearer " + token
+                })
+        },
+
+
     submit() {
       this.$refs.observer.validate();
+      this.$router.push("/login");
+
     },
+
     clear() {
-      this.username = "";
+    //   this.username = "";
       this.email = "";
       this.password = "";
-      this.passwordRetype = "";
+      this.newPassword = "";
       this.$refs.observer.reset();
     },
-    matchingPasswords: function () {
-      if (this.password === this.passwordRetype) {
-        this.PasswordCheck = true;
-        this.PasswordCheck2 = true;
-        return true;
+    // submitBut: function() {
+    //   alert("Password has been reset! Login with new Password");
+    // console.log()
+        // if(!this.$refs.observer.validate()){
+        //     this.displayError = "Password has been reset! Login with new Password";
+        // }
+        // else{
+        //     this.$router.push("/login");
+        // }
+        // this.displayError = "Password has been reset! Login with new Password";
+        
+    // },
+    notMatchingPasswords: function () {
+      if (this.password != this.newPassword && (this.password.length >=8) && (this.newPassword.length >=8)) {
+            
+            this.PasswordCheck = true;
+            this.PasswordCheck2 = true;
+            
+            return true;
       } else {
-        return "Passwords does not match.";
+            return "Old Password and New Password cannot be the same.";
       }
     },
   },

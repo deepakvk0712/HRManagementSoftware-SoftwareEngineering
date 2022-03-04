@@ -7,6 +7,7 @@ import UserProfileView from '../views/UserProfileView.vue'
 import AboutView from '../views/AboutView.vue'
 import LoginPage from '../components/LoginPage.vue'
 import SignupPage from '../components/SignupPage.vue'
+<<<<<<< Updated upstream
 // import store from '../store/store'
 
 // (function() {
@@ -16,6 +17,9 @@ import SignupPage from '../components/SignupPage.vue'
 //       // this.$axios.defaults.headers.common['Authorization'] = null;
 //   }
 // })();
+=======
+import ChangePassword from '../components/ChangePassword.vue'
+>>>>>>> Stashed changes
 
 Vue.use(VueRouter)
 
@@ -58,6 +62,11 @@ const routes = [
     path: '/signup',
     name: 'signup',
     component: SignupPage
+  },
+  {
+    path: '/ChangePassword',
+    name: 'ChangePassword',
+    component: ChangePassword
   },
 ]
 
