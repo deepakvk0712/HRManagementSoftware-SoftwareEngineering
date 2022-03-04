@@ -65,43 +65,10 @@ func DeleteUserDAO(email string) int {
 }
 func UpdateEmployeeDao(user gormModels.User) int {
 	updateTime := time.Now()
+	user.UpdatedTS = updateTime
+	user.IsOnboard = true
 
-	result := utils.Db.Model(&user).Select(
-		"DriversLicense",
-		"SSN",
-		"StateID",
-		"Address",
-		"Phone",
-		"AlternateEmails",
-		"FirstName",
-		"LastName",
-		"Gender",
-		"DateOfBirth",
-		"Race",
-		"Ethnicity",
-		"Citizenship",
-		"Nationality",
-		"Pronouns",
-		"UpdatedTS",
-		"IsOnboard",
-	).Where("Employee_ID = ?", user.EmployeeID).Updates(gormModels.User{
-		DriversLicense:  user.DriversLicense,
-		SSN:             user.SSN,
-		StateID:         user.StateID,
-		Address:         user.Address,
-		Phone:           user.Phone,
-		AlternateEmails: user.AlternateEmails,
-		FirstName:       user.FirstName,
-		LastName:        user.LastName,
-		Gender:          user.Gender,
-		DateOfBirth:     user.DateOfBirth,
-		Race:            user.Race,
-		Ethnicity:       user.Ethnicity,
-		Citizenship:     user.Citizenship,
-		Nationality:     user.Nationality,
-		Pronouns:        user.Pronouns,
-		UpdatedTS:       updateTime,
-		IsOnboard:       true})
+	result := utils.Db.Model(&user).Where("Employee_ID = ?", user.EmployeeID).Updates(&user)
 	if result.Error != nil {
 		fmt.Println(result.Error)
 		return 0

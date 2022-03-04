@@ -10,6 +10,7 @@ import (
 )
 
 func Login(w http.ResponseWriter, req *http.Request) {
+
 	userLogin := req.Context().Value("user").(models.UserLogin)
 	role := req.Context().Value("role").(byte)
 
