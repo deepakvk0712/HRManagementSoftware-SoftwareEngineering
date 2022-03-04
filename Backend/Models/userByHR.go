@@ -11,4 +11,6 @@ type User struct {
 	Title         string `json:"title"`
 	Type          string `json:"type"`
 	PersonalEmail string `json:"personalEmail"`
+	IsHR          bool   `json:"isHR"`
+	IsManager     bool   `json:"isManager"`
 }
