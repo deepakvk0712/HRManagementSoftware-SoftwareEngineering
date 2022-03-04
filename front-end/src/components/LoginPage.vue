@@ -1,9 +1,6 @@
 <template>
     <v-app>
         <v-parallax dark src="https://cdn.vuetifyjs.com/images/backgrounds/vbanner.jpg" height ="100%" jumbotron>
-            <!-- <v-row align="center" justify="center">
-                <v-col class="text-center" cols="12"></v-col>
-            </v-row> -->
             <v-content>
                 <v-container fluid pa-0>
                 <v-row align="center" justify="center" style="height:100vh" dense>
@@ -45,6 +42,7 @@ export default {
 
     methods : {
         login() {
+            this.$store.commit('LOADER', true)
             const requestObj = {
                 "email" : this.userName,
                 "password" : this.password
@@ -52,12 +50,15 @@ export default {
 
             this.$axios.post("http://localhost:8080/login", requestObj)
                 .then(response => {
-                    console.log(response)
-                    this.$router.push('/landing')
-                    let token = response.data.token;
-                    this.$axios.defaults.headers.common["Authorization"] = "Bearer " + token;
+                    let jsonData = JSON.parse(response.data.data)
+                    console.log(jsonData)
+                    let token = jsonData.accessToken
+                    this.$store.state.accessToken = token
+                    console.log(token)
+                    this.$axios.defaults.headers.common['Authorization'] = "Bearer " + token
+                    this.$store.commit('LOADER', false)
+                    this.$router.push('/landing')           
                     
-                    //Make a call to fetch the contents of the landing page here.
                 })
         },
 
