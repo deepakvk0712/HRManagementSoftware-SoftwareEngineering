@@ -64,5 +64,22 @@ func Login(w http.ResponseWriter, req *http.Request) {
 		return
 	}
 
-	utils.MessageHandler(w, jsonResponse, http.StatusCreated)
+	utils.MessageHandler(w, jsonResponse, http.StatusOK)
+}
+
+func Logout(w http.ResponseWriter, req *http.Request) {
+	res := models.JsonResponse{}
+	res.Error = ""
+	res.Msg = "Logged out successfully"
+	res.Data = ""
+
+	jsonResponse, jsonError := json.Marshal(res)
+	if jsonError != nil {
+		fmt.Println(jsonError)
+
+		errorResponses.SendInternalServerErrorResponse(w)
+		return
+	}
+
+	utils.MessageHandler(w, jsonResponse, http.StatusOK)
 }
