@@ -1,13 +1,62 @@
 // https://docs.cypress.io/api/table-of-contents
 
-// describe('My First Test', () => {
-//   it('Visits the app root url', () => {
-//     // cy.visit('http://localhost:8081/')
-//     cy.contains('h1', 'Welcome to Your Vue.js App')
-//   });
+import { mount } from "@vue/test-utils";
+// import HRRegisterEmployee from '../../../src/views/HRRegisterEmployee.vue'
 
-  // it('Verifies the rendering of login page elements and logs in ', () => {
+describe('Testing login procedure and landing page elements ', () => {
+  it('Visits the root of the application at URL ', () => {
+
+    const email = 'dstejas191@hrtools.com'
+    const password = '123'
+
+    cy.visit('http://localhost:8081/')
+    cy.get('#userNameInput')
+      .type('dstejas191@hrtools.com')
+
+    cy.get('#userPasswordInput')
+      .type('123')
+
+    cy.contains('Login')
+      .wait(10)
+      .click()
+
+    cy.request('POST', 'http://localhost:8080/login', {
+      email,
+      password
+    });
+
+    cy.visit('http://localhost:8081/landing')
+
+  });
+
+  // it('HR employee registration form verification ', () => {
+
+  //   const email = 'dstejas191@hrtools.com'
+  //   const password = '123'
+
   //   cy.visit('http://localhost:8081/')
-  //   // cy.contains('h1', 'Welcome to Your Vue.js App')
+  //   cy.get('#userNameInput')
+  //     .type('dstejas191@hrtools.com')
+
+  //   cy.get('#userPasswordInput')
+  //     .type('123')
+
+  //   cy.contains('Login')
+  //     .wait(10)
+  //     .click()
+
+  //   cy.request('POST', 'http://localhost:8080/login', {
+  //     email,
+  //     password
+  //   });
+
+  //   cy.visit('http://localhost:8081/landing')
+
+  //   //Testing the navigation bar here.
+
   // });
-// })
+
+  it('Verifies if the root URL is accessible ', () => {
+    cy.visit('http://localhost:8081/')
+  });
+})

@@ -11,8 +11,8 @@
                     <v-card width = "600" class ="justify-center">
                         <v-card-title> Login </v-card-title>
                         <v-card-text class="text-center">
-                            <v-text-field label = "Username" v-model="userName" prepend-icon="mdi-account-circle"/>
-                            <v-text-field label = "Password" prepend-icon="mdi-lock"
+                            <v-text-field id="userNameInput" label = "Username" v-model="userName" prepend-icon="mdi-account-circle"/>
+                            <v-text-field id="userPasswordInput" label = "Password" prepend-icon="mdi-lock"
                             :append-icon="value ? 'visibility' : 'visibility_off'"
                             @click:append="() => (value = !value)"
                             :type="value ? 'password' : 'text'" v-model="password"/>
@@ -65,18 +65,18 @@ export default {
                 "email" : this.userName,
                 "password" : this.password
             }
-            this.$store.commit('LOADER', true)
             this.$axios.post("http://localhost:8080/login", requestObj)
                 .then(response => {
                     let jsonData = JSON.parse(response.data.data)
                     console.log(jsonData)
                     let firstLogin = response.data.data.firstLogin;
+                    this.$store.state.accessToken = jsonData.accessToken
                     if(firstLogin == true){
                         this.$store.commit('LOADER', false)
                         this.$router.push('/ChangePassword')
                     }
                     else{
-                        let token = jsonData.AccessToken
+                        let token = jsonData.accessToken
                         this.$axios.defaults.headers.common['Authorization'] = "Bearer " + token
                         this.$store.commit('LOADER', false)
                         this.$router.push('/landing')
