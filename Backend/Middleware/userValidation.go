@@ -16,7 +16,7 @@ func ValidateUser(next http.Handler) http.Handler {
 		if err := json.NewDecoder(req.Body).Decode(&userLogin); err != nil {
 			fmt.Println(err)
 
-			errorResponses.SendBadRequestResponse(w, "")
+			errorResponses.SendBadRequestResponse(w, "Invalid JSON")
 
 			return
 		}

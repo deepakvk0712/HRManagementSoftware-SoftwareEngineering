@@ -20,6 +20,7 @@ func main() {
 
 	postRequest := router.Methods(http.MethodPost).Subrouter()
 	postRequest.HandleFunc("/login", Controller.Login)
+	postRequest.HandleFunc("/logout", Controller.Logout)
 	postRequest.Use(middleware.ValidateUser)
 	postRequest.Use(middleware.Authorize)
 
