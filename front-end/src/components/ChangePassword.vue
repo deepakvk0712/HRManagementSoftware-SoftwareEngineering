@@ -182,13 +182,14 @@ export default {
     },
 
     changePassword() {
+            console.log("I am here")
             const requestObj = {
                 "email" : this.email,
                 "oldPassword" : this.password,
                 "newPassword" : this.newPassword,
             }
 
-            this.$axios.post("http://localhost:8080/login", requestObj)
+            this.$axios.put("http://localhost:8080/settings/resetPassword", requestObj)
                 .then(response => {
 
                     let jsonData = JSON.parse(response.data.data)
@@ -221,6 +222,8 @@ export default {
             this.PasswordCheck = true;
             this.PasswordCheck2 = true;
             return true;
+            
+            // return true;
       } else {
             return "Old Password and New Password cannot be the same.";
       }

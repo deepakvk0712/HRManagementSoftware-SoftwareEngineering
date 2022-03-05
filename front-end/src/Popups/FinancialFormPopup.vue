@@ -96,7 +96,7 @@ export default {
         "AccountNumber" : this.accountNumber,
       }
       // closePopup = false
-      this.$axios.post("http://10.20.205.4:8080/users/UpdateEmployeeInfo2", requestObj)
+      this.$axios.post("http://localhost:8080/users/UpdateEmployeeInfo2", requestObj)
         .then(response => {
             console.log(response)
             this.closePopup = false
