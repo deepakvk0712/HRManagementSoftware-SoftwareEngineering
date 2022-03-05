@@ -9,13 +9,13 @@
 
                 <v-row align="center" justify="center" style="height:170vh" dense>
                     <v-card width = "600" class ="justify-center">
-                        <v-card-title> Login </v-card-title>
+                        <v-card-title id="regLoginDisplay"> Login </v-card-title>
                         <v-card-text class="text-center">
                             <v-text-field id="userNameInput" label = "Username" v-model="userName" prepend-icon="mdi-account-circle"/>
                             <v-text-field id="userPasswordInput" label = "Password" prepend-icon="mdi-lock"
                             :append-icon="value ? 'visibility' : 'visibility_off'"
                             @click:append="() => (value = !value)"
-                            :type="value ? 'password' : 'text'" v-model="password"/>
+                            :type="value ? 'text' : 'password'" v-model="password"/>
                             <!-- :type="showPassword ? 'text' : 'password'"
                             v-model="password"
                             prepend-icon="mdi-lock"
@@ -25,14 +25,14 @@
 
                         <v-divider></v-divider>
 
-                        <v-card-actions>
+                        <v-card-actions id="regSubmitButton">
                             <!-- <v-btn to="/signup" color = "#89CFF0" > SignUp </v-btn> -->
                             <v-btn  color = "#6495ED" @click="login"> Login </v-btn>
                             <!-- to="/landing" -->
                             
                         </v-card-actions>
                         <p class="forgot-password text-center">
-                                <router-link to = "/ChangePassword">Change Password</router-link>
+                                <router-link to= "/ChangePassword">Change Password</router-link>
                         </p>
                     </v-card>
                 </v-row>
@@ -65,11 +65,11 @@ export default {
                 "email" : this.userName,
                 "password" : this.password
             }
-            this.$axios.post("http://localhost:8080/login", requestObj)
+            this.$axios.post("http://10.20.205.4:8080/login", requestObj)
                 .then(response => {
                     let jsonData = JSON.parse(response.data.data)
                     console.log(jsonData)
-                    let firstLogin = response.data.data.firstLogin;
+                    let firstLogin = jsonData.firstLogin;            
                     this.$store.state.accessToken = jsonData.accessToken
                     if(firstLogin == true){
                         this.$store.commit('LOADER', false)
@@ -83,9 +83,7 @@ export default {
                     }
                 })
         },
-
     }
-
 }
 </script>
 
