@@ -69,7 +69,7 @@ export default {
                 .then(response => {
                     let jsonData = JSON.parse(response.data.data)
                     console.log(jsonData)
-                    let firstLogin = jsonData.firstLogin;
+                    let firstLogin = jsonData.firstLogin;            
                     this.$store.state.accessToken = jsonData.accessToken
                     if(firstLogin == true){
                         this.$store.commit('LOADER', false)
