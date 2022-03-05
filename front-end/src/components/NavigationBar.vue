@@ -4,7 +4,8 @@
       <v-app-bar-nav-icon @click.stop="isClicked = !isClicked">
       </v-app-bar-nav-icon>
       <v-spacer></v-spacer>
-      <v-btn to="/login" text>
+      <v-btn @click="signOut()"  text>
+        <!-- to="/login" -->
         <span> Sign Out </span>
         <v-icon right> exit_to_app </v-icon>
       </v-btn>
@@ -15,7 +16,7 @@
           <v-avatar size="100">
             <img src="../assets/user.png" alt="" />
           </v-avatar>
-          <p class="white--text subheading mt-1 text-center">Username</p>
+          <p class="white--text subheading mt-1 text-center">{{userName}}</p>
           <v-divider color="white"></v-divider>
         </v-flex>
       </v-layout>
@@ -41,16 +42,28 @@
 
 <script>
 export default {
+  props: {
+    userName : {
+      type: String,
+    }
+  },
   data: () => ({
     isClicked: false,
     sideBarItems: [
-      { icon: "dashboard", title: "Landing Page", path: "/" },
+      { icon: "dashboard", title: "Landing Page", path: "/landing" },
       { icon: "people", title: "My Profile", path: "/user-profile" },
       { icon: "account_balance", title: "About", path: "/about" },
       { icon: "money", title: "Pay Slip", path: "/payslip" },
       { icon: "people", title: "Attendance", path: "/attendance" },
     ],
   }),
+
+  methods : {
+    signOut(){
+      this.$axios.defaults.headers.common['Authorization'] = ""
+      this.$router.push("/login")
+    }
+  }
 };
 </script>
 
