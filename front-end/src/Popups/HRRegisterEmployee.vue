@@ -182,7 +182,7 @@ export default {
               "isHR" : this.IsHR,
               "isManager" : this.IsManager,
           }
-          this.$axios.post("http://10.20.205.4:8080/users/registerHR", requestObj)
+          this.$axios.post("http://localhost:8080/users/registerHR", requestObj)
             .then(response => {
                 console.log(response)
                 this.closePopup = false

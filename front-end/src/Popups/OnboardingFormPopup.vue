@@ -281,7 +281,7 @@ export default {
         "DateOfBirth" : this.dob,
       }
 
-      this.$axios.post("http://10.20.205.4:8080/users/UpdateEmployeeInfo1", reqObj)
+      this.$axios.post("http://localhost:8080/users/UpdateEmployeeInfo1", reqObj)
         .then(response => {
           console.log(response)
           this.closePopup = false
