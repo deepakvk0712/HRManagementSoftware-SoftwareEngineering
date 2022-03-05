@@ -5,6 +5,7 @@ import (
 	"fmt"
 	Dao "hrtool.com/HRManagementSoftware-SoftwareEngineering/Backend/Database/DAO"
 	models "hrtool.com/HRManagementSoftware-SoftwareEngineering/Backend/Models"
+	gormModels "hrtool.com/HRManagementSoftware-SoftwareEngineering/Backend/Models/GormModels"
 	utils "hrtool.com/HRManagementSoftware-SoftwareEngineering/Backend/Utils"
 	errorResponses "hrtool.com/HRManagementSoftware-SoftwareEngineering/Backend/Utils/ErrorHandler/ErrorResponse"
 	"net/http"
@@ -213,6 +214,72 @@ func UpdateProfile(w http.ResponseWriter, req *http.Request) {
 	res.Data = ""
 
 	jsonResponse, jsonError := json.Marshal(res)
+	if jsonError != nil {
+		fmt.Println(jsonError)
+
+		errorResponses.SendInternalServerErrorResponse(w)
+		return
+	}
+
+	utils.MessageHandler(w, jsonResponse, http.StatusCreated)
+}
+
+func UpdateEmployeeInfo(w http.ResponseWriter, r *http.Request) {
+
+	var user gormModels.User
+	//decode json from the front end and convert to object employee
+	if err := json.NewDecoder(r.Body).Decode(&user); err != nil {
+		fmt.Println(err)
+		errorResponses.SendBadRequestResponse(w, "bad request!")
+		return
+	}
+
+	//Database operation
+	if Dao.UpdateEmployeeDao(user) == 0 {
+		errorResponses.SendInternalServerErrorResponse(w)
+		return
+	}
+
+	res := models.JsonResponse{}
+
+	res.Error = ""
+	res.Msg = "Employee record updated"
+	res.Data = ""
+
+	jsonResponse, jsonError := json.Marshal(res)
+
+	if jsonError != nil {
+		fmt.Println(jsonError)
+
+		errorResponses.SendInternalServerErrorResponse(w)
+		return
+	}
+
+	utils.MessageHandler(w, jsonResponse, http.StatusCreated)
+}
+func UpdateEmployeeBankingInfo(w http.ResponseWriter, r *http.Request) {
+	var user gormModels.User
+	//decode json from the front end and convert to object employee
+	if err := json.NewDecoder(r.Body).Decode(&user); err != nil {
+		fmt.Println(err)
+		errorResponses.SendBadRequestResponse(w, "bad request!")
+		return
+	}
+
+	//Database operation
+	if Dao.UpdateEmployeeBankingDao(user) == 0 {
+		errorResponses.SendInternalServerErrorResponse(w)
+		return
+	}
+
+	res := models.JsonResponse{}
+
+	res.Error = ""
+	res.Msg = "Employee banking info updated"
+	res.Data = ""
+
+	jsonResponse, jsonError := json.Marshal(res)
+
 	if jsonError != nil {
 		fmt.Println(jsonError)
 

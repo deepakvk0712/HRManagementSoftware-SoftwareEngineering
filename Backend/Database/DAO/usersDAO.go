@@ -82,3 +82,44 @@ func UpdateProfileDetails(userProfile models.ProfileDetails, email string) int {
 
 	return 1
 }
+
+func UpdateEmployeeDao(user gormModels.User) int {
+	updateTime := time.Now()
+	user.UpdatedTS = updateTime
+	user.IsOnboard = true
+
+	result := utils.Db.Model(&user).Where("Employee_ID = ?", user.EmployeeID).Updates(&user)
+	if result.Error != nil {
+		fmt.Println(result.Error)
+		return 0
+	}
+
+	fmt.Println(result.Error, result.RowsAffected)
+	return 1
+
+}
+
+func UpdateEmployeeBankingDao(user gormModels.User) int {
+
+	updateTime := time.Now()
+
+	result := utils.Db.Model(&user).Select(
+		"RoutingNumber",
+		"AccountNumber",
+		"Bank",
+		"UpdatedTS",
+		"IsFinance").Where("Employee_ID = ?", user.EmployeeID).Updates(gormModels.User{
+		RoutingNumber: user.RoutingNumber,
+		AccountNumber: user.AccountNumber,
+		Bank:          user.Bank,
+		UpdatedTS:     updateTime,
+		IsFinance:     true})
+
+	if result.Error != nil {
+		fmt.Println(result.Error)
+		return 0
+	}
+
+	fmt.Println(result.Error, result.RowsAffected)
+	return 1
+}
