@@ -3,7 +3,7 @@
     <!-- <v-parallax dark src="https://cdn.vuetifyjs.com/images/backgrounds/vbanner.jpg" height ="100%" jumbotron> -->
     <validation-observer ref="observer" v-slot="{ invalid }">
         <!-- v-slot="{ invalid }" -->
-      <form @submit.prevent="submit()">
+      <form @submit.prevent="submit">
         <v-content>
           <v-container fluid pa-0>
 
@@ -16,7 +16,8 @@
 
             <v-row align="center" justify="center" style="height: 100vh" dense>
               <v-card width="600" class="justify-center">
-                <v-card-title>Change your Password here!</v-card-title>
+                <v-card-title id="regChangePassword">Change your Password here!</v-card-title>
+                
                 <!-- <validation-provider
                   v-slot="{ errors }"
                   name="Name"
@@ -32,7 +33,7 @@
                   ></v-text-field>
                 </validation-provider> -->
 
-                <validation-provider
+                <validation-provider id="regEmailID"
                   v-slot="{ errors }"
                   name="EmailID"
                   rules="required|email"
@@ -46,7 +47,7 @@
                   ></v-text-field>
                 </validation-provider>
 
-                <validation-provider
+                <validation-provider id="regOldPassword"
                   v-slot="{ errors }"
                   name="Old Password"
                   rules="required|min:8"
@@ -70,7 +71,7 @@
                   </v-text-field>
                 </validation-provider>
 
-                <validation-provider
+                <validation-provider id="regNewPassword"
                   v-slot="{ errors }"
                   name="New Password"
                   rules="required|min:8"
@@ -95,8 +96,8 @@
                 </validation-provider>
 
                 <v-divider></v-divider>
-                <v-btn class="mr-4" type="submit" style="margin:25px;" :disabled="invalid">submit</v-btn>
-                <v-btn @click="clear" style="margin:25px;">clear</v-btn>
+                <v-btn id="regSubmitButton" @click="changePassword" class="mr-4" type="submit" style="margin:25px;" :disabled="invalid">submit</v-btn>
+                <v-btn id="regClearButton" @click="clear" style="margin:25px;">clear</v-btn>
               </v-card>
             </v-row>
           </v-container>
@@ -167,6 +168,19 @@ export default {
     //     }
     // },
 
+    submit() {
+      this.$refs.observer.validate();
+      this.$router.push("/login");
+    },
+
+    clear() {
+    //   this.username = "";
+      this.email = "";
+      this.password = "";
+      this.newPassword = "";
+      this.$refs.observer.reset();
+    },
+
     changePassword() {
             const requestObj = {
                 "email" : this.email,
@@ -189,19 +203,7 @@ export default {
         },
 
 
-    submit() {
-      this.$refs.observer.validate();
-      this.$router.push("/login");
-
-    },
-
-    clear() {
-    //   this.username = "";
-      this.email = "";
-      this.password = "";
-      this.newPassword = "";
-      this.$refs.observer.reset();
-    },
+    
     // submitBut: function() {
     //   alert("Password has been reset! Login with new Password");
     // console.log()
@@ -215,11 +217,9 @@ export default {
         
     // },
     notMatchingPasswords: function () {
-      if (this.password != this.newPassword && (this.password.length >=8) && (this.newPassword.length >=8)) {
-            
+      if (this.password != this.newPassword) {
             this.PasswordCheck = true;
             this.PasswordCheck2 = true;
-            
             return true;
       } else {
             return "Old Password and New Password cannot be the same.";
