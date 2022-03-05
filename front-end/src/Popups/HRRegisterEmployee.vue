@@ -153,7 +153,7 @@ export default {
     firstName : "",
     lastName : "",
     businessUnit : "",
-    managerId: null,
+    managerId : 0,
     title : "",
     type : "",
     grade : "",
@@ -172,7 +172,7 @@ export default {
               "firstName" : this.firstName,
               "lastName" : this.lastName,
               "businessUnit" : this.businessUnit,
-              "managerId" : this.managerId,
+              "managerId" : parseInt(this.managerId),
               "title" : this.title,
               "type" : this.type,
               "grade" : this.grade,
@@ -182,7 +182,7 @@ export default {
               "isHR" : this.IsHR,
               "isManager" : this.IsManager,
           }
-          this.$axios.post("http://localhost:8080/users/registerHR", requestObj)
+          this.$axios.post("http://10.20.205.4:8080/users/registerHR", requestObj)
             .then(response => {
                 console.log(response)
                 this.closePopup = false

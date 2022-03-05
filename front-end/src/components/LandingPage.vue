@@ -4,7 +4,7 @@
       <NavigationBar v-bind:userName="this.$store.state.userName"/>
 
       <div>
-        <p class="h1 text-left font-weight-black quicklink1">
+        <p id="quicklink1" class="h1 text-left font-weight-black">
           Required Forms
         </p>
       </div>
@@ -83,7 +83,7 @@
       </v-layout>
 
       <div class="mt-4">
-        <p class="text-left font-weight-black quicklink2">
+        <p id="quicklink2" class="text-left font-weight-black">
           Quick Links
         </p>
       </div>
@@ -164,7 +164,7 @@ import RegisterEmployee from '../Popups/HRRegisterEmployee.vue'
 
 export default {
   name: "LandingPage",
-  async created() {
+  async mounted() {
     await this.$axios.get('http://localhost:8080/dashboard/')
       .then(response => {
         // console.log(response);

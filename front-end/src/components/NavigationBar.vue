@@ -4,7 +4,8 @@
       <v-app-bar-nav-icon @click.stop="isClicked = !isClicked">
       </v-app-bar-nav-icon>
       <v-spacer></v-spacer>
-      <v-btn to="/login" text>
+      <v-btn @click="signOut()"  text>
+        <!-- to="/login" -->
         <span> Sign Out </span>
         <v-icon right> exit_to_app </v-icon>
       </v-btn>
@@ -56,6 +57,13 @@ export default {
       { icon: "people", title: "Attendance", path: "/attendance" },
     ],
   }),
+
+  methods : {
+    signOut(){
+      this.$axios.defaults.headers.common['Authorization'] = ""
+      this.$router.push("/login")
+    }
+  }
 };
 </script>
 
