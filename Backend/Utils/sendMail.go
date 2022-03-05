@@ -28,10 +28,13 @@ func SendMail(mailContent models.MailTemplate) int {
 		log.Println(err)
 
 		return 0
-	} else {
+	} else if response.StatusCode != 202 {
+		fmt.Println("Could not send mail")
 		fmt.Println(response.StatusCode)
 		fmt.Println(response.Body)
 		fmt.Println(response.Headers)
+
+		return 0
 	}
 
 	return 1

@@ -31,10 +31,13 @@ type User struct {
 	Citizenship string `json:"Citizenship"`
 	Nationality string `json:"Nationality"`
 	Pronouns    string `json:"Pronouns"`
+	AboutMe     string `json:"aboutMe"`
 	//Payment Method
 	RoutingNumber string    `json:"RoutingNumber"`
 	AccountNumber string    `json:"AccountNumber"`
 	Bank          string    `json:"Bank"`
 	CreatedTS     time.Time `json:"createdTs"`
 	UpdatedTS     time.Time `json:"updatedTs"`
+	IsOnboard     bool      `json:"IsOnboard"`
+	IsFinance     bool      `json:"IsFinance"`
 }
