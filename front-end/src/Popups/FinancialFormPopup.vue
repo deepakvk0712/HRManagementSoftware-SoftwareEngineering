@@ -90,13 +90,13 @@ export default {
   methods: {
     submit() {
       const requestObj = {
-        "EmployeeID" : this.empID,
+        "EmployeeID" : parseInt(this.empID),
         "Bank" : this.bankName,
         "RoutingNumber" : this.routingNumber,
         "AccountNumber" : this.accountNumber,
       }
       // closePopup = false
-      this.$axios.post("http://localhost:8080/users/UpdateEmployeeInfo2", requestObj)
+      this.$axios.post("http://10.20.205.4:8080/users/UpdateEmployeeInfo2", requestObj)
         .then(response => {
             console.log(response)
             this.closePopup = false

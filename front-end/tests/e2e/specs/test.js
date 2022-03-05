@@ -20,7 +20,7 @@ describe('Testing login procedure and landing page elements ', () => {
       .wait(10)
       .click()
 
-    cy.request('POST', 'http://localhost:8080/login', {
+    cy.request('POST', 'http://10.20.205.4:8080/login', {
       email,
       password
     });

@@ -224,7 +224,7 @@ import store from '../store/store'
 export default {
   name: 'userProfile',
   async mounted() {
-    await this.$axios.get('http://192.168.0.75:8080/users/profile')
+    await this.$axios.get('http://10.20.205.4:8080/users/profile')
       .then(response => {
         // console.log(response);
         let respObj = JSON.parse(response.data.data)
@@ -276,7 +276,7 @@ export default {
       }
 
       // Making a Update call to the backend to update user profile.
-      this.$axios.put("http://localhost:8080/users/profile", reqObj)
+      this.$axios.put("http://10.20.205.4:8080/users/profile", reqObj)
         .then(response => {
             console.log(response)
             this.empName = this.firstName + " " + this.lastName
