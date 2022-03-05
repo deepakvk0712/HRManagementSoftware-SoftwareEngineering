@@ -14,6 +14,13 @@
         <v-form class="px-3" ref="form">
           <v-card-text>
             <v-text-field
+              label="Enter Employee ID"
+              v-model="empID"
+              hide-details
+              single-line
+              type="number"
+            />
+            <v-text-field
               id="bankNameInput"
               label="Enter Bank Name"
               v-model="bankName"
@@ -77,17 +84,19 @@ export default {
     routingNumber : "",
     accountNumber : "",
     // accountType : "",
+    empID : 0,
   }),
 
   methods: {
     submit() {
       const requestObj = {
+        "EmployeeID" : this.empID,
         "Bank" : this.bankName,
         "RoutingNumber" : this.routingNumber,
         "AccountNumber" : this.accountNumber,
       }
       // closePopup = false
-      this.$axios.post("http://localhost:8080/login", requestObj)
+      this.$axios.post("http://localhost:8080/register/UpdateEmployeeInfo2", requestObj)
         .then(response => {
             console.log(response)
             this.closePopup = false

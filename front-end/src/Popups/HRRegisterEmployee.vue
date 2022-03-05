@@ -153,7 +153,7 @@ export default {
     firstName : "",
     lastName : "",
     businessUnit : "",
-    managerId: null,
+    managerId : 0,
     title : "",
     type : "",
     grade : "",
