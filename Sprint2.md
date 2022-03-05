@@ -16,9 +16,11 @@ https://youtu.be/R5NVkYDmhhM
 - Integrated the Onboarding form with backend.
 - Integrated the Landing page information with backend
 - Integrated the user profile with backend
+- Integrated the login page with backend
+- Added Change Password component
 - Added Loader to the login page. Will add to other pages in the coming sprint.
 - Integrated the HR Register employee form with backend.
-- Added unit test cases for login, onboarding component, landing page component, financial page component, user profile page and other components.
+- Added unit test cases for login, change password, onboarding component, landing page component, financial page component, user profile page and other components.
 - Using cypress added an e2e test case to verify from login to verifying the functions in the dashboard.
 
 
