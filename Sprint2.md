@@ -11,3 +11,14 @@ https://uflorida-my.sharepoint.com/:v:/g/personal/tejasdharmastala_ufl_edu/EbHJo
 https://youtu.be/R5NVkYDmhhM
 
 
+* Front End
+
+- Integrated the Onboarding form with backend.
+- Integrated the Landing page information with backend
+- Integrated the user profile with backend
+- Added Loader to the login page. Will add to other pages in the coming sprint.
+- Integrated the HR Register employee form with backend.
+- Added unit test cases for login, onboarding component, landing page component, financial page component, user profile page and other components.
+- Using cypress added an e2e test case to verify from login to verifying the functions in the dashboard.
+
+
