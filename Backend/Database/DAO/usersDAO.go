@@ -78,7 +78,7 @@ func GetProfileDetails(email string) (models.ProfileDetails, int) {
 }
 
 func UpdateProfileDetails(userProfile models.ProfileDetails, email string) int {
-	utils.Db.Exec("UPDATE USERS SET FIRST_NAME = ?, LAST_NAME = ?, TITLE = ?, ABOUT_ME = ?WHERE LOWER(OFFICIAL_EMAIL) = ?", userProfile.FirstName, userProfile.LastName, userProfile.Title, userProfile.AboutMe, strings.ToLower(email))
+	utils.Db.Exec("UPDATE USERS SET FIRST_NAME = ?, LAST_NAME = ?, TITLE = ?, ABOUT_ME = ?, PHONE = ?, PERSONAL_EMAIL = ?, ADDRESS = ? WHERE LOWER(OFFICIAL_EMAIL) = ?", userProfile.FirstName, userProfile.LastName, userProfile.Title, userProfile.AboutMe, userProfile.Phone, userProfile.PersonalEmail, userProfile.Address, strings.ToLower(email))
 
 	return 1
 }

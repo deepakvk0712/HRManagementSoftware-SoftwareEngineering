@@ -37,9 +37,5 @@ func SendMail(mailContent models.MailTemplate) int {
 		return 0
 	}
 
-	fmt.Println(response.StatusCode)
-	fmt.Println(response.Body)
-	fmt.Println(response.Headers)
-
 	return 1
 }

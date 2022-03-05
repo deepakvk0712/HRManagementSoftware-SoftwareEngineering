@@ -37,8 +37,6 @@ func ChangePassword(w http.ResponseWriter, req *http.Request) {
 	}
 
 	if err := bcrypt.CompareHashAndPassword([]byte(dbUser.Password), []byte(loginInfo.OldPassword)); err != nil {
-		fmt.Println("Passwords do not match")
-
 		errorResponses.SendBadRequestResponse(w, "Invalid credentials")
 
 		return

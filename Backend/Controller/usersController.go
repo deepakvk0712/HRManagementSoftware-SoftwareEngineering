@@ -59,9 +59,6 @@ func RegisterHR(w http.ResponseWriter, req *http.Request) {
 		return
 	}
 
-	fmt.Println("Password ", tempPassword)
-	fmt.Println("Hashed Password", hashedPassword)
-
 	welcomeMail := models.MailTemplate{
 		From:        "HR Admin",
 		To:          u.FirstName + " " + u.LastName,
@@ -153,7 +150,21 @@ func GetProfile(w http.ResponseWriter, req *http.Request) {
 		return
 	}
 
-	data, jsonError := json.Marshal(profileDetails)
+	Msg := struct {
+		FirstName         string `json:"firstName"`
+		LastName          string `json:"lastName"`
+		Title             string `json:"title"`
+		AboutMe           string `json:"aboutMe"`
+		ProductivityScore int    `json:"productivityScore"`
+	}{
+		FirstName:         profileDetails.FirstName,
+		LastName:          profileDetails.LastName,
+		Title:             profileDetails.Title,
+		AboutMe:           profileDetails.AboutMe,
+		ProductivityScore: 70,
+	}
+
+	data, jsonError := json.Marshal(Msg)
 	if jsonError != nil {
 		fmt.Println(err)
 
