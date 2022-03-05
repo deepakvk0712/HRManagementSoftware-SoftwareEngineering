@@ -7,8 +7,8 @@
           <v-container fluid pa-0>
             <v-row align="center" justify="center" style="height: 100vh" dense>
               <v-card width="600" class="justify-center">
-                <v-card-title>Dont have an account? Signup here </v-card-title>
-                <validation-provider
+                <v-card-title id="regMessage">Dont have an account? Signup here </v-card-title>
+                <validation-provider id="regName"
                   v-slot="{ errors }"
                   name="Name"
                   rules="required|max:20"
@@ -23,7 +23,7 @@
                   ></v-text-field>
                 </validation-provider>
 
-                <validation-provider
+                <validation-provider id="regEmailID"
                   v-slot="{ errors }"
                   name="EmailID"
                   rules="required|email"
@@ -37,7 +37,7 @@
                   ></v-text-field>
                 </validation-provider>
 
-                <validation-provider
+                <validation-provider id="regPassword"
                   v-slot="{ errors }"
                   name="Password"
                   rules="required|min:8"
@@ -60,7 +60,7 @@
                   </v-text-field>
                 </validation-provider>
 
-                <validation-provider
+                <validation-provider id="regPassword1"
                   v-slot="{ errors }"
                   name="Password"
                   rules="required|min:8"
@@ -85,10 +85,10 @@
                 </validation-provider>
 
                 <v-divider></v-divider>
-                <v-btn class="mr-4" to="/login" type="submit" style="margin:25px;" :disabled="invalid"
+                <v-btn id="regSubmit" class="mr-4" to="/login" type="submit" style="margin:25px;" :disabled="invalid"
                   >submit</v-btn
                 >
-                <v-btn @click="clear" style="margin:25px;">clear</v-btn>
+                <v-btn id="regClear" @click="clear" style="margin:25px;">clear</v-btn>
               </v-card>
             </v-row>
           </v-container>
