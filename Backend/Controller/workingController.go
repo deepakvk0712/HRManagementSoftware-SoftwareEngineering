@@ -266,7 +266,7 @@ func GetWeekWorkingByID(w http.ResponseWriter, r *http.Request) {
 	res := models.JsonResponseObject{}
 
 	res.Error = ""
-	res.Msg = "Working detail of this week of this employee:" + string(employee_id)
+	res.Msg = "Working detail of this week"
 	res.Data = workingStatus
 
 	jsonResponse, jsonError := json.Marshal(res)
