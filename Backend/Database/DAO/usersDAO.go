@@ -37,6 +37,7 @@ func CreateUserDAO(u models.User, personalEmail string) (string, int) {
 		Title:         u.Title,
 		Type:          u.Type,
 		PersonalEmail: u.PersonalEmail,
+		Salary:        u.Salary,
 		CreatedTS:     time.Now(),
 		UpdatedTS:     time.Now(),
 	}
@@ -103,6 +104,20 @@ func GetTeamDetails(email string) (models.TeamDetails, int) {
 
 	return teamDetails, 1
 
+}
+
+func GetEmployeeID(email string) (int, int) {
+	employeeId := 0
+
+	row := utils.Db.Raw("SELECT EMPLOYEE_ID FROM USERS WHERE LOWER(OFFICIAL_EMAIL) = ?", strings.ToLower(email)).Row()
+	if row.Err() != nil {
+		fmt.Println(row)
+		return employeeId, 0
+	}
+
+	row.Scan(&employeeId)
+
+	return employeeId, 1
 }
 
 func UpdateProfileDetails(userProfile models.ProfileDetails, email string) int {

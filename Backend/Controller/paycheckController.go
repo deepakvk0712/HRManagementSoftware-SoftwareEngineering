@@ -1,0 +1,119 @@
+package Controller
+
+import (
+	"encoding/json"
+	"fmt"
+	Dao "hrtool.com/HRManagementSoftware-SoftwareEngineering/Backend/Database/DAO"
+	models "hrtool.com/HRManagementSoftware-SoftwareEngineering/Backend/Models"
+	gormModels "hrtool.com/HRManagementSoftware-SoftwareEngineering/Backend/Models/GormModels"
+	utils "hrtool.com/HRManagementSoftware-SoftwareEngineering/Backend/Utils"
+	errorResponses "hrtool.com/HRManagementSoftware-SoftwareEngineering/Backend/Utils/ErrorHandler/ErrorResponse"
+	"net/http"
+)
+
+func GetPaycheck(w http.ResponseWriter, req *http.Request) {
+	email := req.Context().Value("email").(string)
+
+	p := models.PaycheckQuery{}
+	if err := json.NewDecoder(req.Body).Decode(&p); err != nil {
+		fmt.Println(err)
+
+		errorResponses.SendBadRequestResponse(w, "")
+		return
+	}
+
+	employeeID, err := Dao.GetEmployeeID(email)
+	if err == 0 {
+		errorResponses.SendInternalServerErrorResponse(w)
+		return
+	}
+
+	paychecks := Dao.GetPaycheck(employeeID, p)
+
+	Msg := struct {
+		Paychecks []gormModels.Paycheck `json:"paychecks"`
+	}{
+		Paychecks: paychecks,
+	}
+
+	data, jsonError := json.Marshal(Msg)
+	if jsonError != nil {
+		fmt.Println(jsonError)
+
+		errorResponses.SendInternalServerErrorResponse(w)
+		return
+	}
+
+	res := models.JsonResponse{}
+
+	res.Error = ""
+	res.Msg = ""
+	res.Data = string(data)
+
+	jsonResponse, jsonError := json.Marshal(res)
+	if jsonError != nil {
+		fmt.Println(jsonError)
+
+		errorResponses.SendInternalServerErrorResponse(w)
+		return
+	}
+
+	utils.MessageHandler(w, jsonResponse, http.StatusOK)
+}
+
+func GetAllSalaries(w http.ResponseWriter, req *http.Request) {
+	email := req.Context().Value("email").(string)
+	role := req.Context().Value("role").(byte)
+
+	if role&utils.IsManager != utils.IsManager {
+		errorResponses.SendForbiddenRequestResponse(w)
+
+		return
+	}
+
+	p := models.PaycheckQuery{}
+	if err := json.NewDecoder(req.Body).Decode(&p); err != nil {
+		fmt.Println(err)
+
+		errorResponses.SendBadRequestResponse(w, "")
+		return
+	}
+
+	managerID, err := Dao.GetEmployeeID(email)
+	if err == 0 {
+		errorResponses.SendInternalServerErrorResponse(w)
+		return
+	}
+
+	teamSalaries := Dao.GetSalaries(managerID, p)
+
+	Msg := struct {
+		TeamSalaries []models.TeamSalary `json:"paychecks"`
+	}{
+		TeamSalaries: teamSalaries,
+	}
+
+	data, jsonError := json.Marshal(Msg)
+	if jsonError != nil {
+		fmt.Println(jsonError)
+
+		errorResponses.SendInternalServerErrorResponse(w)
+		return
+	}
+
+	res := models.JsonResponse{}
+
+	res.Error = ""
+	res.Msg = ""
+	res.Data = string(data)
+
+	jsonResponse, jsonError := json.Marshal(res)
+	if jsonError != nil {
+		fmt.Println(jsonError)
+
+		errorResponses.SendInternalServerErrorResponse(w)
+		return
+	}
+
+	utils.MessageHandler(w, jsonResponse, http.StatusOK)
+}
