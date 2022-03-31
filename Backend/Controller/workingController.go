@@ -68,12 +68,9 @@ func StopWorking(w http.ResponseWriter, r *http.Request) {
 
 		//Database Operations
 		var workingH gormModels.WorkingHours
-
-		if err := json.NewDecoder(r.Body).Decode(&workingH); err != nil {
-			fmt.Println(err)
-			errorResponses.SendBadRequestResponse(w, "bad request!")
-			return
-		}
+		//Get EmployeeID from token
+		email := r.Context().Value("email").(string)
+		workingH.EmployeeID = Dao.GetEmployeeIDByEmail(email)
 
 		workingH.StartTime = starTime
 		workingH.EndTime = endTime
@@ -105,14 +102,18 @@ func StopWorking(w http.ResponseWriter, r *http.Request) {
 }
 func SetSchedule(w http.ResponseWriter, r *http.Request) {
 	var schedule gormModels.Schedule
-	//Get EmployeeID from front end
+	//Get schedule from front end
 	if err := json.NewDecoder(r.Body).Decode(&schedule); err != nil {
 		fmt.Println(err)
-		errorResponses.SendBadRequestResponse(w, "bad request!")
+		errorResponses.SendBadRequestResponse(w, "")
 		return
 	}
+	//Get EmployeeID from token
+	email := r.Context().Value("email").(string)
+	schedule.EmployeeID = Dao.GetEmployeeIDByEmail(email)
 
 	//Database operation
+
 	if Dao.SetSchedule(schedule) == 0 {
 		errorResponses.SendInternalServerErrorResponse(w)
 		return
@@ -138,12 +139,10 @@ func SetSchedule(w http.ResponseWriter, r *http.Request) {
 }
 func GetSchedule(w http.ResponseWriter, r *http.Request) {
 	var schedule gormModels.Schedule
-	//Get EmployeeID from front end
-	if err := json.NewDecoder(r.Body).Decode(&schedule); err != nil {
-		fmt.Println(err)
-		errorResponses.SendBadRequestResponse(w, "bad request!")
-		return
-	}
+	//Get EmployeeID from token
+	email := r.Context().Value("email").(string)
+	schedule.EmployeeID = Dao.GetEmployeeIDByEmail(email)
+
 	//Database operation
 	s := make([]gormModels.Schedule, 1)
 	var result int
@@ -171,10 +170,12 @@ func GetSchedule(w http.ResponseWriter, r *http.Request) {
 }
 func DelSchedule(w http.ResponseWriter, r *http.Request) {
 	var schedule gormModels.Schedule
-	//Get EmployeeID from front end
+	//Get ID from front end
 	if err := json.NewDecoder(r.Body).Decode(&schedule); err != nil {
 		fmt.Println(err)
-		errorResponses.SendBadRequestResponse(w, "bad request!")
+
+		errorResponses.SendBadRequestResponse(w, "")
+
 		return
 	}
 	//Delete from Database
@@ -202,14 +203,10 @@ func DelSchedule(w http.ResponseWriter, r *http.Request) {
 
 }
 func GetWeekWorkingByID(w http.ResponseWriter, r *http.Request) {
-	var user gormModels.User
-	//Get EmployeeID from front end
-	if err := json.NewDecoder(r.Body).Decode(&user); err != nil {
-		fmt.Println(err)
-		errorResponses.SendBadRequestResponse(w, "bad request!")
-		return
-	}
-	employee_id := user.EmployeeID
+	//Get EmployeeID from token
+	email := r.Context().Value("email").(string)
+	employee_id := Dao.GetEmployeeIDByEmail(email)
+
 	//Get working records from database
 	wkhr := make([]gormModels.WorkingHours, 1)
 	var result int
@@ -281,14 +278,10 @@ func GetWeekWorkingByID(w http.ResponseWriter, r *http.Request) {
 	utils.MessageHandler(w, jsonResponse, http.StatusCreated)
 }
 func GetTodayWorkingHoursByID(w http.ResponseWriter, r *http.Request) {
-	var user gormModels.User
-	//Get EmployeeID from front end
-	if err := json.NewDecoder(r.Body).Decode(&user); err != nil {
-		fmt.Println(err)
-		errorResponses.SendBadRequestResponse(w, "bad request!")
-		return
-	}
-	employee_id := user.EmployeeID
+	//Get EmployeeID from token
+	email := r.Context().Value("email").(string)
+	employee_id := Dao.GetEmployeeIDByEmail(email)
+
 	//get today's total hours form database
 	result, hourWorked := Dao.GetTodayWorkingHoursByID(employee_id)
 	if result == 0 {
@@ -311,4 +304,65 @@ func GetTodayWorkingHoursByID(w http.ResponseWriter, r *http.Request) {
 	}
 
 	utils.MessageHandler(w, jsonResponse, http.StatusCreated)
+}
+func GetWorkingDetailsBetween(w http.ResponseWriter, r *http.Request) {
+	//Get EmployeeID from token
+	email := r.Context().Value("email").(string)
+	employee_id := Dao.GetEmployeeIDByEmail(email)
+
+	//Get start date && end date from front end
+	workingDetails := models.WorkingDetails{}
+	if err := json.NewDecoder(r.Body).Decode(&workingDetails); err != nil {
+		fmt.Println(err)
+		errorResponses.SendBadRequestResponse(w, "")
+		return
+	}
+
+	fmt.Println("Start: " + workingDetails.StartDate.String() + "End: " + workingDetails.EndDate.String())
+
+	if workingDetails.EndDate.Before(workingDetails.StartDate) {
+		errorResponses.SendBadRequestResponse(w, "Star date must before End Date!")
+		return
+	}
+	if workingDetails.StartDate.Equal(workingDetails.EndDate) {
+		errorResponses.SendBadRequestResponse(w, "Star date and End Date cannot be the same day!")
+		return
+	}
+	//Get Number of Present Day
+	workingDetails.PresentDays = Dao.GetPreSentDays(employee_id, workingDetails)
+	if workingDetails.PresentDays == -1 {
+		errorResponses.SendInternalServerErrorResponse(w)
+		return
+	}
+	//Get Number of Absent Day
+	workingDetails.AbsentDays = Dao.GetAbsentDays(employee_id, workingDetails)
+	if workingDetails.AbsentDays == -1 {
+		errorResponses.SendInternalServerErrorResponse(w)
+		return
+	}
+	//Get total hour worked, Total Regular Hour, Total Overtime Hour
+	workingDetails.TotalWorkHour, workingDetails.TotalRegularHour, workingDetails.TotalOvertimeHour = Dao.Get3WorkingHours(employee_id, workingDetails)
+	if workingDetails.TotalWorkHour == -1 || workingDetails.TotalRegularHour == -1 || workingDetails.TotalOvertimeHour == -1 {
+		errorResponses.SendInternalServerErrorResponse(w)
+		return
+	}
+	//Calculate average work hour
+	workingDetails.AverageWorkHour = workingDetails.TotalWorkHour / float64(workingDetails.PresentDays)
+	res := models.JsonResponseObject{}
+
+	res.Error = ""
+	res.Msg = "working details:"
+	res.Data = workingDetails
+
+	jsonResponse, jsonError := json.Marshal(res)
+
+	if jsonError != nil {
+		fmt.Println(jsonError)
+
+		errorResponses.SendInternalServerErrorResponse(w)
+		return
+	}
+
+	utils.MessageHandler(w, jsonResponse, http.StatusCreated)
+
 }

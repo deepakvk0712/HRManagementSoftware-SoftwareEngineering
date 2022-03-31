@@ -123,3 +123,16 @@ func UpdateEmployeeBankingDao(user gormModels.User) int {
 	fmt.Println(result.Error, result.RowsAffected)
 	return 1
 }
+func GetEmployeeIDByEmail(officialEmail string) int {
+
+	var EID int
+	result := utils.Db.Raw("SELECT EMPLOYEE_ID FROM users WHERE OFFICIAL_EMAIL = ?", officialEmail).Scan(&EID)
+
+	if result.Error != nil {
+		fmt.Println(result.Error)
+		return 0
+	}
+	fmt.Println(result.Error, result.RowsAffected)
+
+	return EID
+}
