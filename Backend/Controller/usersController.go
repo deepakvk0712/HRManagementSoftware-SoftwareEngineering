@@ -151,18 +151,31 @@ func GetProfile(w http.ResponseWriter, req *http.Request) {
 		return
 	}
 
+	teamDetails, err := Dao.GetTeamDetails(email)
+	if err == 0 {
+		errorResponses.SendInternalServerErrorResponse(w)
+
+		return
+	}
+
 	Msg := struct {
-		FirstName         string `json:"firstName"`
-		LastName          string `json:"lastName"`
-		Title             string `json:"title"`
-		AboutMe           string `json:"aboutMe"`
-		ProductivityScore int    `json:"productivityScore"`
+		FirstName         string   `json:"firstName"`
+		LastName          string   `json:"lastName"`
+		Title             string   `json:"title"`
+		AboutMe           string   `json:"aboutMe"`
+		ProductivityScore int      `json:"productivityScore"`
+		ManagerName       string   `json:"managerName"`
+		TeamMembers       []string `json:"teamMembers"`
+		BusinessUnit      string   `json:"businessUnit"`
 	}{
 		FirstName:         profileDetails.FirstName,
 		LastName:          profileDetails.LastName,
 		Title:             profileDetails.Title,
 		AboutMe:           profileDetails.AboutMe,
 		ProductivityScore: 70,
+		ManagerName:       teamDetails.Manager,
+		TeamMembers:       teamDetails.TeamMembers,
+		BusinessUnit:      teamDetails.BusinessUnit,
 	}
 
 	data, jsonError := json.Marshal(Msg)

@@ -77,6 +77,34 @@ func GetProfileDetails(email string) (models.ProfileDetails, int) {
 	return profileDetails, 1
 }
 
+func GetTeamDetails(email string) (models.TeamDetails, int) {
+	teamDetails := models.TeamDetails{}
+	managerId := 0
+
+	row := utils.Db.Raw("SELECT MANAGER_ID, BUSINESS_UNIT FROM USERS WHERE LOWER(OFFICIAL_EMAIL) = ?", strings.ToLower(email)).Row()
+	if row.Err() != nil {
+		fmt.Println(row)
+		return teamDetails, 0
+	}
+
+	row.Scan(&managerId, &teamDetails.BusinessUnit)
+
+	rows, _ := utils.Db.Raw("SELECT FIRST_NAME || \" \" || LAST_NAME FROM USERS WHERE EMPLOYEE_ID = ? UNION SELECT FIRST_NAME || \" \" || LAST_NAME FROM USERS WHERE MANAGER_ID = ? AND LOWER(OFFICIAL_EMAIL) <> ?", managerId, managerId, strings.ToLower(email)).Rows()
+	defer rows.Close()
+
+	rows.Next()
+	rows.Scan(&teamDetails.Manager)
+
+	temp := ""
+	for rows.Next() {
+		rows.Scan(&temp)
+		teamDetails.TeamMembers = append(teamDetails.TeamMembers, temp)
+	}
+
+	return teamDetails, 1
+
+}
+
 func UpdateProfileDetails(userProfile models.ProfileDetails, email string) int {
 	utils.Db.Exec("UPDATE USERS SET FIRST_NAME = ?, LAST_NAME = ?, TITLE = ?, ABOUT_ME = ?, PHONE = ?, PERSONAL_EMAIL = ?, ADDRESS = ? WHERE LOWER(OFFICIAL_EMAIL) = ?", userProfile.FirstName, userProfile.LastName, userProfile.Title, userProfile.AboutMe, userProfile.Phone, userProfile.PersonalEmail, userProfile.Address, strings.ToLower(email))
 
