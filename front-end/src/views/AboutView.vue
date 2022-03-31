@@ -29,7 +29,7 @@
                 >
                   <v-tab
                     v-for="t in tabName"
-                    :key="t.Id"
+                    :key="t"
                   >
                     {{t}}
                   </v-tab>

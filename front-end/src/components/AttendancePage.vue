@@ -221,6 +221,14 @@
                             <strong> Filtered Stats </strong>
                             <!-- Next code goes here -->
                         </v-card-subtitle>
+
+                        <v-divider></v-divider>
+
+                        <!-- <v-card-text class="text-h6 text-justify">
+                            <ul>
+                                <li v-for="cat in categories" :key="cat.Id">{{cat.message}} : {{}}
+                            </ul>
+                        </v-card-text> -->
                     </v-row>
                   </v-card>
               </v-col>

@@ -22,7 +22,21 @@
 
             <v-card-subtitle class="py-0 justify-center font-weight-black">
               <!-- Project Manager -->
-              {{empDesignation}}
+              Manager Name : {{managerName}}
+            </v-card-subtitle>
+
+            <v-divider class="pb-2"></v-divider>
+
+            <v-card-subtitle class="py-0 justify-center font-weight-black">
+              <!-- Project Manager -->
+              Business Unit : {{businessUnit}}
+            </v-card-subtitle>
+
+            <v-divider class="pb-2"></v-divider>
+
+            <v-card-subtitle class="py-0 justify-center font-weight-black">
+              <!-- Project Manager -->
+              Designation : {{empDesignation}}
             </v-card-subtitle>
 
             <v-divider class="pb-2"></v-divider>
@@ -59,6 +73,17 @@
               {{descriptionEmp}}
             </v-card-text>
 
+            <v-divider></v-divider>
+            <v-card-subtitle class="text-left font-weight-black">
+              Team Members
+            </v-card-subtitle>
+            <v-card-text class="text-left">
+              <ol>
+                <li v-for="mem in teamMembers" :key="mem.employeeID">
+                  {{mem.name}} : {{mem.emailID}}
+                </li>
+              </ol>
+            </v-card-text>
           </v-card>
         </v-col>
 
@@ -232,6 +257,10 @@ export default {
         this.empDesignation = respObj.title
         this.descriptionEmp = respObj.aboutMe
         this.prodScore = respObj.productivityScore
+        this.teamMembers = respObj.teamMembers
+        this.managerName = respObj.managerName
+        this.businessUnit = respObj.businessUnit
+        console.log(respObj);
         // console.log(this.$store.state.userName);
       })
   },
@@ -259,6 +288,9 @@ export default {
     empDesignation : "",
     prodScore : 20,
     descriptionEmp : "",
+    teamMembers : [],
+    managerName : "",
+    businessUnit : "",
   }),
 
   methods : {

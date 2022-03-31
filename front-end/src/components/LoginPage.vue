@@ -31,9 +31,9 @@
                             <!-- to="/landing" -->
                             
                         </v-card-actions>
-                        <!-- <p class="forgot-password text-center">
+                        <p class="forgot-password text-center">
                                 <router-link to = "/ChangePassword">Change Password</router-link>
-                        </p> -->
+                        </p>
                     </v-card>
                 </v-row>
                 </v-container>
@@ -60,7 +60,7 @@ export default {
 
     methods : {
         login() {
-            this.$store.commit('LOADER', true)
+            // this.$store.commit('LOADER', true)
             const requestObj = {
                 "email" : this.userName,
                 "password" : this.password
@@ -69,18 +69,21 @@ export default {
                 .then(response => {
                     let jsonData = JSON.parse(response.data.data)
                     console.log(jsonData)
-                    let firstLogin = jsonData.firstLogin;
                     this.$store.state.accessToken = jsonData.accessToken
-                    // if(firstLogin == true){
-                    //     this.$store.commit('LOADER', false)
-                    //     // this.$router.push('/ChangePassword')
-                    // }
-                    // else{
-                    let token = jsonData.accessToken
-                    this.$axios.defaults.headers.common['Authorization'] = "Bearer " + token
-                    this.$store.commit('LOADER', false)
-                    this.$router.push('/landing')
-                    // }
+                    let firstLogin = jsonData.firstLogin
+                    console.log(firstLogin)
+                    if(firstLogin == true){
+                        // this.$store.commit('LOADER', false)
+                        let token = jsonData.accessToken
+                        this.$axios.defaults.headers.common['Authorization'] = "Bearer " + token
+                        this.$router.push('/ChangePassword')
+                    }
+                    else{
+                        let token = jsonData.accessToken
+                        this.$axios.defaults.headers.common['Authorization'] = "Bearer " + token
+                        // this.$store.commit('LOADER', false)
+                        this.$router.push('/landing')
+                    }
                 })
         },
     }
