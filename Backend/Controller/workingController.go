@@ -113,7 +113,6 @@ func SetSchedule(w http.ResponseWriter, r *http.Request) {
 	schedule.EmployeeID = Dao.GetEmployeeIDByEmail(email)
 
 	//Database operation
-
 	if Dao.SetSchedule(schedule) == 0 {
 		errorResponses.SendInternalServerErrorResponse(w)
 		return
@@ -283,16 +282,21 @@ func GetTodayWorkingHoursByID(w http.ResponseWriter, r *http.Request) {
 	employee_id := Dao.GetEmployeeIDByEmail(email)
 
 	//get today's total hours form database
-	result, hourWorked := Dao.GetTodayWorkingHoursByID(employee_id)
+	result, hourWorked, regular, overtime := Dao.GetTodayWorkingHoursByID(employee_id)
 	if result == 0 {
 		errorResponses.SendInternalServerErrorResponse(w)
 		return
 	}
 	res := models.JsonResponseObject{}
 
+	workingHours := make(map[string]float64)
+	workingHours["TotalHour"] = hourWorked
+	workingHours["RegularHours"] = regular
+	workingHours["Overtime"] = overtime
+
 	res.Error = ""
-	res.Msg = "Today's Total hour of working:"
-	res.Data = hourWorked
+	res.Msg = "Today's working hours:"
+	res.Data = workingHours
 
 	jsonResponse, jsonError := json.Marshal(res)
 
@@ -318,8 +322,6 @@ func GetWorkingDetailsBetween(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	fmt.Println("Start: " + workingDetails.StartDate.String() + "End: " + workingDetails.EndDate.String())
-
 	if workingDetails.EndDate.Before(workingDetails.StartDate) {
 		errorResponses.SendBadRequestResponse(w, "Star date must before End Date!")
 		return
@@ -335,8 +337,8 @@ func GetWorkingDetailsBetween(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	//Get Number of Absent Day
-	workingDetails.AbsentDays = Dao.GetAbsentDays(employee_id, workingDetails)
-	if workingDetails.AbsentDays == -1 {
+	workingDetails.AbsentDays, workingDetails.Holidays, workingDetails.Totaldays = Dao.GetAbsentAndHoliAndTotalDays(employee_id, workingDetails)
+	if workingDetails.AbsentDays == -1 || workingDetails.Holidays == -1 || workingDetails.Totaldays == -1 {
 		errorResponses.SendInternalServerErrorResponse(w)
 		return
 	}
@@ -365,4 +367,38 @@ func GetWorkingDetailsBetween(w http.ResponseWriter, r *http.Request) {
 
 	utils.MessageHandler(w, jsonResponse, http.StatusCreated)
 
+}
+func SetHolidays(w http.ResponseWriter, r *http.Request) {
+
+	//Get holiday information from front end
+	holiday := gormModels.Holiday{}
+	if err := json.NewDecoder(r.Body).Decode(&holiday); err != nil {
+		fmt.Println(err)
+		errorResponses.SendBadRequestResponse(w, "")
+		return
+	}
+	//Database operation
+	holiday.Date.Format("2006-01-02")
+	fmt.Println(holiday.Date.String())
+	if Dao.SetHoliday(holiday) == 0 {
+		errorResponses.SendInternalServerErrorResponse(w)
+		return
+	}
+
+	res := models.JsonResponse{}
+
+	res.Error = ""
+	res.Msg = "Holiday added!"
+	res.Data = holiday.Date.String() + " " + holiday.Comment
+
+	jsonResponse, jsonError := json.Marshal(res)
+
+	if jsonError != nil {
+		fmt.Println(jsonError)
+
+		errorResponses.SendInternalServerErrorResponse(w)
+		return
+	}
+
+	utils.MessageHandler(w, jsonResponse, http.StatusCreated)
 }

@@ -107,27 +107,35 @@ func GetWeekWorkingRecordByID(employeeID int) (int, []gormModels.WorkingHours) {
 	fmt.Println(result.Error, result.RowsAffected)
 	return 1, workingHours
 }
-func GetTodayWorkingHoursByID(employeeID int) (int, int) {
+func GetTodayWorkingHoursByID(employeeID int) (int, float64, float64, float64) {
 	now := time.Now()
 	y1, m1, d1 := now.Year(), now.Month(), now.Day()
+	startTime := time.Date(y1, m1, d1, 0, 0, 0, 0, time.Local)
+	endTime := time.Date(y1, m1, d1, 23, 59, 59, 0, time.Local)
 	workingHours := make([]gormModels.WorkingHours, 1)
-	result := utils.Db.Where("employee_id = ? AND start_time >? AND end_time < ?", employeeID, now.AddDate(0, 0, -1), now).Find(&workingHours)
+	result := utils.Db.Where("employee_id = ? AND start_time >? AND end_time < ?", employeeID, startTime, endTime).Find(&workingHours)
 
-	var hourWorked int = 0
-	for i, _ := range workingHours {
-		y2, m2, d2 := workingHours[i].EndTime.Year(), workingHours[i].EndTime.Month(), workingHours[i].EndTime.Day()
-		if y1 == y2 && m1 == m2 && d1 == d2 {
-			hourWorked += int(workingHours[i].TimeWorked)
-		}
+	var hourWorked float64 = 0
+	for _, data := range workingHours {
+		hourWorked += data.EndTime.Sub(data.StartTime).Minutes() / 60
 	}
-
+	var regularHour float64
+	var overtime float64
+	if hourWorked > 8 {
+		regularHour = 8
+		overtime = hourWorked - 8
+	} else {
+		regularHour = hourWorked
+		overtime = 0
+	}
 	if result.Error != nil {
 		fmt.Println(result.Error)
-		return 0, hourWorked
+		return 0, -1, -1, -1
 	}
 
 	fmt.Println(result.Error, result.RowsAffected)
-	return 1, hourWorked
+
+	return 1, hourWorked, regularHour, overtime
 }
 func GetPreSentDays(EID int, WD models.WorkingDetails) int {
 
@@ -141,14 +149,14 @@ func GetPreSentDays(EID int, WD models.WorkingDetails) int {
 	fmt.Println(result.Error, result.RowsAffected)
 
 	for i := 0; i < len(workingHours)-1; i++ {
-		if workingHours[i].StartTime.Day() == workingHours[i+1].StartTime.Day() {
+		if workingHours[i].StartTime.YearDay() == workingHours[i+1].StartTime.YearDay() {
 			workingHours = append(workingHours[:i], workingHours[i+1:]...)
 			i--
 		}
 	}
 	return len(workingHours)
 }
-func GetAbsentDays(EID int, WD models.WorkingDetails) int {
+func GetAbsentAndHoliAndTotalDays(EID int, WD models.WorkingDetails) (int, int, int) {
 	var totalDays int
 	var presentDays int
 	var holidays int
@@ -163,10 +171,10 @@ func GetAbsentDays(EID int, WD models.WorkingDetails) int {
 
 	presentDays = GetPreSentDays(EID, WD)
 	if presentDays == -1 {
-		return -1
+		return -1, -1, -1
 	}
 	absentDays := totalDays - presentDays - holidays
-	return absentDays
+	return absentDays, holidays, totalDays
 }
 func Get3WorkingHours(EID int, WD models.WorkingDetails) (float64, float64, float64) {
 	var totalHourWorked float64
@@ -183,19 +191,20 @@ func Get3WorkingHours(EID int, WD models.WorkingDetails) (float64, float64, floa
 		fmt.Println(result.Error)
 		return -1, -1, -1
 	}
+	fmt.Print(workingHours)
 	fmt.Println(result.Error, result.RowsAffected)
 	for _, data := range workingHours {
-		totalHourWorked += data.TimeWorked
 		hoursWorked := data.EndTime.Sub(data.StartTime).Minutes() / 60.0
+		totalHourWorked += hoursWorked
 		//Total hours of a day must bigger than 8 in order to count for overtime
 		// If employee works on holiday, whole working hour counted as overtime
 		if IsHoliday(data.StartTime) {
 			totalOvertimeHour += hoursWorked
-			continue
 		} else { // Regular working days
-			if hoursWorked < 8 {
+			if hoursWorked <= 8 {
 				totalRegularHour += hoursWorked
 			} else {
+				totalRegularHour += 8
 				totalOvertimeHour += hoursWorked - 8
 			}
 		}
@@ -228,4 +237,16 @@ func IsHoliday(day time.Time) bool {
 	}
 
 	return result
+}
+func SetHoliday(holiday gormModels.Holiday) int {
+
+	result := utils.Db.Create(&holiday)
+
+	if result.Error != nil {
+		fmt.Println(result.Error)
+		return 0
+	}
+
+	fmt.Println(result.Error, result.RowsAffected)
+	return 1
 }
