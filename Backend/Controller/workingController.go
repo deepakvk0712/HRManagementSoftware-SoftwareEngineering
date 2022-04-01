@@ -10,6 +10,7 @@ import (
 	errorResponses "hrtool.com/HRManagementSoftware-SoftwareEngineering/Backend/Utils/ErrorHandler/ErrorResponse"
 	"net/http"
 	"strconv"
+	"strings"
 	"time"
 )
 
@@ -315,13 +316,27 @@ func GetWorkingDetailsBetween(w http.ResponseWriter, r *http.Request) {
 	email := r.Context().Value("email").(string)
 	employee_id := Dao.GetEmployeeIDByEmail(email)
 
-	//Get start date && end date from front end
+	//Get Date start && end time from front end
 	workingDetails := models.WorkingDetails{}
-	if err := json.NewDecoder(r.Body).Decode(&workingDetails); err != nil {
+	FD := models.FrontendDate{}
+	if err := json.NewDecoder(r.Body).Decode(&FD); err != nil {
 		fmt.Println(err)
 		errorResponses.SendBadRequestResponse(w, "")
 		return
 	}
+
+	arr1 := strings.Split(FD.StartDate, "-")
+	y1, _ := strconv.Atoi(arr1[0])
+	m1, _ := strconv.Atoi(arr1[1])
+	d1, _ := strconv.Atoi(arr1[2])
+
+	arr2 := strings.Split(FD.EndDate, "-")
+	y2, _ := strconv.Atoi(arr2[0])
+	m2, _ := strconv.Atoi(arr2[1])
+	d2, _ := strconv.Atoi(arr2[2])
+
+	workingDetails.StartDate = time.Date(y1, time.Month(m1), d1, 0, 0, 0, 0, time.Local)
+	workingDetails.EndDate = time.Date(y2, time.Month(m2), d2, 23, 59, 59, 0, time.Local)
 
 	if workingDetails.EndDate.Before(workingDetails.StartDate) {
 		errorResponses.SendBadRequestResponse(w, "Star date must before End Date!")
@@ -350,7 +365,12 @@ func GetWorkingDetailsBetween(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	//Calculate average work hour
-	workingDetails.AverageWorkHour = workingDetails.TotalWorkHour / float64(workingDetails.PresentDays)
+	if workingDetails.PresentDays == 0 { // divide 0
+		workingDetails.AverageWorkHour = 0
+	} else {
+		workingDetails.AverageWorkHour = workingDetails.TotalWorkHour / float64(workingDetails.PresentDays)
+	}
+
 	res := models.JsonResponseObject{}
 
 	res.Error = ""
@@ -361,7 +381,6 @@ func GetWorkingDetailsBetween(w http.ResponseWriter, r *http.Request) {
 
 	if jsonError != nil {
 		fmt.Println(jsonError)
-
 		errorResponses.SendInternalServerErrorResponse(w)
 		return
 	}
@@ -406,11 +425,28 @@ func SetHolidays(w http.ResponseWriter, r *http.Request) {
 func SetWorkingHours(w http.ResponseWriter, r *http.Request) {
 	//Get start&end date from front end
 	WH := gormModels.WorkingHours{}
-	if err := json.NewDecoder(r.Body).Decode(&WH); err != nil {
+	FT := models.FrontendTime{}
+	if err := json.NewDecoder(r.Body).Decode(&FT); err != nil {
 		fmt.Println(err)
 		errorResponses.SendBadRequestResponse(w, "")
 		return
 	}
+	arr := strings.Split(FT.Date, "-")
+	year, _ := strconv.Atoi(arr[0])
+	month, _ := strconv.Atoi(arr[1])
+	day, _ := strconv.Atoi(arr[2])
+
+	arr2 := strings.Split(FT.StartTime, ":")
+	h1, _ := strconv.Atoi(arr2[0])
+	m1, _ := strconv.Atoi(arr2[1])
+
+	arr3 := strings.Split(FT.EndTime, ":")
+	h2, _ := strconv.Atoi(arr3[0])
+	m2, _ := strconv.Atoi(arr3[1])
+
+	WH.StartTime = time.Date(year, time.Month(month), day, h1, m1, 0, 0, time.Local)
+	WH.EndTime = time.Date(year, time.Month(month), day, h2, m2, 0, 0, time.Local)
+
 	WH.TimeWorked = WH.EndTime.Sub(WH.StartTime).Minutes() / 60
 	//Get EmployeeID from token
 	email := r.Context().Value("email").(string)

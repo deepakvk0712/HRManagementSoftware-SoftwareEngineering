@@ -5,6 +5,7 @@ import (
 	models "hrtool.com/HRManagementSoftware-SoftwareEngineering/Backend/Models"
 	gormModels "hrtool.com/HRManagementSoftware-SoftwareEngineering/Backend/Models/GormModels"
 	utils "hrtool.com/HRManagementSoftware-SoftwareEngineering/Backend/Utils"
+	"strconv"
 	"time"
 )
 
@@ -157,18 +158,20 @@ func GetPreSentDays(EID int, WD models.WorkingDetails) int {
 	return len(workingHours)
 }
 func GetAbsentAndHoliAndTotalDays(EID int, WD models.WorkingDetails) (int, int, int) {
+	fmt.Println(WD)
 	var totalDays int
 	var presentDays int
 	var holidays int
 	holidays = 0
-	totalDays = WD.EndDate.YearDay() - WD.StartDate.YearDay()
+	totalDays = WD.EndDate.YearDay() - WD.StartDate.YearDay() + 1
+
 	for i := 0; i < totalDays; i++ {
 		temp := WD.StartDate.AddDate(0, 0, i)
 		if IsHoliday(temp) {
 			holidays++
 		}
 	}
-
+	fmt.Println("holidays : " + strconv.Itoa(holidays))
 	presentDays = GetPreSentDays(EID, WD)
 	if presentDays == -1 {
 		return -1, -1, -1
