@@ -23,9 +23,11 @@ func TestPaychecks(t *testing.T) {
 	loginRouter.Use(middleware.ValidateUser)
 	loginRouter.Use(middleware.Authorize)
 
-	changePasswordRouter := router.PathPrefix("/registerHR").Subrouter()
-	changePasswordRouter.HandleFunc("", RegisterHR).Methods("POST")
-	changePasswordRouter.Use(middleware.ValidateAccessToken)
+	paycheckRouter := router.PathPrefix("/paycheck").Subrouter()
+	paycheckRouter.HandleFunc("/self", GetPaycheck).Methods("GET")
+	paycheckRouter.HandleFunc("/team", GetAllSalaries).Methods("GET")
+	paycheckRouter.HandleFunc("/updateSalary", UpdateEmployeeSalary).Methods("PUT")
+	paycheckRouter.Use(middleware.ValidateAccessToken)
 
 	utils.Init()
 
