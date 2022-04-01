@@ -314,20 +314,24 @@ export default {
 
         filter() {
             // console.log(this.filterStartDate + "     " + this.filterEndDate)
-            const reqObj = {
-                "StartDate" : this.filterStartDate,
-                "EndDate" : this.filterEndDate
-            }
+            // const reqObj = {
+            //     "StartDate" : this.filterStartDate,
+            //     "EndDate" : this.filterEndDate
+            // }
 
-            this.$axios.get("http://localhost:8080/working/getWorkingDetails", reqObj)
-                .then(response => {
-                    console.log(response)
-                    console.log("got details")
-                    // this.closePopup = false
-                    // this.$router.push('/landing')
+            // this.$axios.get("http://localhost:8080/working/getWorkingDetails", reqObj)
+            //     .then(response => {
+            //         console.log(response)
+            //         console.log("got details")
+            //         // this.closePopup = false
+            //         // this.$router.push('/landing')
                     
-                })
+            //     })
         }
   }
 }
 </script>
+
+
+
+
