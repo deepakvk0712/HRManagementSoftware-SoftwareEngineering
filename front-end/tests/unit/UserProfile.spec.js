@@ -39,5 +39,11 @@ describe('UserProfileView.vue', () => {
         expect(wrapper.find('#usrProNumberInput').exists()).to.exist;
         expect(wrapper.find('#usrProLNameInput').exists()).to.exist;
         expect(wrapper.find('#usrProFNameInput').exists()).to.exist; 
-    }); 
+    });
+    
+    it('Correctly prints the user name dynamically ', () => {
+        const wrapper = shallowMount(UserProfileView);
+        expect(wrapper.find('#usrProDescInput').exists()).to.exist;
+        // expect(wrapper.find('#usrProZipInput').exists()).to.exist; 
+    });
 })
