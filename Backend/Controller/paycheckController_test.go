@@ -3,15 +3,14 @@ package Controller
 import (
 	"bytes"
 	"encoding/json"
-	"fmt"
 	"github.com/gorilla/mux"
 	"github.com/stretchr/testify/assert"
 	middleware "hrtool.com/HRManagementSoftware-SoftwareEngineering/Backend/Middleware"
 	models "hrtool.com/HRManagementSoftware-SoftwareEngineering/Backend/Models"
+	gormModels "hrtool.com/HRManagementSoftware-SoftwareEngineering/Backend/Models/GormModels"
 	utils "hrtool.com/HRManagementSoftware-SoftwareEngineering/Backend/Utils"
 	"net/http"
 	"net/http/httptest"
-	"strings"
 	"testing"
 )
 
@@ -24,58 +23,22 @@ func TestPaychecks(t *testing.T) {
 	loginRouter.Use(middleware.Authorize)
 
 	paycheckRouter := router.PathPrefix("/paycheck").Subrouter()
-	paycheckRouter.HandleFunc("/self", GetPaycheck).Methods("GET")
-	paycheckRouter.HandleFunc("/team", GetAllSalaries).Methods("GET")
+	paycheckRouter.HandleFunc("/", GetPaycheck).Methods("GET")
 	paycheckRouter.HandleFunc("/updateSalary", UpdateEmployeeSalary).Methods("PUT")
 	paycheckRouter.Use(middleware.ValidateAccessToken)
 
 	utils.Init()
 
-	newHR := models.User{
-		FirstName:     "Test",
-		LastName:      "One",
-		BusinessUnit:  "test",
-		ManagerId:     1213,
-		Grade:         "6A",
-		Location:      "Bangalore",
-		Country:       "India",
-		Title:         "SWE",
-		Type:          "",
-		PersonalEmail: "tejasdharmastala@ufl.edu",
-		IsHR:          true,
-		IsManager:     false,
+	type targetPaycheck struct {
+		Paychecks    []gormModels.Paycheck `json:"paychecks"`
+		IsManager    bool                  `json:"isManager"`
+		TeamSalaries []models.TeamSalary   `json:"teamSalaries"`
 	}
 
-	newEmployee := models.User{
-		FirstName:     "Test",
-		LastName:      "One",
-		BusinessUnit:  "test",
-		ManagerId:     1213,
-		Grade:         "6A",
-		Location:      "Bangalore",
-		Country:       "India",
-		Title:         "SWE",
-		Type:          "",
-		PersonalEmail: "tejasdharmastala@ufl.edu",
-		IsHR:          false,
-		IsManager:     false,
-	}
-
-	newHREmail := ""
-	newEmployeeEmail := ""
-
-	newHRPassword := ""
-	newEmployeePassword := ""
-
-	type targetEmployee struct {
-		Email    string `json:"email"`
-		Password string `json:"password"`
-	}
-
-	t.Run("Register employee successfully", func(t *testing.T) {
+	t.Run("If employee is a manager, he should get his paycheck along with paychecks of his employees", func(t *testing.T) {
 		user := models.UserLogin{
-			Email:    "dstejas191@hrtools.com",
-			Password: "123",
+			Email:    "vkashyapdeepak1@hrtools.com",
+			Password: "2G5NUeUV5Sp9gYopPP2tvamR",
 		}
 
 		payload, err := json.Marshal(&user)
@@ -102,10 +65,10 @@ func TestPaychecks(t *testing.T) {
 
 		json.Unmarshal([]byte(response.Data), &target)
 
-		payload, err = json.Marshal(&newHR)
-		assert.NoError(t, err)
+		//payload, err = json.Marshal(&{})
+		//assert.NoError(t, err)
 
-		createRequest, err := http.NewRequest("POST", "/registerHR", bytes.NewBuffer(payload))
+		createRequest, err := http.NewRequest("GET", "/paycheck/", nil)
 		createRequest.Header.Set("Content-Type", "application/json")
 		createRequest.Header.Set("Authorization", "Bearer "+target.AccessToken)
 		assert.NoError(t, err)
@@ -113,21 +76,26 @@ func TestPaychecks(t *testing.T) {
 		w = httptest.NewRecorder()
 
 		router.ServeHTTP(w, createRequest)
-		assert.Equal(t, 201, w.Code)
+		assert.Equal(t, 200, w.Code)
 
-		employee := targetEmployee{}
+		paychecks := targetPaycheck{}
 
 		json.NewDecoder(w.Body).Decode(&response)
-		json.Unmarshal([]byte(response.Data), &employee)
-		newHRPassword = employee.Password
-		newHREmail = employee.Email
+		json.Unmarshal([]byte(response.Data), &paychecks)
+
+		paychecksLength := len(paychecks.Paychecks)
+		isManager := paychecks.IsManager
+		teamSalariesLength := len(paychecks.TeamSalaries)
+
+		assert.GreaterOrEqual(t, paychecksLength, 1)
+		assert.GreaterOrEqual(t, teamSalariesLength, 1)
+		assert.Equal(t, true, isManager)
 	})
 
-	t.Run("If the new user is HR, he should be able to create other users", func(t *testing.T) {
-		fmt.Println(newHREmail, newHRPassword)
+	t.Run("If employee is not a manager, he should get only his paycheck", func(t *testing.T) {
 		user := models.UserLogin{
-			Email:    newHREmail,
-			Password: newHRPassword,
+			Email:    "vkashyapdeepak5@hrtools.com",
+			Password: "abcd1234",
 		}
 
 		payload, err := json.Marshal(&user)
@@ -151,12 +119,10 @@ func TestPaychecks(t *testing.T) {
 		var target targetType
 
 		json.NewDecoder(w.Body).Decode(&response)
+
 		json.Unmarshal([]byte(response.Data), &target)
 
-		payload, err = json.Marshal(&newEmployee)
-		assert.NoError(t, err)
-
-		createRequest, err := http.NewRequest("POST", "/registerHR", bytes.NewBuffer(payload))
+		createRequest, err := http.NewRequest("GET", "/paycheck/", nil)
 		createRequest.Header.Set("Content-Type", "application/json")
 		createRequest.Header.Set("Authorization", "Bearer "+target.AccessToken)
 		assert.NoError(t, err)
@@ -164,20 +130,26 @@ func TestPaychecks(t *testing.T) {
 		w = httptest.NewRecorder()
 
 		router.ServeHTTP(w, createRequest)
-		assert.Equal(t, 201, w.Code)
+		assert.Equal(t, 200, w.Code)
 
-		employee := targetEmployee{}
+		paychecks := targetPaycheck{}
 
 		json.NewDecoder(w.Body).Decode(&response)
-		json.Unmarshal([]byte(response.Data), &employee)
-		newEmployeePassword = employee.Password
-		newEmployeeEmail = employee.Email
+		json.Unmarshal([]byte(response.Data), &paychecks)
+
+		paychecksLength := len(paychecks.Paychecks)
+		isManager := paychecks.IsManager
+		teamSalariesLength := len(paychecks.TeamSalaries)
+
+		assert.GreaterOrEqual(t, paychecksLength, 1)
+		assert.Equal(t, 0, teamSalariesLength)
+		assert.Equal(t, false, isManager)
 	})
 
-	t.Run("If the user is not a HR, he cannot register an employee", func(t *testing.T) {
+	t.Run("Only a manager must be able to update the salary of his employees", func(t *testing.T) {
 		user := models.UserLogin{
-			Email:    newEmployeeEmail,
-			Password: newEmployeePassword,
+			Email:    "vkashyapdeepak1@hrtools.com",
+			Password: "2G5NUeUV5Sp9gYopPP2tvamR",
 		}
 
 		payload, err := json.Marshal(&user)
@@ -201,26 +173,82 @@ func TestPaychecks(t *testing.T) {
 		var target targetType
 
 		json.NewDecoder(w.Body).Decode(&response)
+
 		json.Unmarshal([]byte(response.Data), &target)
 
-		payload, err = json.Marshal(&newEmployee)
+		updatedSalary := models.UpdateSalary{
+			EmployeeID: 58,
+			NewSalary:  70000,
+		}
+
+		payload, err = json.Marshal(&updatedSalary)
 		assert.NoError(t, err)
 
-		createRequest, err := http.NewRequest("POST", "/registerHR", bytes.NewBuffer(payload))
+		createRequest, err := http.NewRequest("PUT", "/paycheck/updateSalary", bytes.NewBuffer(payload))
 		createRequest.Header.Set("Content-Type", "application/json")
 		createRequest.Header.Set("Authorization", "Bearer "+target.AccessToken)
 		assert.NoError(t, err)
+
+		w = httptest.NewRecorder()
+
+		router.ServeHTTP(w, createRequest)
+		assert.Equal(t, 200, w.Code)
+
+		row := utils.Db.Raw("SELECT SALARY FROM USERS WHERE EMPLOYEE_ID = 58").Row()
+
+		salary := 0.0
+
+		row.Scan(&salary)
+
+		assert.Equal(t, 70000.0, salary)
+	})
+
+	t.Run("If an employee is not a manager, he should not be able to access update salary", func(t *testing.T) {
+		user := models.UserLogin{
+			Email:    "vkashyapdeepak5@hrtools.com",
+			Password: "abcd1234",
+		}
+
+		payload, err := json.Marshal(&user)
+		assert.NoError(t, err)
+
+		loginRequest, err := http.NewRequest("POST", "/login", bytes.NewBuffer(payload))
+		loginRequest.Header.Set("Content-Type", "application/json")
+		assert.NoError(t, err)
+
+		w := httptest.NewRecorder()
+
+		router.ServeHTTP(w, loginRequest)
+		assert.Equal(t, 200, w.Code)
+
+		type targetType struct {
+			AccessToken string `json:"accessToken"`
+			FirstLogin  bool   `json:"firstLogin"`
+		}
+
+		response := models.JsonResponse{}
+		var target targetType
+
+		json.NewDecoder(w.Body).Decode(&response)
+
+		json.Unmarshal([]byte(response.Data), &target)
+
+		updatedSalary := models.UpdateSalary{
+			EmployeeID: 58,
+			NewSalary:  70000,
+		}
+
+		payload, err = json.Marshal(&updatedSalary)
+		assert.NoError(t, err)
+
+		createRequest, err := http.NewRequest("PUT", "/paycheck/updateSalary", bytes.NewBuffer(payload))
+		createRequest.Header.Set("Content-Type", "application/json")
+		createRequest.Header.Set("Authorization", "Bearer "+target.AccessToken)
+		assert.NoError(t, err)
+
 		w = httptest.NewRecorder()
 
 		router.ServeHTTP(w, createRequest)
 		assert.Equal(t, 403, w.Code)
-
-		employee := targetEmployee{}
-
-		json.NewDecoder(w.Body).Decode(&response)
-		json.Unmarshal([]byte(response.Data), &employee)
 	})
-
-	utils.Db.Exec("DELETE FROM USERS WHERE LOWER(OFFICIAL_EMAIL) = ? OR LOWER(OFFICIAL_EMAIL) = ? ", strings.ToLower(newHREmail), strings.ToLower(newEmployeeEmail))
-	utils.Db.Exec("DELETE FROM LOGIN_USERS WHERE LOWER(EMAIL) = ? OR LOWER(EMAIL) = ? ", strings.ToLower(newHREmail), strings.ToLower(newEmployeeEmail))
 }

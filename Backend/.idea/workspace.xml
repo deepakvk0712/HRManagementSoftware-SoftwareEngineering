@@ -8,10 +8,10 @@
       <change beforePath="$PROJECT_DIR$/.idea/dataSources.local.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dataSources.local.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/dataSources.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dataSources.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Controller/paycheckController.go" beforeDir="false" afterPath="$PROJECT_DIR$/Controller/paycheckController.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Database/DAO/paycheckDAO.go" beforeDir="false" afterPath="$PROJECT_DIR$/Database/DAO/paycheckDAO.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Controller/paycheckController_test.go" beforeDir="false" afterPath="$PROJECT_DIR$/Controller/paycheckController_test.go" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Database/TestHR" beforeDir="false" afterPath="$PROJECT_DIR$/Database/TestHR" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Routers/paycheck.go" beforeDir="false" afterPath="$PROJECT_DIR$/Routers/paycheck.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Utils/init.go" beforeDir="false" afterPath="$PROJECT_DIR$/Utils/init.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/secrets.env" beforeDir="false" afterPath="$PROJECT_DIR$/secrets.env" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -83,6 +83,18 @@
       <filePath value="$PROJECT_DIR$" />
       <method v="2" />
     </configuration>
+    <configuration name="TestPaychecks in hrtool.com/HRManagementSoftware-SoftwareEngineering/Backend/Controller" type="GoTestRunConfiguration" factoryName="Go Test" temporary="true" nameIsGenerated="true">
+      <module name="Backend" />
+      <working_directory value="$PROJECT_DIR$/Controller" />
+      <root_directory value="$PROJECT_DIR$" />
+      <kind value="PACKAGE" />
+      <package value="hrtool.com/HRManagementSoftware-SoftwareEngineering/Backend/Controller" />
+      <directory value="$PROJECT_DIR$" />
+      <filePath value="$PROJECT_DIR$" />
+      <framework value="gotest" />
+      <pattern value="^\QTestPaychecks\E$" />
+      <method v="2" />
+    </configuration>
     <configuration default="true" type="GoTestRunConfiguration" factoryName="Go Test">
       <module name="Backend" />
       <working_directory value="$PROJECT_DIR$" />
@@ -93,6 +105,11 @@
       <framework value="gotest" />
       <method v="2" />
     </configuration>
+    <recent_temporary>
+      <list>
+        <item itemvalue="Go Test.TestPaychecks in hrtool.com/HRManagementSoftware-SoftwareEngineering/Backend/Controller" />
+      </list>
+    </recent_temporary>
   </component>
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
   <component name="TypeScriptGeneratedFilesManager">
