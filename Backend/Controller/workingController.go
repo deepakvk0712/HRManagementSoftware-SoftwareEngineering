@@ -9,6 +9,7 @@ import (
 	utils "hrtool.com/HRManagementSoftware-SoftwareEngineering/Backend/Utils"
 	errorResponses "hrtool.com/HRManagementSoftware-SoftwareEngineering/Backend/Utils/ErrorHandler/ErrorResponse"
 	"net/http"
+	"strconv"
 	"time"
 )
 
@@ -390,6 +391,88 @@ func SetHolidays(w http.ResponseWriter, r *http.Request) {
 	res.Error = ""
 	res.Msg = "Holiday added!"
 	res.Data = holiday.Date.String() + " " + holiday.Comment
+
+	jsonResponse, jsonError := json.Marshal(res)
+
+	if jsonError != nil {
+		fmt.Println(jsonError)
+
+		errorResponses.SendInternalServerErrorResponse(w)
+		return
+	}
+
+	utils.MessageHandler(w, jsonResponse, http.StatusCreated)
+}
+func SetWorkingHours(w http.ResponseWriter, r *http.Request) {
+	//Get start&end date from front end
+	WH := gormModels.WorkingHours{}
+	if err := json.NewDecoder(r.Body).Decode(&WH); err != nil {
+		fmt.Println(err)
+		errorResponses.SendBadRequestResponse(w, "")
+		return
+	}
+	WH.TimeWorked = WH.EndTime.Sub(WH.StartTime).Minutes() / 60
+	//Get EmployeeID from token
+	email := r.Context().Value("email").(string)
+	employee_id := Dao.GetEmployeeIDByEmail(email)
+	WH.EmployeeID = employee_id
+
+	//Database operation
+	if Dao.InsertWorkingRecord(WH) == 0 {
+		errorResponses.SendInternalServerErrorResponse(w)
+		return
+	}
+
+	res := models.JsonResponse{}
+
+	res.Error = ""
+	res.Msg = "Record added!"
+	res.Data = "Employee " + strconv.Itoa(WH.EmployeeID) + " Start working at : " + WH.StartTime.String() + "Leave at : " + WH.EndTime.String()
+
+	jsonResponse, jsonError := json.Marshal(res)
+
+	if jsonError != nil {
+		fmt.Println(jsonError)
+
+		errorResponses.SendInternalServerErrorResponse(w)
+		return
+	}
+
+	utils.MessageHandler(w, jsonResponse, http.StatusCreated)
+}
+func SetTodayWorkingHours(w http.ResponseWriter, r *http.Request) {
+	//Get start&end date from front end
+	SE := models.StartAndEnd{}
+	if err := json.NewDecoder(r.Body).Decode(&SE); err != nil {
+		fmt.Println(err)
+		errorResponses.SendBadRequestResponse(w, "")
+		return
+	}
+
+	WH := gormModels.WorkingHours{}
+	sh, _ := strconv.Atoi(SE.StartHour)
+	eh, _ := strconv.Atoi(SE.EndHour)
+	WH.TimeWorked = float64(eh - sh)
+	t := time.Now()
+	WH.StartTime = time.Date(t.Year(), t.Month(), t.Day(), sh, 0, 0, 0, time.Local)
+	WH.EndTime = time.Date(t.Year(), t.Month(), t.Day(), eh, 0, 0, 0, time.Local)
+
+	//Get EmployeeID from token
+	email := r.Context().Value("email").(string)
+	employee_id := Dao.GetEmployeeIDByEmail(email)
+	WH.EmployeeID = employee_id
+
+	//Database operation
+	if Dao.InsertWorkingRecord(WH) == 0 {
+		errorResponses.SendInternalServerErrorResponse(w)
+		return
+	}
+
+	res := models.JsonResponse{}
+
+	res.Error = ""
+	res.Msg = "Record added!"
+	res.Data = "Employee " + strconv.Itoa(WH.EmployeeID) + " Start working at: " + WH.StartTime.String() + " Leave at: " + WH.EndTime.String()
 
 	jsonResponse, jsonError := json.Marshal(res)
 
