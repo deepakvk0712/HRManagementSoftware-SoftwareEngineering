@@ -30,7 +30,7 @@
                   centered
                 >
                   <v-tab
-                    class="black--text"
+                    class="black--text font-weight-medium"
                     v-for="t in tabName"
                     :key="t"
                   >
@@ -47,7 +47,7 @@
                   src="https://cdn.vuetifyjs.com/images/parallax/material2.jpg"
                 >
                   <v-card-title class="justify-center">
-                    <h1 id="AboutUsHeading" class="black--text text-h2 font-weight-thin mb-2">
+                    <h1 id="AboutUsHeading" class="black--text text-h2 font-weight-medium mb-2">
                       Meet Axle United!
                     </h1>
                   </v-card-title>
@@ -56,7 +56,7 @@
                   </v-card-subtitle> -->
 
                   <v-card-text>
-                    <p id="textAboutUs" style="font-size: 1.4em;" class="black--text text-justify">
+                    <p id="textAboutUs" style="font-size: 1.4em;" class="black--text font-weight-medium text-justify">
                       Axle United represents a new way of thinking about the data hidden in your documents. We use AI to extract data that can be used to fuel corporate transformation.
 
                       <br><br>From old documents to stamps and handwritten notes to receipts, our system can infer what’s missing and fill in the blanks to get you more valuable extracted data. That provides the springboard you need to automate your process, which in turn can transform your business quickly and efficiently.
@@ -71,7 +71,7 @@
                   </v-card-text>
 
                   <v-card-title class="justify-center">
-                    <h1 id="teamAboutUs" class="black--text text-h3 font-weight-thin mb-2">
+                    <h1 id="teamAboutUs" class="black--text text-h3 font-weight-medium mb-2">
                       Meet The Team
                     </h1>
                   </v-card-title>
@@ -115,7 +115,7 @@
                   </v-card-text>
 
                   <v-card-title class="justify-center">
-                    <h1 id="accomplishmentsTeams" class="black--text text-h3 font-weight-thin mb-2">
+                    <h1 id="accomplishmentsTeams" class="black--text text-h3 font-weight-medium mb-2">
                       Our Accomplishments!
                     </h1>
                   </v-card-title>
@@ -138,7 +138,7 @@
                         <!-- <span> -->
                           <v-icon color="#000080">account_group_outline</v-icon>
                           <v-card-text class="black--text text-h4 font-weight-bold">
-                            Voted Most Promising Statup 2022 by the Times group!
+                            Voted Most Promising Startup 2022 by the Times group!
                           </v-card-text>
                         <!-- </span> -->
                         <!-- style="font-size: 44px;" -->
@@ -161,7 +161,7 @@
                   </v-card-text>
 
                   <v-card-title class="justify-left">
-                    <h1 class="black--text text-h3 font-weight-thin mb-2">
+                    <h1 class="black--text text-h3 font-weight-medium mb-2">
                       Leadership
                     </h1>
                   </v-card-title>
@@ -182,7 +182,7 @@
                   src="https://cdn.vuetifyjs.com/images/parallax/material2.jpg"
                 >
                   <v-card-title class="justify-center">
-                    <h1 id="companyPolicy" class="black--text text-h2 font-weight-thin mb-2">
+                    <h1 id="companyPolicy" class="black--text text-h2 font-weight-medium mb-2">
                       Company Policy
                     </h1>
                   </v-card-title>
@@ -211,7 +211,7 @@
                 <!-- :src="require('@/assets/mountain.png')" -->
                 <!-- https://cdn.vuetifyjs.com/images/parallax/material2.jpg -->
                   <v-card-title class="justify-center">
-                    <h1 id="employeePolicy" class="black--text text-h2 font-weight-thin mb-2">
+                    <h1 id="employeePolicy" class="black--text text-h2 font-weight-medium mb-2">
                       Employee Policy
                     </h1>
                   </v-card-title>
@@ -240,7 +240,7 @@
                 <!-- :src="require('@/assets/mountain.png')" -->
                 <!-- https://cdn.vuetifyjs.com/images/parallax/material2.jpg -->
                   <v-card-title class="justify-center">
-                    <h1 id="employeePolicy" class="black--text text-h2 font-weight-thin mb-2">
+                    <h1 id="employeePolicy" class="black--text text-h2 font-weight-medium mb-2">
                       Core Values
                     </h1>
                   </v-card-title>
@@ -269,13 +269,13 @@
                 <!-- :src="require('@/assets/mountain.png')" -->
                 <!-- https://cdn.vuetifyjs.com/images/parallax/material2.jpg -->
                   <v-card-title class="black--text justify-center">
-                    <h1 id="employeePolicy" class="text-h2 font-weight-thin mb-2">
+                    <h1 id="employeePolicy" class="text-h2 font-weight-medium mb-2">
                       Mission Statement
                     </h1>
                   </v-card-title>
 
                   <v-card-title class="justify-left">
-                    <h1 class="black--text text-h3 font-weight-medium mb-2">
+                    <h1 class="black--text text-h4 font-weight-medium mb-2">
                       {{missionStatement}}
                     </h1>
                   </v-card-title>                                           

@@ -227,6 +227,17 @@
                             <!-- Next code goes here -->
                         </v-card-subtitle>
 
+                        <v-card-text class="justify-left">
+                            <ul class="justify-left">
+                                <li>Average hours worked : To be Integrated</li>
+                                <li>Number of holidays : To be Integrated</li>
+                                <li>Number of days worked : To be Integrated</li>
+                                <li>Number of days absent : To be Integrated</li>
+                                <li>Total hours of regular time : To be Integrated</li>
+                                <li>Total hours of overtime : To be Integrated</li>
+                            </ul>
+                        </v-card-text>
+
                         <v-divider></v-divider>
 
                         <!-- <v-card-text class="text-h6 text-justify">
