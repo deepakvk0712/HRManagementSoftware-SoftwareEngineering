@@ -60,7 +60,7 @@
   export default {
     name : "PaySlipPage",
     async created() {
-      await this.$axios.get('http://192.168.0.35:8080/paycheck/')
+      await this.$axios.get('http://localhost:8080/paycheck/')
         .then(response => {
           let jsonData = JSON.parse(response.data.data)
           console.log(jsonData)
@@ -170,7 +170,7 @@
         //     "email" : this.userName,
         //     "password" : this.password
         // }
-        this.$axios.get("http://192.168.0.35:8080/paycheck/")
+        this.$axios.get("http://localhost:8080/paycheck/")
           .then(response => {
               let jsonData = JSON.parse(response.data.data)
               console.log(jsonData)
