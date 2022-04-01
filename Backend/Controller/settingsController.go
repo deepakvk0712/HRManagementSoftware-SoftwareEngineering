@@ -14,6 +14,7 @@ import (
 func ChangePassword(w http.ResponseWriter, req *http.Request) {
 	loginInfo := models.ChangeLoginInfo{}
 	role := req.Context().Value("role").(byte)
+	email := req.Context().Value("email").(string)
 
 	fmt.Println(role)
 
@@ -53,6 +54,14 @@ func ChangePassword(w http.ResponseWriter, req *http.Request) {
 		errorResponses.SendInternalServerErrorResponse(w)
 
 		return
+	}
+
+	if dbUser.FirstLogin {
+		if err := Dao.UpdateFirstLoginDAO(email); err == 0 {
+			errorResponses.SendInternalServerErrorResponse(w)
+
+			return
+		}
 	}
 
 	res := models.JsonResponse{}

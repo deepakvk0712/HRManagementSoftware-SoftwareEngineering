@@ -33,6 +33,7 @@ type User struct {
 	Pronouns    string `json:"Pronouns"`
 	AboutMe     string `json:"aboutMe"`
 	//Payment Method
+	Salary        float32   `json:"salary"` // added by Tejas in Sprint-3 as part of paycheck
 	RoutingNumber string    `json:"RoutingNumber"`
 	AccountNumber string    `json:"AccountNumber"`
 	Bank          string    `json:"Bank"`

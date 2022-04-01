@@ -3,7 +3,6 @@ package Controller
 import (
 	"encoding/json"
 	"fmt"
-	Dao "hrtool.com/HRManagementSoftware-SoftwareEngineering/Backend/Database/DAO"
 	models "hrtool.com/HRManagementSoftware-SoftwareEngineering/Backend/Models"
 	utils "hrtool.com/HRManagementSoftware-SoftwareEngineering/Backend/Utils"
 	errorResponses "hrtool.com/HRManagementSoftware-SoftwareEngineering/Backend/Utils/ErrorHandler/ErrorResponse"
@@ -15,13 +14,13 @@ func Login(w http.ResponseWriter, req *http.Request) {
 	role := req.Context().Value("role").(byte)
 	firstLogin := req.Context().Value("firstLogin").(bool)
 
-	if firstLogin {
-		if err := Dao.UpdateFirstLoginDAO(userLogin.Email); err == 0 {
-			errorResponses.SendInternalServerErrorResponse(w)
-
-			return
-		}
-	}
+	//if firstLogin {
+	//	if err := Dao.UpdateFirstLoginDAO(userLogin.Email); err == 0 {
+	//		errorResponses.SendInternalServerErrorResponse(w)
+	//
+	//		return
+	//	}
+	//}
 
 	token, err := utils.GenerateAccessToken(userLogin.Email, role)
 	if err != nil {

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="dataSourceStorageLocal" created-in="GO-213.6777.51">
-    <data-source name="TestHR" uuid="ae6c33b0-c355-407e-ae18-369c33a7cccb">
+    <data-source name="TestHR" uuid="b1c61b54-4ab0-4b7a-901d-7e2359f226bc">
       <database-info product="SQLite" version="3.34.0" jdbc-version="2.1" driver-name="SQLite JDBC" driver-version="3.34.0" dbms="SQLITE" exact-version="3.34.0" exact-driver-version="3.34">
         <identifier-quote-string>&quot;</identifier-quote-string>
       </database-info>
