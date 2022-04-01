@@ -7,12 +7,13 @@
               <v-col>
                   <v-card elevation="4">
                       <v-card-title class="justify-center">
-                          <strong> Submit Attendance </strong>
+                          <strong id="headingSubmit"> Submit Attendance </strong>
                       </v-card-title>
 
                         <v-divider></v-divider>
 
                         <v-date-picker
+                            id="datePickingSubmit"
                             v-model="date"
                             scrollable
                             no-title
@@ -44,6 +45,7 @@
                         <v-row>
                         <v-col class="pl-4">
                             <v-dialog
+                                id="startTimeSubmit"
                                 ref="dialog"
                                 v-model="startTimeFlag"
                                 :return-value.sync="startTime"
@@ -86,6 +88,7 @@
 
                         <v-col class="pr-4">
                             <v-dialog
+                                id="endTimeSubmit"
                                 ref="dialog1"
                                 v-model="endTimeFlag"
                                 :return-value.sync="endTime"
@@ -129,10 +132,10 @@
 
                         <v-row>
                             <v-col class="py-0 mb-4 text-center">
-                                <v-btn @click="resetFields()">Reset </v-btn>
+                                <v-btn id="resetButton" @click="resetFields()">Reset </v-btn>
                             </v-col>
                             <v-col class="py-0 mb-4 text-center">
-                                <v-btn @click="submit()">Submit</v-btn>
+                                <v-btn id="submitButton" @click="submit()">Submit</v-btn>
                             </v-col>
                         </v-row>
                   </v-card>
@@ -151,6 +154,7 @@
                     <v-row>
                         <v-col class="ml-4 pb-0">
                             <v-menu
+                                id="filterStartDate"
                                 ref="menu1"
                                 v-model="menu1"
                                 :close-on-content-click="false"
@@ -180,6 +184,7 @@
 
                         <v-col class="mr-4 pb-0">
                             <v-menu
+                                id="filterEndDate"
                                 ref="menu2"
                                 v-model="menu2"
                                 :close-on-content-click="false"
@@ -210,7 +215,7 @@
 
                     <v-row class="py-0 my-0 mr-2 text-right">
                         <v-col>
-                            <v-btn @click="filter()"> Filter </v-btn>
+                            <v-btn id="filterButton" @click="filter()"> Filter </v-btn>
                         </v-col>
                     </v-row>
 
@@ -221,6 +226,25 @@
                             <strong> Filtered Stats </strong>
                             <!-- Next code goes here -->
                         </v-card-subtitle>
+
+                        <v-card-text class="justify-left">
+                            <ul class="justify-left">
+                                <li>Average hours worked : To be Integrated</li>
+                                <li>Number of holidays : To be Integrated</li>
+                                <li>Number of days worked : To be Integrated</li>
+                                <li>Number of days absent : To be Integrated</li>
+                                <li>Total hours of regular time : To be Integrated</li>
+                                <li>Total hours of overtime : To be Integrated</li>
+                            </ul>
+                        </v-card-text>
+
+                        <v-divider></v-divider>
+
+                        <!-- <v-card-text class="text-h6 text-justify">
+                            <ul>
+                                <li v-for="cat in categories" :key="cat.Id">{{cat.message}} : {{}}
+                            </ul>
+                        </v-card-text> -->
                     </v-row>
                   </v-card>
               </v-col>
@@ -261,34 +285,48 @@ export default {
         },
 
         submit() {
-            // const reqObj = {
-            //     "Date" : this.date,
-            //     "startTime" : this.startTime,
-            //     "endTime" : this.endTime,
-            // }
 
-            // this.$axios.post("http://localhost:8080/login", reqObj)
-            //     .then(response => {
-            //         console.log(response)
-            //         this.closePopup = false
-            //         // this.$router.push('/landing')
+            // console.log(typeof this.startTime)
+            // console.log(typeof this.endTime)
+            // console.log(typeof this.date)
+            // console.log(this.startTime + ":" + this.endTime)
+            // this.date = new Date(this.date).toISOString().substring(0,10);
+            // console.log("Date : " + typeof this.date + " Value : " + this.date);
+            // this.startTime = new Date(this.startTime).toISOString().substring(0,10);
+            // console.log("Date : " + typeof this.startTime + " Value : " + this.startTime);
+            const reqObj = {
+                "Date" : this.date,
+                "StartTime" : this.startTime,
+                "EndTime" : this.endTime,
+            }
+
+            // console.log(reqObj)
+
+            this.$axios.post("http://localhost:8080/working/insertWorkingRecord", reqObj)
+                .then(response => {
+                    console.log(response)
+                    // this.closePopup = false
+                    console.log("I came till here")
+                    // this.$router.push('/landing')
                     
-            //     })
+                })
         },
 
         filter() {
-            // const reqObj = {
-            //     "filterStartDate" : this.filterStartDate,
-            //     "filterEndDate" : this.filterEndDate,
-            // }
+            // console.log(this.filterStartDate + "     " + this.filterEndDate)
+            const reqObj = {
+                "StartDate" : this.filterStartDate,
+                "EndDate" : this.filterEndDate
+            }
 
-            // this.$axios.post("http://localhost:8080/login", reqObj)
-            //     .then(response => {
-            //         console.log(response)
-            //         this.closePopup = false
-            //         // this.$router.push('/landing')
+            this.$axios.get("http://localhost:8080/working/getWorkingDetails", reqObj)
+                .then(response => {
+                    console.log(response)
+                    console.log("got details")
+                    // this.closePopup = false
+                    // this.$router.push('/landing')
                     
-            //     })
+                })
         }
   }
 }

@@ -32,7 +32,7 @@
                             
                         </v-card-actions>
                         <p class="forgot-password text-center">
-                                <router-link to= "/ChangePassword">Change Password</router-link>
+                                <router-link to = "/ChangePassword">Change Password</router-link>
                         </p>
                     </v-card>
                 </v-row>
@@ -60,25 +60,28 @@ export default {
 
     methods : {
         login() {
-            this.$store.commit('LOADER', true)
+            // this.$store.commit('LOADER', true)
             const requestObj = {
                 "email" : this.userName,
                 "password" : this.password
             }
-            this.$axios.post("http://10.20.205.4:8080/login", requestObj)
+            this.$axios.post("http://localhost:8080/login", requestObj)
                 .then(response => {
                     let jsonData = JSON.parse(response.data.data)
                     console.log(jsonData)
-                    let firstLogin = jsonData.firstLogin;            
                     this.$store.state.accessToken = jsonData.accessToken
+                    let firstLogin = jsonData.firstLogin
+                    console.log(firstLogin)
                     if(firstLogin == true){
-                        this.$store.commit('LOADER', false)
+                        // this.$store.commit('LOADER', false)
+                        let token = jsonData.accessToken
+                        this.$axios.defaults.headers.common['Authorization'] = "Bearer " + token
                         this.$router.push('/ChangePassword')
                     }
                     else{
                         let token = jsonData.accessToken
                         this.$axios.defaults.headers.common['Authorization'] = "Bearer " + token
-                        this.$store.commit('LOADER', false)
+                        // this.$store.commit('LOADER', false)
                         this.$router.push('/landing')
                     }
                 })

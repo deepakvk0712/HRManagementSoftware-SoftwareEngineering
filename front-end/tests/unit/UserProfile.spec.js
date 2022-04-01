@@ -39,5 +39,20 @@ describe('UserProfileView.vue', () => {
         expect(wrapper.find('#usrProNumberInput').exists()).to.exist;
         expect(wrapper.find('#usrProLNameInput').exists()).to.exist;
         expect(wrapper.find('#usrProFNameInput').exists()).to.exist; 
-    }); 
+    });
+    
+    it('Correctly renders the productivity header and productivity score ', () => {
+        const wrapper = shallowMount(UserProfileView);
+        expect(wrapper.find('#prodUserProfile').exists()).to.exist;
+    });
+
+    it('Correctly renders the about me and the description sent from backend ', () => {
+        const wrapper = shallowMount(UserProfileView);
+        expect(wrapper.find('#aboutUserProfile').exists()).to.exist;
+    });
+
+    it('Correctly renders the team members header and the team members email ID and name ', () => {
+        const wrapper = shallowMount(UserProfileView);
+        expect(wrapper.find('#teamMembersUserProfile').exists()).to.exist;
+    });
 })
