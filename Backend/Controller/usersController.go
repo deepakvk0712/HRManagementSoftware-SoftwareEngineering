@@ -9,7 +9,6 @@ import (
 	utils "hrtool.com/HRManagementSoftware-SoftwareEngineering/Backend/Utils"
 	errorResponses "hrtool.com/HRManagementSoftware-SoftwareEngineering/Backend/Utils/ErrorHandler/ErrorResponse"
 	"net/http"
-	"os"
 )
 
 func RegisterHR(w http.ResponseWriter, req *http.Request) {
@@ -60,24 +59,25 @@ func RegisterHR(w http.ResponseWriter, req *http.Request) {
 		return
 	}
 
-	welcomeMail := models.MailTemplate{
-		From:        "HR Admin",
-		To:          u.FirstName + " " + u.LastName,
-		FromEmail:   os.Getenv("SENDGRID_SENDER_MAIL"),
-		ToEmail:     u.PersonalEmail,
-		Subject:     "Welcome to the company",
-		TextContent: "Dear " + u.FirstName + " " + u.LastName + ",\n\n Welcome onboard. Your official email id is " + email + ". Your temporary password is " + tempPassword + "\n\nRegards,\nHR Team",
-		HTMLContent: "",
-	}
+	fmt.Println(tempPassword, email)
+	//welcomeMail := models.MailTemplate{
+	//	From:        "HR Admin",
+	//	To:          u.FirstName + " " + u.LastName,
+	//	FromEmail:   os.Getenv("SENDGRID_SENDER_MAIL"),
+	//	ToEmail:     u.PersonalEmail,
+	//	Subject:     "Welcome to the company",
+	//	TextContent: "Dear " + u.FirstName + " " + u.LastName + ",\n\n Welcome onboard. Your official email id is " + email + ". Your temporary password is " + tempPassword + "\n\nRegards,\nHR Team",
+	//	HTMLContent: "",
+	//}
 
-	if utils.SendMail(welcomeMail) == 0 {
-		Dao.DeleteUserDAO(email)
-		Dao.DeleteLoginDAO(email)
-
-		errorResponses.SendInternalServerErrorResponse(w)
-
-		return
-	}
+	//if utils.SendMail(welcomeMail) == 0 {
+	//	Dao.DeleteUserDAO(email)
+	//	Dao.DeleteLoginDAO(email)
+	//
+	//	errorResponses.SendInternalServerErrorResponse(w)
+	//
+	//	return
+	//}
 
 	res := models.JsonResponse{}
 
