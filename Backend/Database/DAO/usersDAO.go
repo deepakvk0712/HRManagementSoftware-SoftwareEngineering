@@ -90,16 +90,22 @@ func GetTeamDetails(email string) (models.TeamDetails, int) {
 
 	row.Scan(&managerId, &teamDetails.BusinessUnit)
 
-	rows, _ := utils.Db.Raw("SELECT FIRST_NAME || \" \" || LAST_NAME FROM USERS WHERE EMPLOYEE_ID = ? UNION SELECT FIRST_NAME || \" \" || LAST_NAME FROM USERS WHERE MANAGER_ID = ? AND LOWER(OFFICIAL_EMAIL) <> ?", managerId, managerId, strings.ToLower(email)).Rows()
+	rows, _ := utils.Db.Raw("SELECT FIRST_NAME || \" \" || LAST_NAME, LOWER(OFFICIAL_EMAIL), EMPLOYEE_ID FROM USERS WHERE EMPLOYEE_ID = ? UNION SELECT FIRST_NAME || \" \" || LAST_NAME, LOWER(OFFICIAL_EMAIL), EMPLOYEE_ID FROM USERS WHERE MANAGER_ID = ? AND LOWER(OFFICIAL_EMAIL) <> ?", managerId, managerId, strings.ToLower(email)).Rows()
 	defer rows.Close()
 
-	rows.Next()
-	rows.Scan(&teamDetails.Manager)
+	//rows.Next()
+	//rows.Scan(&teamDetails.Manager)
 
-	temp := ""
+	teamMember := models.TeamMember{}
+
 	for rows.Next() {
-		rows.Scan(&temp)
-		teamDetails.TeamMembers = append(teamDetails.TeamMembers, temp)
+		rows.Scan(&teamMember.Name, &teamMember.EmailID, &teamMember.EmployeeID)
+		if teamMember.EmployeeID == managerId {
+			teamDetails.Manager = teamMember.Name
+			continue
+		}
+
+		teamDetails.TeamMembers = append(teamDetails.TeamMembers, teamMember)
 	}
 
 	return teamDetails, 1

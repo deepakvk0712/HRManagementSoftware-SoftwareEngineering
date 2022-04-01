@@ -14,13 +14,13 @@ import (
 func GetPaycheck(w http.ResponseWriter, req *http.Request) {
 	email := req.Context().Value("email").(string)
 
-	p := models.PaycheckQuery{}
-	if err := json.NewDecoder(req.Body).Decode(&p); err != nil {
-		fmt.Println(err)
-
-		errorResponses.SendBadRequestResponse(w, "")
-		return
-	}
+	//p := models.PaycheckQuery{}
+	//if err := json.NewDecoder(req.Body).Decode(&p); err != nil {
+	//	fmt.Println(err)
+	//
+	//	errorResponses.SendBadRequestResponse(w, "")
+	//	return
+	//}
 
 	employeeID, err := Dao.GetEmployeeID(email)
 	if err == 0 {
@@ -28,7 +28,7 @@ func GetPaycheck(w http.ResponseWriter, req *http.Request) {
 		return
 	}
 
-	paychecks := Dao.GetPaycheck(employeeID, p)
+	paychecks := Dao.GetPaycheck(employeeID)
 
 	Msg := struct {
 		Paychecks []gormModels.Paycheck `json:"paychecks"`
@@ -106,6 +106,46 @@ func GetAllSalaries(w http.ResponseWriter, req *http.Request) {
 	res.Error = ""
 	res.Msg = ""
 	res.Data = string(data)
+
+	jsonResponse, jsonError := json.Marshal(res)
+	if jsonError != nil {
+		fmt.Println(jsonError)
+
+		errorResponses.SendInternalServerErrorResponse(w)
+		return
+	}
+
+	utils.MessageHandler(w, jsonResponse, http.StatusOK)
+}
+
+func UpdateEmployeeSalary(w http.ResponseWriter, req *http.Request) {
+	role := req.Context().Value("role").(byte)
+
+	if role&utils.IsManager != utils.IsManager {
+		errorResponses.SendForbiddenRequestResponse(w)
+
+		return
+	}
+
+	u := models.UpdateSalary{}
+	if err := json.NewDecoder(req.Body).Decode(&u); err != nil {
+		fmt.Println(err)
+
+		errorResponses.SendBadRequestResponse(w, "")
+		return
+	}
+
+	err := Dao.UpdateSalary(u.EmployeeID, u.NewSalary)
+	if err == 0 {
+		errorResponses.SendInternalServerErrorResponse(w)
+		return
+	}
+
+	res := models.JsonResponse{}
+
+	res.Error = ""
+	res.Msg = "Salary updated successfully"
+	res.Data = ""
 
 	jsonResponse, jsonError := json.Marshal(res)
 	if jsonError != nil {

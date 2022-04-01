@@ -1,15 +1,16 @@
 package Dao
 
 import (
+	"fmt"
 	models "hrtool.com/HRManagementSoftware-SoftwareEngineering/Backend/Models"
 	gormModels "hrtool.com/HRManagementSoftware-SoftwareEngineering/Backend/Models/GormModels"
 	utils "hrtool.com/HRManagementSoftware-SoftwareEngineering/Backend/Utils"
 )
 
-func GetPaycheck(employeeId int, param models.PaycheckQuery) []gormModels.Paycheck {
+func GetPaycheck(employeeId int) []gormModels.Paycheck {
 	var paychecks []gormModels.Paycheck
 
-	utils.Db.Where("EMPLOYEE_ID = ? AND CHECK_DATE >= ? AND CHECK_DATE <= ?", employeeId, param.PayBeginDate, param.PayEndDate).Find(&paychecks)
+	utils.Db.Where("EMPLOYEE_ID = ?", employeeId).Find(&paychecks)
 
 	return paychecks
 }
@@ -27,4 +28,14 @@ func GetSalaries(managerId int, param models.PaycheckQuery) []models.TeamSalary 
 	}
 
 	return teamSalaries
+}
+
+func UpdateSalary(employeeId int, newSalary float32) int {
+	row := utils.Db.Raw("UPDATE USERS SET SALARY = ? WHERE EMPLOYEE_ID = ?", newSalary, employeeId).Row()
+	if row.Err() != nil {
+		fmt.Println(row)
+		return 0
+	}
+
+	return 1
 }

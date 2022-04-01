@@ -159,14 +159,14 @@ func GetProfile(w http.ResponseWriter, req *http.Request) {
 	}
 
 	Msg := struct {
-		FirstName         string   `json:"firstName"`
-		LastName          string   `json:"lastName"`
-		Title             string   `json:"title"`
-		AboutMe           string   `json:"aboutMe"`
-		ProductivityScore int      `json:"productivityScore"`
-		ManagerName       string   `json:"managerName"`
-		TeamMembers       []string `json:"teamMembers"`
-		BusinessUnit      string   `json:"businessUnit"`
+		FirstName         string              `json:"firstName"`
+		LastName          string              `json:"lastName"`
+		Title             string              `json:"title"`
+		AboutMe           string              `json:"aboutMe"`
+		ProductivityScore int                 `json:"productivityScore"`
+		ManagerName       string              `json:"managerName"`
+		TeamMembers       []models.TeamMember `json:"teamMembers"`
+		BusinessUnit      string              `json:"businessUnit"`
 	}{
 		FirstName:         profileDetails.FirstName,
 		LastName:          profileDetails.LastName,

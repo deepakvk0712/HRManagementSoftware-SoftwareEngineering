@@ -5,17 +5,19 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="92e96ae0-5c25-4d74-9f10-84e21d1f6971" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/Controller/paycheckController.go" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Database/DAO/paycheckDAO.go" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Models/GormModels/paycheck.go" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Models/paycheckQuery.go" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Models/teamSalary.go" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Routers/paycheck.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Models/teamMember.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Models/updateSalary.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/dataSources/ae6c33b0-c355-407e-ae18-369c33a7cccb.xml" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Controller/loginController.go" beforeDir="false" afterPath="$PROJECT_DIR$/Controller/loginController.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Controller/paycheckController.go" beforeDir="false" afterPath="$PROJECT_DIR$/Controller/paycheckController.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Controller/settingsController.go" beforeDir="false" afterPath="$PROJECT_DIR$/Controller/settingsController.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Controller/usersController.go" beforeDir="false" afterPath="$PROJECT_DIR$/Controller/usersController.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Database/DAO/paycheckDAO.go" beforeDir="false" afterPath="$PROJECT_DIR$/Database/DAO/paycheckDAO.go" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Database/DAO/usersDAO.go" beforeDir="false" afterPath="$PROJECT_DIR$/Database/DAO/usersDAO.go" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Database/TestHR" beforeDir="false" afterPath="$PROJECT_DIR$/Database/TestHR" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Models/GormModels/user.go" beforeDir="false" afterPath="$PROJECT_DIR$/Models/GormModels/user.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Models/userByHR.go" beforeDir="false" afterPath="$PROJECT_DIR$/Models/userByHR.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Models/teamDetails.go" beforeDir="false" afterPath="$PROJECT_DIR$/Models/teamDetails.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/main.go" beforeDir="false" afterPath="$PROJECT_DIR$/main.go" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/secrets.env" beforeDir="false" afterPath="$PROJECT_DIR$/secrets.env" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
