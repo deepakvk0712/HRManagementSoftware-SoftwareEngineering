@@ -275,42 +275,47 @@ export default {
 
         submit() {
 
-            console.log(typeof this.startTime)
-            console.log(typeof this.endTime)
-            console.log(typeof this.date)
-            console.log(this.startTime + ":" + this.endTime)
-            this.date = new Date(this.date).toISOString().substring(0,10);
-            console.log("Date : " + typeof this.date + " Value : " + this.date);
-            this.startTime = new Date(this.startTime).toISOString().substring(0,10);
-            console.log("Date : " + typeof this.startTime + " Value : " + this.startTime);
-            // const reqObj = {
-            //     "Date" : this.date,
-            //     "startTime" : this.startTime,
-            //     "endTime" : this.endTime,
-            // }
+            // console.log(typeof this.startTime)
+            // console.log(typeof this.endTime)
+            // console.log(typeof this.date)
+            // console.log(this.startTime + ":" + this.endTime)
+            // this.date = new Date(this.date).toISOString().substring(0,10);
+            // console.log("Date : " + typeof this.date + " Value : " + this.date);
+            // this.startTime = new Date(this.startTime).toISOString().substring(0,10);
+            // console.log("Date : " + typeof this.startTime + " Value : " + this.startTime);
+            const reqObj = {
+                "Date" : this.date,
+                "StartTime" : this.startTime,
+                "EndTime" : this.endTime,
+            }
 
-            // this.$axios.post("http://localhost:8080/login", reqObj)
-            //     .then(response => {
-            //         console.log(response)
-            //         this.closePopup = false
-            //         // this.$router.push('/landing')
+            // console.log(reqObj)
+
+            this.$axios.post("http://localhost:8080/working/insertWorkingRecord", reqObj)
+                .then(response => {
+                    console.log(response)
+                    // this.closePopup = false
+                    console.log("I came till here")
+                    // this.$router.push('/landing')
                     
-            //     })
+                })
         },
 
         filter() {
-            // const reqObj = {
-            //     "filterStartDate" : this.filterStartDate,
-            //     "filterEndDate" : this.filterEndDate,
-            // }
+            // console.log(this.filterStartDate + "     " + this.filterEndDate)
+            const reqObj = {
+                "StartDate" : this.filterStartDate,
+                "EndDate" : this.filterEndDate
+            }
 
-            // this.$axios.post("http://localhost:8080/login", reqObj)
-            //     .then(response => {
-            //         console.log(response)
-            //         this.closePopup = false
-            //         // this.$router.push('/landing')
+            this.$axios.get("http://localhost:8080/working/getWorkingDetails", reqObj)
+                .then(response => {
+                    console.log(response)
+                    console.log("got details")
+                    // this.closePopup = false
+                    // this.$router.push('/landing')
                     
-            //     })
+                })
         }
   }
 }

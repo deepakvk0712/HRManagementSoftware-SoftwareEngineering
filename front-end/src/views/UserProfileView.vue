@@ -43,7 +43,7 @@
 
             <v-row fluid>
               <v-col>
-                <v-card-subtitle class="pl-2 py-0 text-left">
+                <v-card-subtitle id="prodUserProfile" class="pl-2 py-0 text-left">
                 Productivity
                 </v-card-subtitle>
               </v-col>
@@ -65,7 +65,7 @@
 
             <v-divider></v-divider>
 
-            <v-card-subtitle class="text-left font-weight-black">
+            <v-card-subtitle id="aboutUserProfile" class="text-left font-weight-black">
               About Me
             </v-card-subtitle>
             <v-card-text class="text-left">
@@ -74,7 +74,7 @@
             </v-card-text>
 
             <v-divider></v-divider>
-            <v-card-subtitle class="text-left font-weight-black">
+            <v-card-subtitle id="teamMembersUserProfile" class="text-left font-weight-black">
               Team Members
             </v-card-subtitle>
             <v-card-text class="text-left">
