@@ -1,6 +1,10 @@
 <template>
     <v-app>
+        <div>
+          <h1 id="titleId">Payslip Page</h1>
+        </div>
         <v-data-table
+            id="empTableId"
             dense
             :headers="headers"
             :items="payslipObj"
@@ -9,7 +13,7 @@
         ></v-data-table>
 
        
-        <v-btn color = "#6495ED" @click="teamSalaries()" class="mb-4"> Teams </v-btn>
+        <v-btn id="teamButtonId" color = "#6495ED" @click="teamSalaries()" class="mb-4">Show Team Payslip</v-btn>
        
 
         <v-data-table v-show="isManager == true"
