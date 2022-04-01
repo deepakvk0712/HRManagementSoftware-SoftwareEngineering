@@ -321,7 +321,7 @@ func GetWorkingDetailsBetween(w http.ResponseWriter, r *http.Request) {
 	FD := models.FrontendDate{}
 	if err := json.NewDecoder(r.Body).Decode(&FD); err != nil {
 		fmt.Println(err)
-		errorResponses.SendBadRequestResponse(w, "")
+		errorResponses.SendBadRequestResponse(w, "Cannot decode json")
 		return
 	}
 
