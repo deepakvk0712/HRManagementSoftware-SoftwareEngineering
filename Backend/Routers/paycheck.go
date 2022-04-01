@@ -10,8 +10,8 @@ import (
 func PaycheckRouter() *mux.Router {
 	router := mux.NewRouter()
 
-	router.Path("/self").Methods(http.MethodGet).HandlerFunc(Controller.GetPaycheck)
-	router.Path("/team").Methods(http.MethodGet).HandlerFunc(Controller.GetAllSalaries)
+	router.Path("/").Methods(http.MethodGet).HandlerFunc(Controller.GetPaycheck)
+	//router.Path("/team").Methods(http.MethodGet).HandlerFunc(Controller.GetAllSalaries)
 	router.Path("/updateSalary").Methods(http.MethodPut).HandlerFunc(Controller.UpdateEmployeeSalary)
 	router.Use(middleware.ValidateAccessToken)
 

@@ -13,8 +13,11 @@ import (
 
 func GetPaycheck(w http.ResponseWriter, req *http.Request) {
 	email := req.Context().Value("email").(string)
+	role := req.Context().Value("role").(byte)
 
 	var paychecks []gormModels.Paycheck
+	var teamSalaries []models.TeamSalary
+	isManager := false
 	v := req.URL.Query()
 
 	startDate := v.Get("startDate")
@@ -28,63 +31,20 @@ func GetPaycheck(w http.ResponseWriter, req *http.Request) {
 
 	paychecks = Dao.GetPaycheck(employeeID, startDate, endDate)
 
-	Msg := struct {
-		Paychecks []gormModels.Paycheck `json:"paychecks"`
-	}{
-		Paychecks: paychecks,
+	if role&utils.IsManager == utils.IsManager {
+		isManager = true
+
+		teamSalaries = Dao.GetSalaries(employeeID, startDate, endDate)
+
 	}
-
-	data, jsonError := json.Marshal(Msg)
-	if jsonError != nil {
-		fmt.Println(jsonError)
-
-		errorResponses.SendInternalServerErrorResponse(w)
-		return
-	}
-
-	res := models.JsonResponse{}
-
-	res.Error = ""
-	res.Msg = ""
-	res.Data = string(data)
-
-	jsonResponse, jsonError := json.Marshal(res)
-	if jsonError != nil {
-		fmt.Println(jsonError)
-
-		errorResponses.SendInternalServerErrorResponse(w)
-		return
-	}
-
-	utils.MessageHandler(w, jsonResponse, http.StatusOK)
-}
-
-func GetAllSalaries(w http.ResponseWriter, req *http.Request) {
-	email := req.Context().Value("email").(string)
-	role := req.Context().Value("role").(byte)
-
-	if role&utils.IsManager != utils.IsManager {
-		errorResponses.SendForbiddenRequestResponse(w)
-
-		return
-	}
-
-	v := req.URL.Query()
-
-	startDate := v.Get("startDate")
-	endDate := v.Get("endDate")
-
-	managerID, err := Dao.GetEmployeeID(email)
-	if err == 0 {
-		errorResponses.SendInternalServerErrorResponse(w)
-		return
-	}
-
-	teamSalaries := Dao.GetSalaries(managerID, startDate, endDate)
 
 	Msg := struct {
-		TeamSalaries []models.TeamSalary `json:"paychecks"`
+		Paychecks    []gormModels.Paycheck `json:"paychecks"`
+		IsManager    bool                  `json:"isManager"`
+		TeamSalaries []models.TeamSalary   `json:"teamSalaries"`
 	}{
+		Paychecks:    paychecks,
+		IsManager:    isManager,
 		TeamSalaries: teamSalaries,
 	}
 
@@ -112,6 +72,60 @@ func GetAllSalaries(w http.ResponseWriter, req *http.Request) {
 
 	utils.MessageHandler(w, jsonResponse, http.StatusOK)
 }
+
+//func GetAllSalaries(w http.ResponseWriter, req *http.Request) {
+//	email := req.Context().Value("email").(string)
+//	role := req.Context().Value("role").(byte)
+//
+//	if role&utils.IsManager != utils.IsManager {
+//		errorResponses.SendForbiddenRequestResponse(w)
+//
+//		return
+//	}
+//
+//	v := req.URL.Query()
+//
+//	startDate := v.Get("startDate")
+//	endDate := v.Get("endDate")
+//
+//	managerID, err := Dao.GetEmployeeID(email)
+//	if err == 0 {
+//		errorResponses.SendInternalServerErrorResponse(w)
+//		return
+//	}
+//
+//	teamSalaries := Dao.GetSalaries(managerID, startDate, endDate)
+//
+//	Msg := struct {
+//		TeamSalaries []models.TeamSalary `json:"paychecks"`
+//	}{
+//		TeamSalaries: teamSalaries,
+//	}
+//
+//	data, jsonError := json.Marshal(Msg)
+//	if jsonError != nil {
+//		fmt.Println(jsonError)
+//
+//		errorResponses.SendInternalServerErrorResponse(w)
+//		return
+//	}
+//
+//	res := models.JsonResponse{}
+//
+//	res.Error = ""
+//	res.Msg = ""
+//	res.Data = string(data)
+//
+//	jsonResponse, jsonError := json.Marshal(res)
+//	if jsonError != nil {
+//		fmt.Println(jsonError)
+//
+//		errorResponses.SendInternalServerErrorResponse(w)
+//		return
+//	}
+//
+//	utils.MessageHandler(w, jsonResponse, http.StatusOK)
+//}
 
 func UpdateEmployeeSalary(w http.ResponseWriter, req *http.Request) {
 	role := req.Context().Value("role").(byte)
