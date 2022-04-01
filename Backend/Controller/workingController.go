@@ -9,6 +9,8 @@ import (
 	utils "hrtool.com/HRManagementSoftware-SoftwareEngineering/Backend/Utils"
 	errorResponses "hrtool.com/HRManagementSoftware-SoftwareEngineering/Backend/Utils/ErrorHandler/ErrorResponse"
 	"net/http"
+	"strconv"
+	"strings"
 	"time"
 )
 
@@ -68,12 +70,9 @@ func StopWorking(w http.ResponseWriter, r *http.Request) {
 
 		//Database Operations
 		var workingH gormModels.WorkingHours
-
-		if err := json.NewDecoder(r.Body).Decode(&workingH); err != nil {
-			fmt.Println(err)
-			errorResponses.SendBadRequestResponse(w, "bad request!")
-			return
-		}
+		//Get EmployeeID from token
+		email := r.Context().Value("email").(string)
+		workingH.EmployeeID = Dao.GetEmployeeIDByEmail(email)
 
 		workingH.StartTime = starTime
 		workingH.EndTime = endTime
@@ -105,12 +104,15 @@ func StopWorking(w http.ResponseWriter, r *http.Request) {
 }
 func SetSchedule(w http.ResponseWriter, r *http.Request) {
 	var schedule gormModels.Schedule
-	//Get EmployeeID from front end
+	//Get schedule from front end
 	if err := json.NewDecoder(r.Body).Decode(&schedule); err != nil {
 		fmt.Println(err)
-		errorResponses.SendBadRequestResponse(w, "bad request!")
+		errorResponses.SendBadRequestResponse(w, "")
 		return
 	}
+	//Get EmployeeID from token
+	email := r.Context().Value("email").(string)
+	schedule.EmployeeID = Dao.GetEmployeeIDByEmail(email)
 
 	//Database operation
 	if Dao.SetSchedule(schedule) == 0 {
@@ -138,12 +140,10 @@ func SetSchedule(w http.ResponseWriter, r *http.Request) {
 }
 func GetSchedule(w http.ResponseWriter, r *http.Request) {
 	var schedule gormModels.Schedule
-	//Get EmployeeID from front end
-	if err := json.NewDecoder(r.Body).Decode(&schedule); err != nil {
-		fmt.Println(err)
-		errorResponses.SendBadRequestResponse(w, "bad request!")
-		return
-	}
+	//Get EmployeeID from token
+	email := r.Context().Value("email").(string)
+	schedule.EmployeeID = Dao.GetEmployeeIDByEmail(email)
+
 	//Database operation
 	s := make([]gormModels.Schedule, 1)
 	var result int
@@ -171,10 +171,12 @@ func GetSchedule(w http.ResponseWriter, r *http.Request) {
 }
 func DelSchedule(w http.ResponseWriter, r *http.Request) {
 	var schedule gormModels.Schedule
-	//Get EmployeeID from front end
+	//Get ID from front end
 	if err := json.NewDecoder(r.Body).Decode(&schedule); err != nil {
 		fmt.Println(err)
-		errorResponses.SendBadRequestResponse(w, "bad request!")
+
+		errorResponses.SendBadRequestResponse(w, "")
+
 		return
 	}
 	//Delete from Database
@@ -202,14 +204,10 @@ func DelSchedule(w http.ResponseWriter, r *http.Request) {
 
 }
 func GetWeekWorkingByID(w http.ResponseWriter, r *http.Request) {
-	var user gormModels.User
-	//Get EmployeeID from front end
-	if err := json.NewDecoder(r.Body).Decode(&user); err != nil {
-		fmt.Println(err)
-		errorResponses.SendBadRequestResponse(w, "bad request!")
-		return
-	}
-	employee_id := user.EmployeeID
+	//Get EmployeeID from token
+	email := r.Context().Value("email").(string)
+	employee_id := Dao.GetEmployeeIDByEmail(email)
+
 	//Get working records from database
 	wkhr := make([]gormModels.WorkingHours, 1)
 	var result int
@@ -281,25 +279,236 @@ func GetWeekWorkingByID(w http.ResponseWriter, r *http.Request) {
 	utils.MessageHandler(w, jsonResponse, http.StatusCreated)
 }
 func GetTodayWorkingHoursByID(w http.ResponseWriter, r *http.Request) {
-	var user gormModels.User
-	//Get EmployeeID from front end
-	if err := json.NewDecoder(r.Body).Decode(&user); err != nil {
-		fmt.Println(err)
-		errorResponses.SendBadRequestResponse(w, "bad request!")
-		return
-	}
-	employee_id := user.EmployeeID
+	//Get EmployeeID from token
+	email := r.Context().Value("email").(string)
+	employee_id := Dao.GetEmployeeIDByEmail(email)
+
 	//get today's total hours form database
-	result, hourWorked := Dao.GetTodayWorkingHoursByID(employee_id)
+	result, hourWorked, regular, overtime := Dao.GetTodayWorkingHoursByID(employee_id)
 	if result == 0 {
 		errorResponses.SendInternalServerErrorResponse(w)
 		return
 	}
 	res := models.JsonResponseObject{}
 
+	workingHours := make(map[string]float64)
+	workingHours["TotalHour"] = hourWorked
+	workingHours["RegularHours"] = regular
+	workingHours["Overtime"] = overtime
+
 	res.Error = ""
-	res.Msg = "Today's Total hour of working:"
-	res.Data = hourWorked
+	res.Msg = "Today's working hours:"
+	res.Data = workingHours
+
+	jsonResponse, jsonError := json.Marshal(res)
+
+	if jsonError != nil {
+		fmt.Println(jsonError)
+
+		errorResponses.SendInternalServerErrorResponse(w)
+		return
+	}
+
+	utils.MessageHandler(w, jsonResponse, http.StatusCreated)
+}
+func GetWorkingDetailsBetween(w http.ResponseWriter, r *http.Request) {
+	//Get EmployeeID from token
+	email := r.Context().Value("email").(string)
+	employee_id := Dao.GetEmployeeIDByEmail(email)
+
+	//Get Date start && end time from front end
+	workingDetails := models.WorkingDetails{}
+	FD := models.FrontendDate{}
+	if err := json.NewDecoder(r.Body).Decode(&FD); err != nil {
+		fmt.Println(err)
+		errorResponses.SendBadRequestResponse(w, "Cannot decode json")
+		return
+	}
+
+	arr1 := strings.Split(FD.StartDate, "-")
+	y1, _ := strconv.Atoi(arr1[0])
+	m1, _ := strconv.Atoi(arr1[1])
+	d1, _ := strconv.Atoi(arr1[2])
+
+	arr2 := strings.Split(FD.EndDate, "-")
+	y2, _ := strconv.Atoi(arr2[0])
+	m2, _ := strconv.Atoi(arr2[1])
+	d2, _ := strconv.Atoi(arr2[2])
+
+	workingDetails.StartDate = time.Date(y1, time.Month(m1), d1, 0, 0, 0, 0, time.Local)
+	workingDetails.EndDate = time.Date(y2, time.Month(m2), d2, 23, 59, 59, 0, time.Local)
+
+	if workingDetails.EndDate.Before(workingDetails.StartDate) {
+		errorResponses.SendBadRequestResponse(w, "Star date must before End Date!")
+		return
+	}
+	if workingDetails.StartDate.Equal(workingDetails.EndDate) {
+		errorResponses.SendBadRequestResponse(w, "Star date and End Date cannot be the same day!")
+		return
+	}
+	//Get Number of Present Day
+	workingDetails.PresentDays = Dao.GetPreSentDays(employee_id, workingDetails)
+	if workingDetails.PresentDays == -1 {
+		errorResponses.SendInternalServerErrorResponse(w)
+		return
+	}
+	//Get Number of Absent Day
+	workingDetails.AbsentDays, workingDetails.Holidays, workingDetails.Totaldays = Dao.GetAbsentAndHoliAndTotalDays(employee_id, workingDetails)
+	if workingDetails.AbsentDays == -1 || workingDetails.Holidays == -1 || workingDetails.Totaldays == -1 {
+		errorResponses.SendInternalServerErrorResponse(w)
+		return
+	}
+	//Get total hour worked, Total Regular Hour, Total Overtime Hour
+	workingDetails.TotalWorkHour, workingDetails.TotalRegularHour, workingDetails.TotalOvertimeHour = Dao.Get3WorkingHours(employee_id, workingDetails)
+	if workingDetails.TotalWorkHour == -1 || workingDetails.TotalRegularHour == -1 || workingDetails.TotalOvertimeHour == -1 {
+		errorResponses.SendInternalServerErrorResponse(w)
+		return
+	}
+	//Calculate average work hour
+	if workingDetails.PresentDays == 0 { // divide 0
+		workingDetails.AverageWorkHour = 0
+	} else {
+		workingDetails.AverageWorkHour = workingDetails.TotalWorkHour / float64(workingDetails.PresentDays)
+	}
+
+	res := models.JsonResponseObject{}
+
+	res.Error = ""
+	res.Msg = "working details:"
+	res.Data = workingDetails
+
+	jsonResponse, jsonError := json.Marshal(res)
+
+	if jsonError != nil {
+		fmt.Println(jsonError)
+		errorResponses.SendInternalServerErrorResponse(w)
+		return
+	}
+
+	utils.MessageHandler(w, jsonResponse, http.StatusCreated)
+
+}
+func SetHolidays(w http.ResponseWriter, r *http.Request) {
+
+	//Get holiday information from front end
+	holiday := gormModels.Holiday{}
+	if err := json.NewDecoder(r.Body).Decode(&holiday); err != nil {
+		fmt.Println(err)
+		errorResponses.SendBadRequestResponse(w, "")
+		return
+	}
+	//Database operation
+	holiday.Date.Format("2006-01-02")
+	fmt.Println(holiday.Date.String())
+	if Dao.SetHoliday(holiday) == 0 {
+		errorResponses.SendInternalServerErrorResponse(w)
+		return
+	}
+
+	res := models.JsonResponse{}
+
+	res.Error = ""
+	res.Msg = "Holiday added!"
+	res.Data = holiday.Date.String() + " " + holiday.Comment
+
+	jsonResponse, jsonError := json.Marshal(res)
+
+	if jsonError != nil {
+		fmt.Println(jsonError)
+
+		errorResponses.SendInternalServerErrorResponse(w)
+		return
+	}
+
+	utils.MessageHandler(w, jsonResponse, http.StatusCreated)
+}
+func SetWorkingHours(w http.ResponseWriter, r *http.Request) {
+	//Get start&end date from front end
+	WH := gormModels.WorkingHours{}
+	FT := models.FrontendTime{}
+	if err := json.NewDecoder(r.Body).Decode(&FT); err != nil {
+		fmt.Println(err)
+		errorResponses.SendBadRequestResponse(w, "")
+		return
+	}
+	arr := strings.Split(FT.Date, "-")
+	year, _ := strconv.Atoi(arr[0])
+	month, _ := strconv.Atoi(arr[1])
+	day, _ := strconv.Atoi(arr[2])
+
+	arr2 := strings.Split(FT.StartTime, ":")
+	h1, _ := strconv.Atoi(arr2[0])
+	m1, _ := strconv.Atoi(arr2[1])
+
+	arr3 := strings.Split(FT.EndTime, ":")
+	h2, _ := strconv.Atoi(arr3[0])
+	m2, _ := strconv.Atoi(arr3[1])
+
+	WH.StartTime = time.Date(year, time.Month(month), day, h1, m1, 0, 0, time.Local)
+	WH.EndTime = time.Date(year, time.Month(month), day, h2, m2, 0, 0, time.Local)
+
+	WH.TimeWorked = WH.EndTime.Sub(WH.StartTime).Minutes() / 60
+	//Get EmployeeID from token
+	email := r.Context().Value("email").(string)
+	employee_id := Dao.GetEmployeeIDByEmail(email)
+	WH.EmployeeID = employee_id
+
+	//Database operation
+	if Dao.InsertWorkingRecord(WH) == 0 {
+		errorResponses.SendInternalServerErrorResponse(w)
+		return
+	}
+
+	res := models.JsonResponse{}
+
+	res.Error = ""
+	res.Msg = "Record added!"
+	res.Data = "Employee " + strconv.Itoa(WH.EmployeeID) + " Start working at : " + WH.StartTime.String() + "Leave at : " + WH.EndTime.String()
+
+	jsonResponse, jsonError := json.Marshal(res)
+
+	if jsonError != nil {
+		fmt.Println(jsonError)
+
+		errorResponses.SendInternalServerErrorResponse(w)
+		return
+	}
+
+	utils.MessageHandler(w, jsonResponse, http.StatusCreated)
+}
+func SetTodayWorkingHours(w http.ResponseWriter, r *http.Request) {
+	//Get start&end date from front end
+	SE := models.StartAndEnd{}
+	if err := json.NewDecoder(r.Body).Decode(&SE); err != nil {
+		fmt.Println(err)
+		errorResponses.SendBadRequestResponse(w, "")
+		return
+	}
+
+	WH := gormModels.WorkingHours{}
+	sh, _ := strconv.Atoi(SE.StartHour)
+	eh, _ := strconv.Atoi(SE.EndHour)
+	WH.TimeWorked = float64(eh - sh)
+	t := time.Now()
+	WH.StartTime = time.Date(t.Year(), t.Month(), t.Day(), sh, 0, 0, 0, time.Local)
+	WH.EndTime = time.Date(t.Year(), t.Month(), t.Day(), eh, 0, 0, 0, time.Local)
+
+	//Get EmployeeID from token
+	email := r.Context().Value("email").(string)
+	employee_id := Dao.GetEmployeeIDByEmail(email)
+	WH.EmployeeID = employee_id
+
+	//Database operation
+	if Dao.InsertWorkingRecord(WH) == 0 {
+		errorResponses.SendInternalServerErrorResponse(w)
+		return
+	}
+
+	res := models.JsonResponse{}
+
+	res.Error = ""
+	res.Msg = "Record added!"
+	res.Data = "Employee " + strconv.Itoa(WH.EmployeeID) + " Start working at: " + WH.StartTime.String() + " Leave at: " + WH.EndTime.String()
 
 	jsonResponse, jsonError := json.Marshal(res)
 
