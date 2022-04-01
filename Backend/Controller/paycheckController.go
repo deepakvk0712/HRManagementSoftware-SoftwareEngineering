@@ -14,13 +14,11 @@ import (
 func GetPaycheck(w http.ResponseWriter, req *http.Request) {
 	email := req.Context().Value("email").(string)
 
-	//p := models.PaycheckQuery{}
-	//if err := json.NewDecoder(req.Body).Decode(&p); err != nil {
-	//	fmt.Println(err)
-	//
-	//	errorResponses.SendBadRequestResponse(w, "")
-	//	return
-	//}
+	var paychecks []gormModels.Paycheck
+	v := req.URL.Query()
+
+	startDate := v.Get("startDate")
+	endDate := v.Get("endDate")
 
 	employeeID, err := Dao.GetEmployeeID(email)
 	if err == 0 {
@@ -28,7 +26,7 @@ func GetPaycheck(w http.ResponseWriter, req *http.Request) {
 		return
 	}
 
-	paychecks := Dao.GetPaycheck(employeeID)
+	paychecks = Dao.GetPaycheck(employeeID, startDate, endDate)
 
 	Msg := struct {
 		Paychecks []gormModels.Paycheck `json:"paychecks"`
@@ -71,13 +69,10 @@ func GetAllSalaries(w http.ResponseWriter, req *http.Request) {
 		return
 	}
 
-	p := models.PaycheckQuery{}
-	if err := json.NewDecoder(req.Body).Decode(&p); err != nil {
-		fmt.Println(err)
+	v := req.URL.Query()
 
-		errorResponses.SendBadRequestResponse(w, "")
-		return
-	}
+	startDate := v.Get("startDate")
+	endDate := v.Get("endDate")
 
 	managerID, err := Dao.GetEmployeeID(email)
 	if err == 0 {
@@ -85,7 +80,7 @@ func GetAllSalaries(w http.ResponseWriter, req *http.Request) {
 		return
 	}
 
-	teamSalaries := Dao.GetSalaries(managerID, p)
+	teamSalaries := Dao.GetSalaries(managerID, startDate, endDate)
 
 	Msg := struct {
 		TeamSalaries []models.TeamSalary `json:"paychecks"`
