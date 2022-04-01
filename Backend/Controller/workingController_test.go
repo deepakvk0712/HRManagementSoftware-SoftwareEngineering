@@ -5,6 +5,7 @@ import (
 	"encoding/json"
 	"github.com/gorilla/mux"
 	"github.com/stretchr/testify/assert"
+	models "hrtool.com/HRManagementSoftware-SoftwareEngineering/Backend/Models"
 	utils "hrtool.com/HRManagementSoftware-SoftwareEngineering/Backend/Utils"
 	"net/http"
 	"net/http/httptest"
@@ -89,3 +90,29 @@ func TestGetWeekWorkingByID(t *testing.T) {
 	})
 
 }
+func TestGetWorkingDetailsBetween(t *testing.T) {
+	router := mux.NewRouter()
+
+	workingRouter := router.PathPrefix("/working").Subrouter()
+	workingRouter.HandleFunc("", GetWorkingDetailsBetween).Methods("GET")
+
+	utils.Init()
+
+	t.Run("Get This Week's Working Hours", func(t *testing.T) {
+		FD := models.FrontendDate{}
+		FD.StartDate = "2022-03-31"
+		FD.EndDate = "2022-04-05"
+
+		payload, err := json.Marshal(&FD)
+		assert.NoError(t, err)
+
+		weekHRequest, err := http.NewRequest("GET", "/getWorkingDetails", bytes.NewBuffer(payload))
+		weekHRequest.Header.Set("Content-Type", "application/json")
+		assert.NoError(t, err)
+
+		w := httptest.NewRecorder()
+
+		workingRouter.ServeHTTP(w, weekHRequest)
+		assert.Equal(t, 200, w.Code)
+	})
+}cd
