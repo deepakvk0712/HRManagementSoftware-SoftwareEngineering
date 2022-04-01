@@ -4,7 +4,7 @@ import "time"
 
 type User struct {
 	OfficialEmail string `json:"OfficialEmail"`
-	EmployeeID    int64  `json:"EmployeeID";gorm:"primaryKey"`
+	EmployeeID    int    `json:"EmployeeID";gorm:"primaryKey"`
 	FirstName     string `json:"firstName"`
 	LastName      string `json:"lastName"`
 	BusinessUnit  string `json:"businessUnit"`

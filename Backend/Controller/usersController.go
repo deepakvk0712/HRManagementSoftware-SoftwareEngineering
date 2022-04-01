@@ -248,6 +248,12 @@ func UpdateEmployeeInfo(w http.ResponseWriter, r *http.Request) {
 	}
 
 	//Database operation
+
+	//Get EmployeeID from token
+	email := r.Context().Value("email").(string)
+
+	user.EmployeeID = Dao.GetEmployeeIDByEmail(email)
+
 	if Dao.UpdateEmployeeDao(user) == 0 {
 		errorResponses.SendInternalServerErrorResponse(w)
 		return
@@ -280,6 +286,12 @@ func UpdateEmployeeBankingInfo(w http.ResponseWriter, r *http.Request) {
 	}
 
 	//Database operation
+
+	//Get EmployeeID from token
+	email := r.Context().Value("email").(string)
+
+	user.EmployeeID = Dao.GetEmployeeIDByEmail(email)
+
 	if Dao.UpdateEmployeeBankingDao(user) == 0 {
 		errorResponses.SendInternalServerErrorResponse(w)
 		return
