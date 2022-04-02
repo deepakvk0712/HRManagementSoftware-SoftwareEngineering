@@ -86,6 +86,7 @@
                     required
                     style="margin:25px;"
                   >
+                  <!--  -->
                     <template v-slot:append>
                       <v-icon v-if="PasswordCheck2" color="green">
                       </v-icon>
@@ -191,15 +192,20 @@ export default {
 
             this.$axios.put("http://localhost:8080/settings/resetPassword", requestObj)
                 .then(response => {
-
-                    let jsonData = JSON.parse(response.data.data)
-                    console.log(jsonData)
+                    console.log(response)
+                    // let jsonData = JSON.parse(response)
+                    // console.log(jsonData)
                     
-                    if(response.error == null){
-                        this.$router.push('/login')
+                    if(response.data.error == ""){
+                        // this.$router.push('/login')
+                        console.log("Successful reset")
                     }
-                    let token = jsonData.AccessToken
-                    this.$axios.defaults.headers.common["Authorization"] = "Bearer " + token
+
+                    //Put an alert here if there is an error
+
+
+                    // let token = jsonData.AccessToken
+                    // this.$axios.defaults.headers.common["Authorization"] = "Bearer " + token
                 })
         },
 
