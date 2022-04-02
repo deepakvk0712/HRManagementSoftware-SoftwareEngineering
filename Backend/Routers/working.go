@@ -17,6 +17,10 @@ func WorkingRouter() *mux.Router {
 	router.Path("/delSchedule").Methods(http.MethodDelete).HandlerFunc(Controller.DelSchedule)
 	router.Path("/getWeekWork").Methods(http.MethodGet).HandlerFunc(Controller.GetWeekWorkingByID)
 	router.Path("/getTodayWork").Methods(http.MethodGet).HandlerFunc(Controller.GetTodayWorkingHoursByID)
+	router.Path("/getWorkingDetails").Methods(http.MethodGet).HandlerFunc(Controller.GetWorkingDetailsBetween)
+	router.Path("/setHolidays").Methods(http.MethodPost).HandlerFunc(Controller.SetHolidays)
+	router.Path("/insertWorkingRecord").Methods(http.MethodPost).HandlerFunc(Controller.SetWorkingHours)
+	router.Path("/insertTodayWorkingHours").Methods(http.MethodPost).HandlerFunc(Controller.SetTodayWorkingHours)
 	router.Use(middleware.ValidateAccessToken)
 
 	return router

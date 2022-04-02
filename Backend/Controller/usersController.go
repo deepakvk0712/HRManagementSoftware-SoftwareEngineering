@@ -9,7 +9,6 @@ import (
 	utils "hrtool.com/HRManagementSoftware-SoftwareEngineering/Backend/Utils"
 	errorResponses "hrtool.com/HRManagementSoftware-SoftwareEngineering/Backend/Utils/ErrorHandler/ErrorResponse"
 	"net/http"
-	"os"
 )
 
 func RegisterHR(w http.ResponseWriter, req *http.Request) {
@@ -60,24 +59,25 @@ func RegisterHR(w http.ResponseWriter, req *http.Request) {
 		return
 	}
 
-	welcomeMail := models.MailTemplate{
-		From:        "HR Admin",
-		To:          u.FirstName + " " + u.LastName,
-		FromEmail:   os.Getenv("SENDGRID_SENDER_MAIL"),
-		ToEmail:     u.PersonalEmail,
-		Subject:     "Welcome to the company",
-		TextContent: "Dear " + u.FirstName + " " + u.LastName + ",\n\n Welcome onboard. Your official email id is " + email + ". Your temporary password is " + tempPassword + "\n\nRegards,\nHR Team",
-		HTMLContent: "",
-	}
+	fmt.Println(tempPassword, email)
+	//welcomeMail := models.MailTemplate{
+	//	From:        "HR Admin",
+	//	To:          u.FirstName + " " + u.LastName,
+	//	FromEmail:   os.Getenv("SENDGRID_SENDER_MAIL"),
+	//	ToEmail:     u.PersonalEmail,
+	//	Subject:     "Welcome to the company",
+	//	TextContent: "Dear " + u.FirstName + " " + u.LastName + ",\n\n Welcome onboard. Your official email id is " + email + ". Your temporary password is " + tempPassword + "\n\nRegards,\nHR Team",
+	//	HTMLContent: "",
+	//}
 
-	if utils.SendMail(welcomeMail) == 0 {
-		Dao.DeleteUserDAO(email)
-		Dao.DeleteLoginDAO(email)
-
-		errorResponses.SendInternalServerErrorResponse(w)
-
-		return
-	}
+	//if utils.SendMail(welcomeMail) == 0 {
+	//	Dao.DeleteUserDAO(email)
+	//	Dao.DeleteLoginDAO(email)
+	//
+	//	errorResponses.SendInternalServerErrorResponse(w)
+	//
+	//	return
+	//}
 
 	res := models.JsonResponse{}
 
@@ -151,18 +151,31 @@ func GetProfile(w http.ResponseWriter, req *http.Request) {
 		return
 	}
 
+	teamDetails, err := Dao.GetTeamDetails(email)
+	if err == 0 {
+		errorResponses.SendInternalServerErrorResponse(w)
+
+		return
+	}
+
 	Msg := struct {
-		FirstName         string `json:"firstName"`
-		LastName          string `json:"lastName"`
-		Title             string `json:"title"`
-		AboutMe           string `json:"aboutMe"`
-		ProductivityScore int    `json:"productivityScore"`
+		FirstName         string              `json:"firstName"`
+		LastName          string              `json:"lastName"`
+		Title             string              `json:"title"`
+		AboutMe           string              `json:"aboutMe"`
+		ProductivityScore int                 `json:"productivityScore"`
+		ManagerName       string              `json:"managerName"`
+		TeamMembers       []models.TeamMember `json:"teamMembers"`
+		BusinessUnit      string              `json:"businessUnit"`
 	}{
 		FirstName:         profileDetails.FirstName,
 		LastName:          profileDetails.LastName,
 		Title:             profileDetails.Title,
 		AboutMe:           profileDetails.AboutMe,
 		ProductivityScore: 70,
+		ManagerName:       teamDetails.Manager,
+		TeamMembers:       teamDetails.TeamMembers,
+		BusinessUnit:      teamDetails.BusinessUnit,
 	}
 
 	data, jsonError := json.Marshal(Msg)
@@ -235,6 +248,12 @@ func UpdateEmployeeInfo(w http.ResponseWriter, r *http.Request) {
 	}
 
 	//Database operation
+
+	//Get EmployeeID from token
+	email := r.Context().Value("email").(string)
+
+	user.EmployeeID = Dao.GetEmployeeIDByEmail(email)
+
 	if Dao.UpdateEmployeeDao(user) == 0 {
 		errorResponses.SendInternalServerErrorResponse(w)
 		return
@@ -267,6 +286,12 @@ func UpdateEmployeeBankingInfo(w http.ResponseWriter, r *http.Request) {
 	}
 
 	//Database operation
+
+	//Get EmployeeID from token
+	email := r.Context().Value("email").(string)
+
+	user.EmployeeID = Dao.GetEmployeeIDByEmail(email)
+
 	if Dao.UpdateEmployeeBankingDao(user) == 0 {
 		errorResponses.SendInternalServerErrorResponse(w)
 		return

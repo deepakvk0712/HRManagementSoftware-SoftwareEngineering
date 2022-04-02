@@ -37,6 +37,7 @@ func CreateUserDAO(u models.User, personalEmail string) (string, int) {
 		Title:         u.Title,
 		Type:          u.Type,
 		PersonalEmail: u.PersonalEmail,
+		Salary:        u.Salary,
 		CreatedTS:     time.Now(),
 		UpdatedTS:     time.Now(),
 	}
@@ -75,6 +76,54 @@ func GetProfileDetails(email string) (models.ProfileDetails, int) {
 
 	row.Scan(&profileDetails.FirstName, &profileDetails.LastName, &profileDetails.Title, &profileDetails.AboutMe)
 	return profileDetails, 1
+}
+
+func GetTeamDetails(email string) (models.TeamDetails, int) {
+	teamDetails := models.TeamDetails{}
+	managerId := 0
+
+	row := utils.Db.Raw("SELECT MANAGER_ID, BUSINESS_UNIT FROM USERS WHERE LOWER(OFFICIAL_EMAIL) = ?", strings.ToLower(email)).Row()
+	if row.Err() != nil {
+		fmt.Println(row)
+		return teamDetails, 0
+	}
+
+	row.Scan(&managerId, &teamDetails.BusinessUnit)
+
+	rows, _ := utils.Db.Raw("SELECT FIRST_NAME || \" \" || LAST_NAME, LOWER(OFFICIAL_EMAIL), EMPLOYEE_ID FROM USERS WHERE EMPLOYEE_ID = ? UNION SELECT FIRST_NAME || \" \" || LAST_NAME, LOWER(OFFICIAL_EMAIL), EMPLOYEE_ID FROM USERS WHERE MANAGER_ID = ? AND LOWER(OFFICIAL_EMAIL) <> ?", managerId, managerId, strings.ToLower(email)).Rows()
+	defer rows.Close()
+
+	//rows.Next()
+	//rows.Scan(&teamDetails.Manager)
+
+	teamMember := models.TeamMember{}
+
+	for rows.Next() {
+		rows.Scan(&teamMember.Name, &teamMember.EmailID, &teamMember.EmployeeID)
+		if teamMember.EmployeeID == managerId {
+			teamDetails.Manager = teamMember.Name
+			continue
+		}
+
+		teamDetails.TeamMembers = append(teamDetails.TeamMembers, teamMember)
+	}
+
+	return teamDetails, 1
+
+}
+
+func GetEmployeeID(email string) (int, int) {
+	employeeId := 0
+
+	row := utils.Db.Raw("SELECT EMPLOYEE_ID FROM USERS WHERE LOWER(OFFICIAL_EMAIL) = ?", strings.ToLower(email)).Row()
+	if row.Err() != nil {
+		fmt.Println(row)
+		return employeeId, 0
+	}
+
+	row.Scan(&employeeId)
+
+	return employeeId, 1
 }
 
 func UpdateProfileDetails(userProfile models.ProfileDetails, email string) int {
@@ -122,4 +171,17 @@ func UpdateEmployeeBankingDao(user gormModels.User) int {
 
 	fmt.Println(result.Error, result.RowsAffected)
 	return 1
+}
+func GetEmployeeIDByEmail(officialEmail string) int {
+
+	var EID int
+	result := utils.Db.Raw("SELECT EMPLOYEE_ID FROM users WHERE OFFICIAL_EMAIL = ?", officialEmail).Scan(&EID)
+
+	if result.Error != nil {
+		fmt.Println(result.Error)
+		return 0
+	}
+	fmt.Println(result.Error, result.RowsAffected)
+
+	return EID
 }
