@@ -3,17 +3,51 @@
     <v-container>
       <NavigationBar v-bind:userName="this.$store.state.userName"/>
 
-      <div>
+      <v-layout class="mt-4" row wrap>
+        <v-divider></v-divider>
+      </v-layout>
+
+      <div class="mt-4">
+          
+        <v-container
+        class="grey lighten-5 mb-6"
+        >
+          <v-row
+          :align="align"
+          no-gutters
+          style="height: auto;"
+          >
+            <v-col class="col-6" align-center>
+              <p id="quicklink2" class="text-left font-weight-black">
+                Notifications
+              </p>
+            </v-col>
+
+            <v-col class="col-6 text-right">
+              <v-card-actions>
+                <SendNotificationPopup/>
+                <!-- style="margin:15px;" -->
+              </v-card-actions>
+            </v-col>
+          </v-row>
+        </v-container>
+      </div>
+
+      <v-layout class="mt-4 mb-4" row wrap>
+        <v-divider></v-divider>
+      </v-layout>
+
+      <div v-if="!this.$store.state.isOnboard || !this.$store.state.isFinance">
         <p id="quicklink1" class="h1 text-left font-weight-black">
           Required Forms
         </p>
       </div>
-      <v-layout row wrap>
+      <v-layout v-if="!this.$store.state.isOnboard || !this.$store.state.isFinance" row wrap>
         <v-divider></v-divider>
       </v-layout>
 
       <v-layout row wrap>
-        <v-flex sm6 xs12 md6 lg3>
+        <v-flex v-if="!this.$store.state.isOnboard" sm6 xs12 md6 lg3>
           <v-card class="ma-3">
             <v-list-item>
               <v-list-item-avatar tile class="mt-n7">
@@ -35,7 +69,7 @@
           </v-card>
         </v-flex>
 
-        <v-flex sm6 xs12 md6 lg3>
+        <v-flex v-if="!this.$store.state.isFinance" sm6 xs12 md6 lg3>
           <v-card class="ma-3">
             <v-list-item>
               <v-list-item-avatar tile class="mt-n7">
@@ -78,7 +112,7 @@
         </v-flex> -->
       </v-layout>
 
-      <v-layout class="mt-4" row wrap>
+      <v-layout v-if="!this.$store.state.isOnboard || !this.$store.state.isFinance" class="mt-4" row wrap>
         <v-divider></v-divider>
       </v-layout>
 
@@ -88,7 +122,7 @@
         </p>
       </div>
       <v-layout row wrap>
-        <v-flex sm6 xs12 md6 lg3>
+        <v-flex v-if="this.$store.state.isHR" sm6 xs12 md6 lg3>
           <!-- Add the check to show this form element only if the account type is admin -->
           <v-card class="ma-3">
             <v-list-item>
@@ -161,6 +195,7 @@ import FinancialFormPopup from '../Popups/FinancialFormPopup.vue'
 import NavigationBar from './NavigationBar.vue'
 import PageBottom from './PageBottom.vue'
 import RegisterEmployee from '../Popups/HRRegisterEmployee.vue'
+import SendNotificationPopup from '../Popups/sendNotification.vue'
 
 export default {
   name: "LandingPage",
@@ -170,12 +205,32 @@ export default {
         // console.log(response);
         let respObj = JSON.parse(response.data.data)
         this.$store.state.userName = respObj.username
-        this.$store.state.accountType = respObj.accountType
+        // this.$store.state.accountType = respObj.accountType
+        this.$store.state.isManager = respObj.isManager
+        this.$store.state.isHR = respObj.isHR
+        // this.$store.state.teamMembers = respObj.teamMembers
+        this.$store.state.businessUnits = respObj.businessUnits
+        this.$store.state.isOnboard = respObj.isOnboard
+        this.$store.state.isFinance = respObj.isFinance
+
+        let tMembers = []
+        for (var i=0; i < respObj.teamMembers.length; i++) {
+          let cat = {}
+          cat.name = respObj.teamMembers[i].name
+          cat.emailID = respObj.teamMembers[i].emailID
+          tMembers.push(cat)
+        }
+        
+        this.$store.state.teamMembers = tMembers
+        // console.log(this.$store.state.teamMembers)
+        // this.$store.state.accountType = false
+        // this.$store.state.isManager = false
+    
         // console.log(this.$store.state.userName);
       })
   },
   components: {
-    ApplyLeavePopup, OnboardingFormPopup, FinancialFormPopup, NavigationBar, PageBottom, RegisterEmployee,
+    ApplyLeavePopup, OnboardingFormPopup, FinancialFormPopup, NavigationBar, PageBottom, RegisterEmployee, SendNotificationPopup,
   },
   data: () => ({
     maxPaidLeave: 20,
