@@ -14,7 +14,7 @@ func ReceiveNotification(w http.ResponseWriter, req *http.Request) {
 	//role := req.Context().Value("role").(byte)
 	email := req.Context().Value("email").(string)
 
-	var m = models.NotificationMessage{}
+	var m = models.ReceiveNotificationMessage{}
 
 	if err := json.NewDecoder(req.Body).Decode(&m); err != nil {
 		fmt.Println(err)
@@ -88,6 +88,35 @@ func GetTeamMembers(w http.ResponseWriter, req *http.Request) {
 	res.Error = ""
 	res.Msg = ""
 	res.Data = string(data)
+
+	jsonResponse, jsonError := json.Marshal(res)
+	if jsonError != nil {
+		fmt.Println(jsonError)
+
+		errorResponses.SendInternalServerErrorResponse(w)
+		return
+	}
+
+	utils.MessageHandler(w, jsonResponse, http.StatusOK)
+}
+
+func MarkRead(w http.ResponseWriter, req *http.Request) {
+	res := models.JsonResponse{}
+
+	v := req.URL.Query()
+
+	messageID := v.Get("id")
+
+	err := Dao.MarkAsRead(messageID)
+	if err != 1 {
+		errorResponses.SendInternalServerErrorResponse(w)
+
+		return
+	}
+
+	res.Error = ""
+	res.Msg = "Mark as read"
+	res.Data = ""
 
 	jsonResponse, jsonError := json.Marshal(res)
 	if jsonError != nil {

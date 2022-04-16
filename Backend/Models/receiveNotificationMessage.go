@@ -1,6 +1,6 @@
 package models
 
-type NotificationMessage struct {
+type ReceiveNotificationMessage struct {
 	Receiver string `json:"receiver"`
 	Message  string `json:"message"`
 }

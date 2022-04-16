@@ -7,7 +7,7 @@ import (
 	utils "hrtool.com/HRManagementSoftware-SoftwareEngineering/Backend/Utils"
 )
 
-func StoreMessage(message models.NotificationMessage, sender string) int {
+func StoreMessage(message models.ReceiveNotificationMessage, sender string) int {
 	notification := gormModels.Notification{
 		Sender:   sender,
 		Receiver: message.Receiver,
@@ -21,6 +21,12 @@ func StoreMessage(message models.NotificationMessage, sender string) int {
 
 		return 0
 	}
+
+	return 1
+}
+
+func MarkAsRead(id string) int {
+	utils.Db.Exec("UPDATE NOTIFICATIONS SET READ = TRUE WHERE MESSAGE_ID = ?", id)
 
 	return 1
 }
