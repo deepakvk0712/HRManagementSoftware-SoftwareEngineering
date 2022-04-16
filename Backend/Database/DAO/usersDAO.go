@@ -185,3 +185,58 @@ func GetEmployeeIDByEmail(officialEmail string) int {
 
 	return EID
 }
+
+func GetFormStatus(email string) (int, bool, bool) {
+	var isOnboard bool
+	var isFinance bool
+
+	row := utils.Db.Raw("SELECT IS_ONBOARD, IS_FINANCE FROM USERS WHERE LOWER(OFFICIAL_EMAIL) = ?", strings.ToLower(email)).Row()
+	if row.Err() != nil {
+		fmt.Println(row)
+		return 0, false, false
+	}
+
+	row.Scan(&isOnboard, &isFinance)
+
+	return 1, isOnboard, isFinance
+}
+
+func GetBusinessUnits() ([]string, int) {
+	var businessUnits []string
+
+	rows, _ := utils.Db.Raw("SELECT DISTINCT BUSINESS_UNIT FROM USERS").Rows()
+	defer rows.Close()
+
+	var businessUnit string
+
+	for rows.Next() {
+		rows.Scan(&businessUnit)
+
+		businessUnits = append(businessUnits, businessUnit)
+	}
+
+	return businessUnits, 1
+
+}
+
+func GetTeamDetailsByBU(businessUnit, email string) ([]models.TeamMember, int) {
+	var teamMembers []models.TeamMember
+
+	rows, _ := utils.Db.Raw("SELECT FIRST_NAME || \" \" || LAST_NAME, LOWER(OFFICIAL_EMAIL), EMPLOYEE_ID FROM USERS WHERE LOWER(BUSINESS_UNIT) = ?", strings.ToLower(businessUnit)).Rows()
+	defer rows.Close()
+
+	teamMember := models.TeamMember{}
+
+	for rows.Next() {
+
+		rows.Scan(&teamMember.Name, &teamMember.EmailID, &teamMember.EmployeeID)
+		if teamMember.EmailID == email {
+			continue
+		}
+
+		teamMembers = append(teamMembers, teamMember)
+	}
+
+	return teamMembers, 1
+
+}
