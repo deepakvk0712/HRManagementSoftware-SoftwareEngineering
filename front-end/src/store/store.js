@@ -17,6 +17,7 @@ export default new Vuex.Store({
         isFinance : false,
         teamMembers : [],
         businessUnits : [],
+        notifications : [],
         // accountType : "",
         loader : false,
     },

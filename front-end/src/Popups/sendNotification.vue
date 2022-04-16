@@ -34,6 +34,7 @@
                 label="Select the team member to notify"
                 dense
                 outlined
+                @change="selectedMember = data.item.emailID"
                 v-model="selectedMember"
                 required
                 >
@@ -112,18 +113,20 @@ export default {
                 console.log(this.$store.state.teamMembers)         
             })
         },
-        // sendNotification(){
-        //     const reqObj = {
-        //         'receiver' : this.selectedMember,
-        //         'message' : this.message
-        //     }
+        sendNotification(){
+            console.log(this.selectedMember.emailID)
+            const reqObj = {
+                'receiver' : this.selectedMember.emailID,
+                'message' : this.message
+            }
 
-        //     this.$axios.post("http://localhost:8080/notify/sendNotification", reqObj)
-        //     .then(response => {
-        //         console.log(response)
-        //         let respObj = JSON.parse(response.data.data)
-        //     })
-        // }
+            this.$axios.post("http://localhost:8080/notify/", reqObj)
+            .then(response => {
+                console.log(response)
+                // let respObj = JSON.parse(response.data.data)
+            })
+            this.closePopup = false
+        }
     }
 };
 </script>

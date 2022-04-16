@@ -30,6 +30,30 @@
               </v-card-actions>
             </v-col>
           </v-row>
+          <v-layout class="mt-4" row wrap>
+            <v-divider></v-divider>
+          </v-layout>
+          <v-row v-if="$store.state.notifications.length == 0" class="mt-4 text-center">
+            No new notifications to show!
+          </v-row>
+          <!-- The message displaying code goes here. -->
+          <v-row
+          v-for="item in $store.state.notifications" :key="item.messageID"
+          class="mt-4"
+          :align="align"
+          no-gutters
+          style="height: auto;"
+          >
+            <v-col class="col-10" align-center>
+              <p id="quicklink2" class="text-left font-weight-black">
+                {{item.sender}} :   {{item.message}}
+              </p>
+            </v-col>
+
+            <v-col class="col-2 text-right">
+              <v-btn block @click="markRead(item.messageID)"> Mark Read </v-btn>
+            </v-col>
+          </v-row>
         </v-container>
       </div>
 
@@ -214,7 +238,7 @@ export default {
         this.$store.state.isFinance = respObj.isFinance
 
         let tMembers = []
-        for (var i=0; i < respObj.teamMembers.length; i++) {
+        for (let i=0; i < respObj.teamMembers.length; i++) {
           let cat = {}
           cat.name = respObj.teamMembers[i].name
           cat.emailID = respObj.teamMembers[i].emailID
@@ -222,6 +246,22 @@ export default {
         }
         
         this.$store.state.teamMembers = tMembers
+        if(respObj.messages == null){
+          let nMembers = []
+          this.$store.state.notifications = nMembers
+        }
+        else{ 
+          let nMembers = []
+          for (let i=0; i < respObj.messages.length; i++) {
+            let cat = {}
+            cat.sender = respObj.messages[i].sender
+            cat.message = respObj.messages[i].message
+            cat.messageID = respObj.messages[i].messageID
+            nMembers.push(cat)
+          }
+          this.$store.state.notifications = nMembers
+        }
+
         // console.log(this.$store.state.teamMembers)
         // this.$store.state.accountType = false
         // this.$store.state.isManager = false
@@ -241,5 +281,16 @@ export default {
     userName : this.$store.state.userName,
 
   }),
+
+  methods: {
+    markRead(messageID){
+      console.log(messageID)
+      this.$axios.put("http://192.168.0.35:8080/notify/markRead?id=" + messageID)
+        .then(response => {
+            console.log(response)
+            // let respObj = JSON.parse(response.data.data)
+        })
+    }
+  }
 };
 </script>
