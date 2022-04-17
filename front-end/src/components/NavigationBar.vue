@@ -55,6 +55,7 @@ export default {
       { icon: "account_balance", title: "About", path: "/about" },
       { icon: "money", title: "Pay Slip", path: "/payslip" },
       { icon: "people", title: "Attendance", path: "/attendance" },
+      { icon: "people", title: "Training", path: "/training" },
     ],
   }),
 
