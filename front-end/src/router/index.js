@@ -2,7 +2,7 @@ import Vue from 'vue'
 import VueRouter from 'vue-router'
 import LandingPage from '../components/LandingPage.vue'
 import AttendancePage from '../components/AttendancePage.vue'
-// import PayslipPage from '../components/PayslipPage.vue'
+import PayslipPage from '../components/PayslipPage.vue'
 import UserProfileView from '../views/UserProfileView.vue'
 import AboutView from '../views/AboutView.vue'
 import LoginPage from '../components/LoginPage.vue'
@@ -35,11 +35,11 @@ const routes = [
     name: 'attendance',
     component: AttendancePage
   },
-  // {
-  //   path: '/payslip',
-  //   name: 'payslip',
-  //   component: PayslipPage
-  // },
+  {
+    path: '/payslip',
+    name: 'payslip',
+    component: PayslipPage
+  },
   {
     path: '/about',
     name: 'about',
