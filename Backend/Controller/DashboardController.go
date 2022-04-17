@@ -33,15 +33,23 @@ func GetDashboard(w http.ResponseWriter, req *http.Request) {
 		return
 	}
 
+	messages, err := Dao.GetMessages(email)
+	if err != 1 {
+		errorResponses.SendInternalServerErrorResponse(w)
+
+		return
+	}
+
 	Msg := struct {
-		AccountType   byte                `json:"accountType"`
-		Username      string              `json:"username"`
-		IsManager     bool                `json:"isManager"`
-		IsHR          bool                `json:"isHR"`
-		IsOnboard     bool                `json:"isOnboard"`
-		IsFinance     bool                `json:"isFinance"`
-		TeamMembers   []models.TeamMember `json:"teamMembers"`
-		BusinessUnits []string            `json:"businessUnits"`
+		AccountType   byte                             `json:"accountType"`
+		Username      string                           `json:"username"`
+		IsManager     bool                             `json:"isManager"`
+		IsHR          bool                             `json:"isHR"`
+		IsOnboard     bool                             `json:"isOnboard"`
+		IsFinance     bool                             `json:"isFinance"`
+		TeamMembers   []models.TeamMember              `json:"teamMembers"`
+		BusinessUnits []string                         `json:"businessUnits"`
+		Messages      []models.SendNotificationMessage `json:"messages"`
 	}{
 		AccountType:   role,
 		Username:      utils.GetUsername(email),
@@ -51,6 +59,7 @@ func GetDashboard(w http.ResponseWriter, req *http.Request) {
 		IsFinance:     isFinance,
 		TeamMembers:   teamDetails.TeamMembers,
 		BusinessUnits: businessUnits,
+		Messages:      messages,
 	}
 
 	data, jsonError := json.Marshal(Msg)

@@ -10,7 +10,7 @@ import (
 func NotificationRouter() *mux.Router {
 	router := mux.NewRouter()
 
-	router.Path("").Methods(http.MethodPost).HandlerFunc(Controller.ReceiveNotification)
+	router.Path("/").Methods(http.MethodPost).HandlerFunc(Controller.ReceiveNotification)
 	router.Path("/teamMembers").Methods(http.MethodGet).HandlerFunc(Controller.GetTeamMembers)
 	router.Path("/markRead").Methods(http.MethodPut).HandlerFunc(Controller.MarkRead)
 	//router.Path("/teamMembers").Methods(http.MethodGet).HandlerFunc(Controller.GetTeamMembers)
