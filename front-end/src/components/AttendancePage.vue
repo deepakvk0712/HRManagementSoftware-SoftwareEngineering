@@ -2,6 +2,20 @@
   <div class="home">
     <v-container>
       <NavigationBar v-bind:userName="this.$store.state.userName"/>
+      <div>
+        <v-alert
+            :value="alert"
+            :type="alertType"
+            outlined
+            prominent
+            border="left"
+            transition="fade-transition"
+        >
+        <!-- type="warning" -->
+        <!-- dismissible -->
+        {{alertMessage}}
+        </v-alert>
+      </div>
       <v-layout class="d-flex">
           <v-row>
               <v-col>
@@ -175,10 +189,10 @@
                                 <v-date-picker
                                 v-model="filterStartDate"
                                 :active-picker.sync="activePicker"
-                                :max="(new Date(Date.now() - (new Date()).getTimezoneOffset() * 60000)).toISOString().substr(0, 10)"
                                 min="1950-01-01"
-                                @change="save"
                                 ></v-date-picker>
+                                <!-- :max="(new Date(Date.now() - (new Date()).getTimezoneOffset() * 60000)).toISOString().substr(0, 10)" -->
+                                <!-- @change="save" -->
                             </v-menu>
                         </v-col>
 
@@ -204,11 +218,11 @@
                                 </template>
                                 <v-date-picker
                                 v-model="filterEndDate"
-                                :active-picker.sync="activePicker"
-                                :max="(new Date(Date.now() - (new Date()).getTimezoneOffset() * 60000)).toISOString().substr(0, 10)"
-                                min="1950-01-01"
-                                @change="save"
+                                :active-picker.sync="activePicker"                              
+                                min="1950-01-01"                               
                                 ></v-date-picker>
+                                <!-- :max="(new Date(Date.now() - (new Date()).getTimezoneOffset() * 60000)).toISOString().substr(0, 10)" -->
+                                <!-- @change="save" -->
                             </v-menu>
                         </v-col>
                     </v-row>
@@ -273,7 +287,9 @@ export default {
     date : null,
     filterStartDate : null,
     filterEndDate : null,
-
+    alert : false,
+    alertType : "",
+    alertMessage : "",
 
   }),
 
@@ -285,7 +301,6 @@ export default {
         },
 
         submit() {
-
             // console.log(typeof this.startTime)
             // console.log(typeof this.endTime)
             // console.log(typeof this.date)
@@ -300,33 +315,39 @@ export default {
                 "EndTime" : this.endTime,
             }
 
-            // console.log(reqObj)
-
             this.$axios.post("http://localhost:8080/working/insertWorkingRecord", reqObj)
                 .then(response => {
                     console.log(response)
-                    // this.closePopup = false
-                    console.log("I came till here")
-                    // this.$router.push('/landing')
+                    this.alertMessage = "Successfully submitted the hours worked on " + this.date + " from " + this.startTime + " to " + this.endTime + ".";
+                    this.alert = true
+                    this.alertType = "success"
+                    console.log(this.alertMessage)
+                    // this.$forceUpdate()
+                    setTimeout(() => {
+                        this.alert = false;
+                        this.alertType = "success"
+                        // this.alertMessage="Default message is this!"
+                        // this.$forceUpdate();
+                    }, 7000)
                     
                 })
         },
 
         filter() {
-            // console.log(this.filterStartDate + "     " + this.filterEndDate)
-            // const reqObj = {
-            //     "StartDate" : this.filterStartDate,
-            //     "EndDate" : this.filterEndDate
-            // }
+            console.log(this.filterStartDate + "     " + this.filterEndDate)
+            const reqObj = {
+                "StartDate" : this.filterStartDate,
+                "EndDate" : this.filterEndDate
+            }
 
-            // this.$axios.get("http://localhost:8080/working/getWorkingDetails", reqObj)
-            //     .then(response => {
-            //         console.log(response)
-            //         console.log("got details")
-            //         // this.closePopup = false
-            //         // this.$router.push('/landing')
+            this.$axios.get("http://localhost:8080/working/getWorkingDetails", reqObj)
+                .then(response => {
+                    console.log(response)
+                    console.log("got details")
+                    // this.closePopup = false
+                    // this.$router.push('/landing')
                     
-            //     })
+                })
         }
   }
 }

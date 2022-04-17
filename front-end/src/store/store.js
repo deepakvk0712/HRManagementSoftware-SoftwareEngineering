@@ -18,6 +18,8 @@ export default new Vuex.Store({
         teamMembers : [],
         businessUnits : [],
         notifications : [],
+        paidLeaves : 20,
+        unpaidLeaves : 20,
         // accountType : "",
         loader : false,
     },

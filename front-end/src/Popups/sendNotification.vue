@@ -125,6 +125,7 @@ export default {
                 console.log(response)
                 // let respObj = JSON.parse(response.data.data)
             })
+            this.$emit('notif', 'A new notification has been sent to ' + this.selectedMember.emailID, "success")
             this.closePopup = false
         }
     }

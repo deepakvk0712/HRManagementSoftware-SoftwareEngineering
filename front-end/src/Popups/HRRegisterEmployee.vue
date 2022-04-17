@@ -198,6 +198,7 @@ export default {
           this.$axios.post("http://localhost:8080/users/registerHR", requestObj)
             .then(response => {
                 console.log(response)
+                this.$emit('notif', 'Successfully registered a new employee.', "success")
                 this.closePopup = false
                                   
             })
