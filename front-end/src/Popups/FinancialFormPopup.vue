@@ -99,6 +99,7 @@ export default {
       this.$axios.post("http://localhost:8080/users/UpdateEmployeeInfo2", requestObj)
         .then(response => {
             console.log(response)
+            this.$emit('notif', 'Financial form submitted successfully.', "success")
             this.closePopup = false
             // this.$router.push('/landing')
             
