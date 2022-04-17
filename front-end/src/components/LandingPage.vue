@@ -2,7 +2,25 @@
   <div class="team">
     <v-container>
       <NavigationBar v-bind:userName="this.$store.state.userName"/>
+      <div>
+        <v-alert
+            :value="alert"
+            :type="alertType"
+            outlined
+            prominent
+            border="left"
+            transition="fade-transition"
+        >
+        <!-- type="warning" -->
+        <!-- dismissible -->
+        {{alertMessage}}
+        </v-alert>
 
+        <!-- <v-snackbar v-model="alert" :timeout="5000" top>
+          <span>{{alertMessage}}</span>
+          <v-btn flat color="white" @click="alert = false">Close</v-btn>
+        </v-snackbar> -->
+      </div>
       <v-layout class="mt-4" row wrap>
         <v-divider></v-divider>
       </v-layout>
@@ -25,7 +43,7 @@
 
             <v-col class="col-6 text-right">
               <v-card-actions>
-                <SendNotificationPopup/>
+                <SendNotificationPopup @notif="nowNotify"/>
                 <!-- style="margin:15px;" -->
               </v-card-actions>
             </v-col>
@@ -88,7 +106,7 @@
               </v-list-item-content>
             </v-list-item>
             <v-card-actions>
-              <OnboardingFormPopup style="margin:15px;"/>
+              <OnboardingFormPopup @notif="nowNotify" style="margin:15px;"/>
             </v-card-actions>
           </v-card>
         </v-flex>
@@ -110,7 +128,7 @@
               </v-list-item-content>
             </v-list-item>
             <v-card-actions>
-              <FinancialFormPopup style="margin:15px;"/>
+              <FinancialFormPopup @notif="nowNotify" style="margin:15px;"/>
             </v-card-actions>
           </v-card>
         </v-flex>
@@ -164,7 +182,7 @@
               </v-list-item-content>
             </v-list-item>
             <v-card-actions>
-              <RegisterEmployee style="margin:15px;"/>
+              <RegisterEmployee @notif="nowNotify" style="margin:15px;"/>
             </v-card-actions>
           </v-card>
         </v-flex>
@@ -184,20 +202,17 @@
                   Leave Information
                 </div>
                 <v-list-item-title class="text-right"
-                  >Paid Leave: {{ paidLeavesRemaining }}/{{
-                    maxPaidLeave
-                  }}</v-list-item-title
+                  >Paid Leave: {{ $store.state.paidLeaves }}/20
+                </v-list-item-title
                 >
                 <v-list-item-title class="text-right"
-                  >Un-Paid Leave: {{ unpaidLeavesRemaining }}/{{
-                    maxUnpaidLeaves
-                  }}</v-list-item-title
-                >
+                  >Un-Paid Leave: {{ $store.state.unpaidLeaves }}/20
+                </v-list-item-title>
                 <div><v-divider></v-divider></div>
               </v-list-item-content>
             </v-list-item>
             <v-card-actions>
-              <ApplyLeavePopup style="margin:5px;"/>
+              <ApplyLeavePopup @notif="nowNotify" style="margin:5px;"/>
             </v-card-actions>
           </v-card>
         </v-flex>
@@ -261,7 +276,12 @@ export default {
           }
           this.$store.state.notifications = nMembers
         }
+        this.$store.state.paidLeaves = respObj.paidLeaves
+        this.$store.state.unpaidLeaves = respObj.unpaidLeaves
 
+        this.alert = false
+        this.alertType = "success"
+        this.alertMessage = "Default message is this!"
         // console.log(this.$store.state.teamMembers)
         // this.$store.state.accountType = false
         // this.$store.state.isManager = false
@@ -279,17 +299,44 @@ export default {
     unpaidLeavesRemaining: 14,
     isLoading:false,
     userName : this.$store.state.userName,
-
+    alert : false,
+    alertType : "",
+    alertMessage : "",
   }),
+  // computed : {
+  //   show(){
+  //     return this.alert == true
+  //   }
+  // },
 
   methods: {
     markRead(messageID){
       console.log(messageID)
-      this.$axios.put("http://192.168.0.35:8080/notify/markRead?id=" + messageID)
+      this.$axios.put("http://localhost:8080/notify/markRead?id=" + messageID)
         .then(response => {
             console.log(response)
+            let newArray = this.$store.state.notifications.filter((item) => item.messageID != messageID);
+            this.$store.state.notifications = newArray
             // let respObj = JSON.parse(response.data.data)
         })
+    },
+
+    nowNotify(value, type){
+    //   // console.log(value)
+      this.alertMessage = value;
+      this.alert = true
+      this.alertType = type
+      console.log(this.alertMessage)
+      this.$forceUpdate()
+      // console.log(this.alert)
+      setTimeout(() => {
+        this.alert = false;
+        this.alertType = "success"
+        // this.alertMessage="Default message is this!"
+        this.$forceUpdate();
+        // console.log("hide alert after 3 seconds");
+      }, 7000) 
+      
     }
   }
 };

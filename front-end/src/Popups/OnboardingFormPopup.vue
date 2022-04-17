@@ -284,6 +284,7 @@ export default {
       this.$axios.post("http://localhost:8080/users/UpdateEmployeeInfo1", reqObj)
         .then(response => {
           console.log(response)
+          this.$emit('notif', 'Onboarding form submitted successfully.', "success")
           this.closePopup = false
         })
     }

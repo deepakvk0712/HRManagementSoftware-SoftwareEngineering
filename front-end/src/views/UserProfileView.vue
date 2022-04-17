@@ -3,6 +3,22 @@
     <v-container>
 
       <NavigationBar v-bind:userName="userName"/>
+
+      <div>
+        <v-alert
+            :value="alert"
+            :type="alertType"
+            outlined
+            prominent
+            border="left"
+            transition="fade-transition"
+        >
+        <!-- type="warning" -->
+        <!-- dismissible -->
+        {{alertMessage}}
+        </v-alert>
+      </div>
+
       <v-layout class="d-flex">
         <v-row>
         <v-col>
@@ -291,6 +307,9 @@ export default {
     teamMembers : [],
     managerName : "",
     businessUnit : "",
+    alert : false,
+    alertType : "",
+    alertMessage : "",
   }),
 
   methods : {
@@ -313,7 +332,19 @@ export default {
             console.log(response)
             this.empName = this.firstName + " " + this.lastName
             // this.empDesignation = this.designation
-            this.descriptionEmp = this.description   
+            this.descriptionEmp = this.description
+            
+            this.alertMessage = "Successfully updated the user profile information.";
+            this.alert = true
+            this.alertType = "success"
+            console.log(this.alertMessage)
+            // this.$forceUpdate()
+            setTimeout(() => {
+                this.alert = false;
+                this.alertType = "success"
+                // this.alertMessage="Default message is this!"
+                // this.$forceUpdate();
+            }, 7000)
         })
     }
   },

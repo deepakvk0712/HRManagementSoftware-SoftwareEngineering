@@ -27,7 +27,7 @@
               prepend-icon="edit"
               :rules="inputRules"
             ></v-textarea>
-            <v-col cols="12" lg="6">
+            <!-- <v-col cols="12" lg="6">
               <v-menu
                 id="leaveApplyInput"
                 ref="menu1"
@@ -66,7 +66,71 @@
                   @input="menu1 = false"
                 ></v-date-picker>
               </v-menu>
-            </v-col>
+            </v-col> -->
+
+
+            <v-row>
+              <v-col class="ml-4 pb-0">
+                  <v-menu
+                      id="filterStartDate"
+                      ref="menu1"
+                      v-model="menu1"
+                      :close-on-content-click="false"
+                      transition="scale-transition"
+                      offset-y
+                      min-width="auto"
+                  >
+                      <template v-slot:activator="{ on, attrs }">
+                      <v-text-field
+                          v-model="leaveStartDate"
+                          label="Leave start date"
+                          prepend-icon="mdi-calendar"
+                          readonly
+                          v-bind="attrs"
+                          v-on="on"
+                      ></v-text-field>
+                      </template>
+                      <v-date-picker
+                      v-model="leaveStartDate"
+                      :active-picker.sync="activePicker"
+                      min="1950-01-01"
+                      
+                      ></v-date-picker>
+                      <!-- :max="(new Date(Date.now() - (new Date()).getTimezoneOffset() * 60000)).toISOString().substr(0, 10)" -->
+                      <!-- @change="save" -->
+                  </v-menu>
+              </v-col>
+
+              <v-col class="mr-4 pb-0">
+                  <v-menu
+                      id="leaveEndDate"
+                      ref="menu2"
+                      v-model="menu2"
+                      :close-on-content-click="false"
+                      transition="scale-transition"
+                      offset-y
+                      min-width="auto"
+                  >
+                      <template v-slot:activator="{ on, attrs }">
+                      <v-text-field
+                          v-model="leaveEndDate"
+                          label="Leave end date"
+                          prepend-icon="mdi-calendar"
+                          readonly
+                          v-bind="attrs"
+                          v-on="on"
+                      ></v-text-field>
+                      </template>
+                      <v-date-picker
+                      v-model="leaveEndDate"
+                      :active-picker.sync="activePicker"
+                      min="1950-01-01"
+                      ></v-date-picker>
+                      <!-- :max="(new Date(Date.now() - (new Date()).getTimezoneOffset() * 60000)).toISOString().substr(0, 10)" -->
+                      <!-- @change="save" -->
+                  </v-menu>
+              </v-col>
+          </v-row>
           </v-card-text>
           <v-col class="d-flex" cols="12" sm="6">
             <v-select
@@ -88,7 +152,7 @@
               color="green darken-1"
               text
               outlined
-              @click="closePopup = false"
+              @click="apply()"
               >Apply</v-btn
             >
           </v-card-actions>
@@ -100,41 +164,37 @@
 
 <script>
 export default {
-  data: (vm) => ({
+  data: () => ({
     dropdownItems:[
-        'Paid Leave', 'Un-Paid Leave'
+        'Paid Leave', 'Unpaid Leave'
     ],
-    leaveTypeSelection:1,
+    leaveTypeSelection:"",
     closePopup: false,
     leaveApplicationTitle: "",
     leaveRequestDescription: "",
-    date: new Date().toISOString().substr(0, 10),
-    fromDateFormatted: vm.formatDate(new Date().toISOString().substr(0, 10)),
-    toDateFormatted: vm.formatDate(new Date().toISOString().substr(0, 10)),
+    leaveStartDate : null,
+    leaveEndDate : null,
     menu1: false,
     inputRules: [(v) => v.length >= 3 || "Minimum lenght is 3 charachters"],
   }),
   methods: {
-    formatDate(date) {
-      if (!date) return null;
-      const [year, month, day] = date.split("-");
-      return `${year}/${month}/${day}`;
-    },
-    parseDate(date) {
-      if (!date) return null;
-      const [year, month, day] = date.split("/");
-      return `${year}-${month.padStart(2, "0")}-${day.padStart(2, "0")}`;
-    },
-  },
-  computed: {
-    computedDateFormatted() {
-      return this.formatDate(this.date);
-    },
-  },
-  watch: {
-    date() {
-      this.dateFormatted = this.formatDate(this.date);
-    },
+    apply(){
+      console.log(this.leaveTypeSelection)
+      const reqObj = {
+        "subject" : this.leaveApplicationTitle,
+        "reason" : this.leaveRequestDescription,
+        "leaveType" : this.leaveTypeSelection,
+        "startDate" : this.leaveStartDate,
+        "endDate" : this.leaveEndDate
+      }
+
+      this.$axios.post("http://localhost:8080/leave/apply", reqObj)
+        .then(response => {
+            console.log(response)
+            this.$emit('notif', 'Requested ' + this.leaveTypeSelection +' from ' + this.leaveStartDate + ' to ' + this.leaveEndDate + ' submitted', "success")
+            this.closePopup = false            
+        })
+    }
   },
 };
 </script>
