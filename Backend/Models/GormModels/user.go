@@ -41,4 +41,8 @@ type User struct {
 	UpdatedTS     time.Time `json:"updatedTs"`
 	IsOnboard     bool      `json:"IsOnboard"`
 	IsFinance     bool      `json:"IsFinance"`
+	//Leaves // added by Tejas
+	LeavesRemaining int `json:"leavesRemaining"`
+	PaidLeaves      int `json:"paidLeaves"`
+	UnpaidLeaves    int `json:"unpaidLeaves"`
 }

@@ -40,6 +40,13 @@ func GetDashboard(w http.ResponseWriter, req *http.Request) {
 		return
 	}
 
+	paidLeaves, unpaidLeaves, err := Dao.GetLeaveStatus(email)
+	if err == 0 {
+		errorResponses.SendInternalServerErrorResponse(w)
+
+		return
+	}
+
 	Msg := struct {
 		AccountType   byte                             `json:"accountType"`
 		Username      string                           `json:"username"`
@@ -50,6 +57,8 @@ func GetDashboard(w http.ResponseWriter, req *http.Request) {
 		TeamMembers   []models.TeamMember              `json:"teamMembers"`
 		BusinessUnits []string                         `json:"businessUnits"`
 		Messages      []models.SendNotificationMessage `json:"messages"`
+		PaidLeaves    int                              `json:"paidLeaves"`
+		UnpaidLeaves  int                              `json:"unpaidLeaves"`
 	}{
 		AccountType:   role,
 		Username:      utils.GetUsername(email),
@@ -60,6 +69,8 @@ func GetDashboard(w http.ResponseWriter, req *http.Request) {
 		TeamMembers:   teamDetails.TeamMembers,
 		BusinessUnits: businessUnits,
 		Messages:      messages,
+		PaidLeaves:    paidLeaves,
+		UnpaidLeaves:  unpaidLeaves,
 	}
 
 	data, jsonError := json.Marshal(Msg)
