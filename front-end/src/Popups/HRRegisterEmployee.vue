@@ -99,6 +99,17 @@
               required
             ></v-text-field>
 
+            <v-text-field
+              id= "Salary"
+              label="Enter employee negotiated salary"
+              v-model="salary"
+              prepend-icon="edit"
+              :rules="inputRules"
+              single-line
+              type="number"
+              required
+            ></v-text-field>
+
             <v-col class="d-flex" cols="12" sm="6">
                 <v-select
                 id="regEmpIsHrInput"
@@ -160,6 +171,7 @@ export default {
     location : "",
     country : "",
     personalEmail : "",
+    salary: 0,
     IsHR:false,
     HrPossibility : [true, false],
     IsManager: false,
@@ -181,8 +193,9 @@ export default {
               "personalEmail" : this.personalEmail,
               "isHR" : this.IsHR,
               "isManager" : this.IsManager,
+              "salary" : parseInt(this.salary)
           }
-          this.$axios.post("http://10.20.205.4:8080/users/registerHR", requestObj)
+          this.$axios.post("http://localhost:8080/users/registerHR", requestObj)
             .then(response => {
                 console.log(response)
                 this.closePopup = false

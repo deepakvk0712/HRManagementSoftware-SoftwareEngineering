@@ -11,7 +11,14 @@ export default new Vuex.Store({
     state : {
         accessToken : "",
         userName : "",
-        accountType : "",
+        isHR : false,
+        isManager : false,
+        isOnboard : false,
+        isFinance : false,
+        teamMembers : [],
+        businessUnits : [],
+        notifications : [],
+        // accountType : "",
         loader : false,
     },
 
