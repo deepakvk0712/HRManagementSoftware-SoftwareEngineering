@@ -216,6 +216,32 @@
             </v-card-actions>
           </v-card>
         </v-flex>
+
+        <v-flex sm6 xs12 md6 lg3>
+          <v-card class="ma-3" >
+            <v-list-item>
+              <v-list-item-avatar tile class="mt-n7">
+                <v-sheet color="white" elevation="10">
+                  <v-icon color="#D22B2B" style="font-size: 48px; margin-top: 15px" large
+                    >person</v-icon
+                  >
+                </v-sheet>
+              </v-list-item-avatar>
+              <v-list-item-content>
+                <div class="text-right mb-1" style="font-size: 20px">
+                  Resignation
+                </div>
+                <v-list-item-title id="subRegEmpHead" class="text-right">
+                  Resign from your position
+                </v-list-item-title>
+                <div><v-divider></v-divider></div>
+              </v-list-item-content>
+            </v-list-item>
+            <v-card-actions>
+              <resignationPopup @notif="nowNotify" style="margin:5px;"/>
+            </v-card-actions>
+          </v-card>
+        </v-flex>
       </v-layout>
 
       <v-layout class="mt-4" row wrap>
@@ -235,6 +261,7 @@ import NavigationBar from './NavigationBar.vue'
 import PageBottom from './PageBottom.vue'
 import RegisterEmployee from '../Popups/HRRegisterEmployee.vue'
 import SendNotificationPopup from '../Popups/sendNotification.vue'
+import resignationPopup from '../Popups/resignationPopup.vue'
 
 export default {
   name: "LandingPage",
@@ -290,7 +317,7 @@ export default {
       })
   },
   components: {
-    ApplyLeavePopup, OnboardingFormPopup, FinancialFormPopup, NavigationBar, PageBottom, RegisterEmployee, SendNotificationPopup,
+    ApplyLeavePopup, OnboardingFormPopup, FinancialFormPopup, NavigationBar, PageBottom, RegisterEmployee, SendNotificationPopup, resignationPopup
   },
   data: () => ({
     maxPaidLeave: 20,
