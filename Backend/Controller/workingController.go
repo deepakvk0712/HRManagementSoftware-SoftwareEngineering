@@ -444,6 +444,11 @@ func SetWorkingHours(w http.ResponseWriter, r *http.Request) {
 	h2, _ := strconv.Atoi(arr3[0])
 	m2, _ := strconv.Atoi(arr3[1])
 
+	if h1 > h2 {
+		errorResponses.SendBadRequestResponse(w, "End time must greater than start time!")
+		return
+	}
+
 	WH.StartTime = time.Date(year, time.Month(month), day, h1, m1, 0, 0, time.Local)
 	WH.EndTime = time.Date(year, time.Month(month), day, h2, m2, 0, 0, time.Local)
 
@@ -484,10 +489,13 @@ func SetTodayWorkingHours(w http.ResponseWriter, r *http.Request) {
 		errorResponses.SendBadRequestResponse(w, "")
 		return
 	}
-
 	WH := gormModels.WorkingHours{}
 	sh, _ := strconv.Atoi(SE.StartHour)
 	eh, _ := strconv.Atoi(SE.EndHour)
+	if sh < eh {
+		errorResponses.SendBadRequestResponse(w, "end hour must greater than start hour!")
+		return
+	}
 	WH.TimeWorked = float64(eh - sh)
 	t := time.Now()
 	WH.StartTime = time.Date(t.Year(), t.Month(), t.Day(), sh, 0, 0, 0, time.Local)

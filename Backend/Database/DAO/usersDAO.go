@@ -185,3 +185,20 @@ func GetEmployeeIDByEmail(officialEmail string) int {
 
 	return EID
 }
+func GetEmployeeNameByEmail(officialEmail string) string {
+
+	var fn string
+	var ln string
+	result1 := utils.Db.Raw("SELECT FIRST_NAME FROM users WHERE OFFICIAL_EMAIL = ?", officialEmail).Scan(&fn)
+	result2 := utils.Db.Raw("SELECT LAST_NAME FROM users WHERE OFFICIAL_EMAIL = ?", officialEmail).Scan(&ln)
+
+	if result1.Error != nil && result2.Error != nil {
+		fmt.Println(result1.Error, result2.Error)
+		return "0"
+	}
+	fmt.Println(result1.RowsAffected, result2.RowsAffected)
+
+	name1 := fn + " " + ln
+
+	return name1
+}
