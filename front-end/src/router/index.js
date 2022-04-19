@@ -7,6 +7,7 @@ import UserProfileView from '../views/UserProfileView.vue'
 import AboutView from '../views/AboutView.vue'
 import LoginPage from '../components/LoginPage.vue'
 import SignupPage from '../components/SignupPage.vue'
+import Training from '../components/Training.vue'
 // import store from '../store/store'
 
 // (function() {
@@ -39,6 +40,11 @@ const routes = [
     path: '/payslip',
     name: 'payslip',
     component: PayslipPage
+  },
+  {
+    path: '/training',
+    name: 'training',
+    component: Training
   },
   {
     path: '/about',

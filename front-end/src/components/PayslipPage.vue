@@ -206,6 +206,7 @@
         { text: 'Begin Date', value: 'payBeginDate' },
         { text: 'End Date', value: 'payEndDate' },
         { text: 'Total Pay', value: 'amountPaid' },
+        { text: 'Updated Salary', value: 'salary' },
         // { text: 'Paycheck Number', value: 'checkNumber' },
       ],
 
@@ -271,13 +272,14 @@
 
         updateSalary(){
             const requestObj = {
-                "employeeID" : this.empID,
-                "newSalary" : this.salaryUpdate
+                "employeeID" : parseInt(this.empID),
+                "newSalary" : parseFloat(this.salaryUpdate)
             }
-            this.$axios.post("http://localhost:8080/paycheck/updateSalary", requestObj)
+            this.$axios.put("http://localhost:8080/paycheck/updateSalary", requestObj)
                 .then(response => {
                     let jsonData = JSON.parse(response.data.data)
                     console.log(jsonData)
+                    this.$store.state.accessToken = jsonData.accessToken
           })
         },
 
