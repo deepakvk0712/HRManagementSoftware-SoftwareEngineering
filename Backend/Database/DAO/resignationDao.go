@@ -13,6 +13,8 @@ func InsertFeedback(fb gormModels.Feedback) int {
 		fmt.Println(result.Error)
 		return 0
 	}
+	EID := fb.EmployeeID
+	utils.Db.Model(&gormModels.User{}).Where("EMPLOYEE_ID = ?", EID).Update("is_resigned", 1)
 
 	fmt.Println(result.Error, result.RowsAffected)
 	return 1

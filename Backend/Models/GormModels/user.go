@@ -41,4 +41,5 @@ type User struct {
 	UpdatedTS     time.Time `json:"updatedTs"`
 	IsOnboard     bool      `json:"IsOnboard"`
 	IsFinance     bool      `json:"IsFinance"`
+	IsResigned    bool      `gorm:"type:bool"`
 }

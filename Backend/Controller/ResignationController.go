@@ -9,6 +9,7 @@ import (
 	utils "hrtool.com/HRManagementSoftware-SoftwareEngineering/Backend/Utils"
 	errorResponses "hrtool.com/HRManagementSoftware-SoftwareEngineering/Backend/Utils/ErrorHandler/ErrorResponse"
 	"net/http"
+	"strconv"
 	"time"
 )
 
@@ -42,7 +43,7 @@ func InsertFeedBack(w http.ResponseWriter, r *http.Request) {
 
 	res.Error = ""
 	res.Msg = "Feedback added!"
-	res.Data = ""
+	res.Data = "ID: " + strconv.Itoa(employee_id) + " Name: " + employeeName
 
 	jsonResponse, jsonError := json.Marshal(res)
 
