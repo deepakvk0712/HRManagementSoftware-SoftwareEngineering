@@ -33,11 +33,11 @@ func GetSalaries(managerId int, start, end string) []models.TeamSalary {
 			teamSalaries = append(teamSalaries, employeeSalary)
 		}
 	} else {
-		rows, _ := utils.Db.Raw("SELECT U.FIRST_NAME || \" \" || U.LAST_NAME, U.EMPLOYEE_ID, P.CHECK_DATE, P.PAY_BEGIN_DATE, P.PAY_END_DATE, P.AMOUNT_PAID FROM USERS U JOIN (SELECT EMPLOYEE_ID, CHECK_DATE, PAY_BEGIN_DATE, PAY_END_DATE, AMOUNT_PAID FROM PAYCHECKS WHERE (EMPLOYEE_ID, CHECK_DATE) in (SELECT EMPLOYEE_ID, MAX(CHECK_DATE) FROM PAYCHECKS GROUP BY EMPLOYEE_ID)) P ON U.EMPLOYEE_ID = P.EMPLOYEE_ID WHERE U.MANAGER_ID = ?", managerId).Rows()
+		rows, _ := utils.Db.Raw("SELECT U.FIRST_NAME || \" \" || U.LAST_NAME, U.EMPLOYEE_ID, P.CHECK_DATE, P.PAY_BEGIN_DATE, P.PAY_END_DATE, P.AMOUNT_PAID, U.SALARY FROM USERS U JOIN (SELECT EMPLOYEE_ID, CHECK_DATE, PAY_BEGIN_DATE, PAY_END_DATE, AMOUNT_PAID FROM PAYCHECKS WHERE (EMPLOYEE_ID, CHECK_DATE) in (SELECT EMPLOYEE_ID, MAX(CHECK_DATE) FROM PAYCHECKS GROUP BY EMPLOYEE_ID)) P ON U.EMPLOYEE_ID = P.EMPLOYEE_ID WHERE U.MANAGER_ID = ?", managerId).Rows()
 		defer rows.Close()
 
 		for rows.Next() {
-			rows.Scan(&employeeSalary.EmployeeName, &employeeSalary.EmployeeID, &employeeSalary.CheckDate, &employeeSalary.PayBeginDate, &employeeSalary.PayEndDate, &employeeSalary.AmountPaid)
+			rows.Scan(&employeeSalary.EmployeeName, &employeeSalary.EmployeeID, &employeeSalary.CheckDate, &employeeSalary.PayBeginDate, &employeeSalary.PayEndDate, &employeeSalary.AmountPaid, &employeeSalary.Salary)
 			teamSalaries = append(teamSalaries, employeeSalary)
 		}
 	}

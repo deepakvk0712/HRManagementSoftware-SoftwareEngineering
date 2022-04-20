@@ -9,4 +9,5 @@ type TeamSalary struct {
 	PayBeginDate time.Time `json:"payBeginDate"`
 	PayEndDate   time.Time `json:"payEndDate"`
 	AmountPaid   float32   `json:"amountPaid"`
+	Salary       float32   `json:"salary"`
 }

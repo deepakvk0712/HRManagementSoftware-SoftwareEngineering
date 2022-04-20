@@ -13,7 +13,7 @@ import (
 	"testing"
 )
 
-func TestChangePassword(t *testing.T) {
+func TestSettings(t *testing.T) {
 	router := mux.NewRouter()
 
 	loginRouter := router.PathPrefix("/login").Subrouter()

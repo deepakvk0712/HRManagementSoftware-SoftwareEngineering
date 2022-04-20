@@ -1,13 +1,14 @@
 package main
 
 import (
+	"log"
+	"net/http"
+	"strings"
+
 	"hrtool.com/HRManagementSoftware-SoftwareEngineering/Backend/Controller"
 	middleware "hrtool.com/HRManagementSoftware-SoftwareEngineering/Backend/Middleware"
 	"hrtool.com/HRManagementSoftware-SoftwareEngineering/Backend/Routers"
 	utils "hrtool.com/HRManagementSoftware-SoftwareEngineering/Backend/Utils"
-	"log"
-	"net/http"
-	"strings"
 
 	"github.com/gorilla/mux"
 	"github.com/rs/cors"

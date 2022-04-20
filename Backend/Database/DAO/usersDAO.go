@@ -2,13 +2,14 @@ package Dao
 
 import (
 	"fmt"
-	models "hrtool.com/HRManagementSoftware-SoftwareEngineering/Backend/Models"
-	gormModels "hrtool.com/HRManagementSoftware-SoftwareEngineering/Backend/Models/GormModels"
-	utils "hrtool.com/HRManagementSoftware-SoftwareEngineering/Backend/Utils"
 	"os"
 	"strconv"
 	"strings"
 	"time"
+
+	models "hrtool.com/HRManagementSoftware-SoftwareEngineering/Backend/Models"
+	gormModels "hrtool.com/HRManagementSoftware-SoftwareEngineering/Backend/Models/GormModels"
+	utils "hrtool.com/HRManagementSoftware-SoftwareEngineering/Backend/Utils"
 )
 
 func CreateUserDAO(u models.User, personalEmail string) (string, int) {

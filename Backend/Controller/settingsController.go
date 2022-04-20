@@ -56,6 +56,8 @@ func ChangePassword(w http.ResponseWriter, req *http.Request) {
 		return
 	}
 
+	fmt.Println(newHashedPassword)
+
 	if dbUser.FirstLogin {
 		if err := Dao.UpdateFirstLoginDAO(email); err == 0 {
 			errorResponses.SendInternalServerErrorResponse(w)
