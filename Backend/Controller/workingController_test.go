@@ -5,6 +5,7 @@ import (
 	"encoding/json"
 	"github.com/gorilla/mux"
 	"github.com/stretchr/testify/assert"
+	middleware "hrtool.com/HRManagementSoftware-SoftwareEngineering/Backend/Middleware"
 	models "hrtool.com/HRManagementSoftware-SoftwareEngineering/Backend/Models"
 	utils "hrtool.com/HRManagementSoftware-SoftwareEngineering/Backend/Utils"
 	"net/http"
@@ -15,104 +16,107 @@ import (
 func TestGetSchedule(t *testing.T) {
 	router := mux.NewRouter()
 
+	loginRouter := router.PathPrefix("/login").Subrouter()
+	loginRouter.HandleFunc("", Login).Methods("POST")
+	loginRouter.Use(middleware.ValidateUser)
+	loginRouter.Use(middleware.Authorize)
+
 	workingRouter := router.PathPrefix("/working").Subrouter()
-	workingRouter.HandleFunc("", GetSchedule).Methods("GET")
+	workingRouter.HandleFunc("/getSchedule", GetSchedule).Methods("GET")
+	workingRouter.HandleFunc("/getWorkingDetails", GetWorkingDetailsBetween).Methods("GET")
+	workingRouter.Use(middleware.ValidateAccessToken)
 
 	utils.Init()
 
 	t.Run("Get schedule", func(t *testing.T) {
+		user := models.UserLogin{
+			Email:    "dstejas191@hrtools.com",
+			Password: "123",
+		}
 
-		EmployeeID := 34
-
-		payload, err := json.Marshal(&EmployeeID)
+		payload, err := json.Marshal(&user)
 		assert.NoError(t, err)
 
-		scheduleRequest, err := http.NewRequest("GET", "/getSchedule", bytes.NewBuffer(payload))
-		scheduleRequest.Header.Set("Content-Type", "application/json")
+		loginRequest, err := http.NewRequest("POST", "/login", bytes.NewBuffer(payload))
+		loginRequest.Header.Set("Content-Type", "application/json")
 		assert.NoError(t, err)
 
 		w := httptest.NewRecorder()
+
+		router.ServeHTTP(w, loginRequest)
+		assert.Equal(t, 200, w.Code)
+
+		type targetType struct {
+			AccessToken string `json:"accessToken"`
+			FirstLogin  bool   `json:"firstLogin"`
+		}
+
+		response := models.JsonResponse{}
+		var target targetType
+
+		json.NewDecoder(w.Body).Decode(&response)
+		json.Unmarshal([]byte(response.Data), &target)
+
+		EmployeeID := 34
+		payload, err = json.Marshal(&EmployeeID)
+		assert.NoError(t, err)
+
+		scheduleRequest, err := http.NewRequest("GET", "/working/getSchedule", bytes.NewBuffer(payload))
+		scheduleRequest.Header.Set("Content-Type", "application/json")
+		scheduleRequest.Header.Set("Authorization", "Bearer "+target.AccessToken)
+		assert.NoError(t, err)
+
+		w = httptest.NewRecorder()
 
 		workingRouter.ServeHTTP(w, scheduleRequest)
 		assert.Equal(t, 200, w.Code)
 	})
 
-}
-func TestGetTodayWorkingHoursByID(t *testing.T) {
-	router := mux.NewRouter()
+	t.Run("Get Working Details", func(t *testing.T) {
+		user := models.UserLogin{
+			Email:    "dstejas191@hrtools.com",
+			Password: "123",
+		}
 
-	workingRouter := router.PathPrefix("/working").Subrouter()
-	workingRouter.HandleFunc("", GetTodayWorkingHoursByID).Methods("GET")
-
-	utils.Init()
-
-	t.Run("Get Today Working Hours", func(t *testing.T) {
-
-		EmployeeID := 34
-
-		payload, err := json.Marshal(&EmployeeID)
+		payload, err := json.Marshal(&user)
 		assert.NoError(t, err)
 
-		todayHRequest, err := http.NewRequest("GET", "/getTodayWork", bytes.NewBuffer(payload))
-		todayHRequest.Header.Set("Content-Type", "application/json")
+		loginRequest, err := http.NewRequest("POST", "/login", bytes.NewBuffer(payload))
+		loginRequest.Header.Set("Content-Type", "application/json")
 		assert.NoError(t, err)
 
 		w := httptest.NewRecorder()
 
-		workingRouter.ServeHTTP(w, todayHRequest)
+		router.ServeHTTP(w, loginRequest)
 		assert.Equal(t, 200, w.Code)
-	})
 
-}
-func TestGetWeekWorkingByID(t *testing.T) {
-	router := mux.NewRouter()
+		type targetType struct {
+			AccessToken string `json:"accessToken"`
+			FirstLogin  bool   `json:"firstLogin"`
+		}
 
-	workingRouter := router.PathPrefix("/working").Subrouter()
-	workingRouter.HandleFunc("", GetWeekWorkingByID).Methods("GET")
+		response := models.JsonResponse{}
+		var target targetType
 
-	utils.Init()
+		json.NewDecoder(w.Body).Decode(&response)
+		json.Unmarshal([]byte(response.Data), &target)
 
-	t.Run("Get This Week's Working Hours", func(t *testing.T) {
-
-		EmployeeID := 34
-
-		payload, err := json.Marshal(&EmployeeID)
-		assert.NoError(t, err)
-
-		weekHRequest, err := http.NewRequest("GET", "/getWeekWork", bytes.NewBuffer(payload))
-		weekHRequest.Header.Set("Content-Type", "application/json")
-		assert.NoError(t, err)
-
-		w := httptest.NewRecorder()
-
-		workingRouter.ServeHTTP(w, weekHRequest)
-		assert.Equal(t, 200, w.Code)
-	})
-
-}
-func TestGetWorkingDetailsBetween(t *testing.T) {
-	router := mux.NewRouter()
-
-	workingRouter := router.PathPrefix("/working").Subrouter()
-	workingRouter.HandleFunc("", GetWorkingDetailsBetween).Methods("GET")
-
-	utils.Init()
-
-	t.Run("Get This Week's Working Hours", func(t *testing.T) {
 		FD := models.FrontendDate{}
 		FD.StartDate = "2022-03-31"
 		FD.EndDate = "2022-04-05"
 
-		payload, err := json.Marshal(&FD)
+		payload, err = json.Marshal(&FD)
 		assert.NoError(t, err)
 
-		weekHRequest, err := http.NewRequest("GET", "/getWorkingDetails", bytes.NewBuffer(payload))
+		weekHRequest, err := http.NewRequest("GET", "/working/getWorkingDetails", bytes.NewBuffer(payload))
 		weekHRequest.Header.Set("Content-Type", "application/json")
+		weekHRequest.Header.Set("Authorization", "Bearer "+target.AccessToken)
 		assert.NoError(t, err)
 
-		w := httptest.NewRecorder()
+		w = httptest.NewRecorder()
 
 		workingRouter.ServeHTTP(w, weekHRequest)
 		assert.Equal(t, 200, w.Code)
 	})
+
 }
