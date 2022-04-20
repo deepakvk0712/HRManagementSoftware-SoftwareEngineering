@@ -248,6 +248,7 @@ export default {
         this.$axios.post("http://localhost:8080/resign/insertFeedback", requestObj)
           .then(response => {
               console.log(response)
+
               this.trainingRating = 5
               this.growthRating = 5
               this.recommendOthers = 5
@@ -260,6 +261,7 @@ export default {
               this.agreeCheckbox = false
               this.changeMind = ""
               this.fullName = ""
+              
               this.$emit('notif', 'Successfully submitted your resignation', "success")
               this.closePopup = false
                                 
