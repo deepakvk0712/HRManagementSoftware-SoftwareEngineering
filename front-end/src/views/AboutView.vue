@@ -8,10 +8,11 @@
         <v-row>
           <v-card class="mx-auto p-0" width="100%" elevation="4">
             <v-toolbar
-              color="#F94D00"
               dark
               flat
+              src="../assets/background.png"
             >
+            <!-- color="#F94D00" -->
             <!-- prominent -->
               <!-- <v-text-field
                 append-icon="mdi-microphone"
@@ -44,8 +45,9 @@
               <v-tab-item>
                 <v-parallax
                   height="100%"
-                  src="https://cdn.vuetifyjs.com/images/parallax/material2.jpg"
+                  src="../assets/background.png"
                 >
+                <!-- src="https://cdn.vuetifyjs.com/images/parallax/material2.jpg" -->
                   <v-card-title class="justify-center">
                     <h1 id="AboutUsHeading" class="black--text text-h2 font-weight-medium mb-2">
                       Meet Axle United!
@@ -63,10 +65,8 @@
 
                       <br><br>Our AI knows how to find what others don’t. We make it quick and easy for you to get the most from the data you have, and to move your enterprise closer to incredibly valuable end-to-end automation.
                       
-                      <br><br>Morbi mattis ullamcorper velit. Donec orci lectus, aliquam ut, faucibus non, euismod id, nulla. Fusce convallis metus id felis luctus adipiscing. Aenean massa. Vestibulum purus quam, scelerisque ut, mollis sed, nonummy id, metus.
-
-                      Nulla consequat massa quis enim. Praesent venenatis metus at tortor pulvinar varius. Donec venenatis vulputate lorem. Phasellus accumsan cursus velit. Pellentesque ut neque.
                       Inference is a powerful tool. You do it without thinking — your brain fills in the missing vowels in our company’s name effortlessly. It knows what’s missing. So do we. We have designed our technology to make these kinds of connections, and at lightning speed.
+                      <br><br> So please come and join us as we venture into a new world and a new horizon, one filled with endless possibilities! With Axle United, anything is possible!
                     </p>
                   </v-card-text>
 
@@ -82,30 +82,191 @@
                       <!-- align="center" -->
                       <v-col style="text-align:center; display:inline-block;" align-content="center" cols="4" class="text-center fill-height">
                         <!-- <span> -->
-                          <v-icon  color="#000080">account_group_outline</v-icon>
+
+                          <!-- <v-icon  color="#000080">account_group_outline</v-icon>
                           <v-card-text class="black--text text-h5 font-weight-bold">
                             2000+ Employees
-                          </v-card-text>
+                          </v-card-text> -->
+
+                          <v-card
+                            class="mx-auto"
+                            max-width="344"
+                          >
+                            <v-card-text>
+                              <!-- <v-icon color="#000080">account_group_outline</v-icon> -->
+                              <div>Team Effort</div>
+                              <p class="text-h4 text--primary">
+                                Strong Team to help you succeed
+                              </p>
+                              <!-- <p>adjective</p> -->
+                              <!-- <div class="text--primary">
+                                relating to or dependent on charity; charitable.<br>
+                                "an eleemosynary educational institution."
+                              </div> -->
+                            </v-card-text>
+                            <v-card-actions>
+                              <v-btn
+                                text
+                                color="teal accent-4"
+                                @click="revealTeam = true"
+                              >
+                                Learn More
+                              </v-btn>
+                            </v-card-actions>
+                        
+                            <v-expand-transition>
+                              <v-card
+                                v-if="revealTeam"
+                                class="transition-fast-in-fast-out v-card--reveal"
+                                style="height: 100%;"
+                              >
+                                <v-card-text class="pb-0">
+                                  <p class="text-h4 text--primary">
+                                    Always working as a team
+                                  </p>
+                                  <p>2000+ Employees</p>
+                                </v-card-text>
+                                <v-card-actions class="pt-0">
+                                  <v-btn
+                                    text
+                                    color="teal accent-4"
+                                    @click="revealTeam = false"
+                                  >
+                                    Close
+                                  </v-btn>
+                                </v-card-actions>
+                              </v-card>
+                            </v-expand-transition>
+                        </v-card>
+
+
                         <!-- </span> -->
                         <!-- large -->
                       </v-col>
 
                       <v-col style="text-align:center; display:inline-block;" align-content="center" cols="4" class="fill-height">
                         <!-- <span> -->
-                          <v-icon color="#000080">feed</v-icon>
-                          <v-card-text class="black--text text-h4 font-weight-bold">
+
+                          <!-- <v-icon color="#000080">feed</v-icon> -->
+                          <!-- <v-card-text class="black--text text-h4 font-weight-bold">
                             50000+ Records Processed
-                          </v-card-text>
+                          </v-card-text> -->
+
+
+                        <v-card
+                            class="mx-auto"
+                            max-width="344"
+                          >
+                            <v-card-text>
+                              <v-icon color="#000080">feed</v-icon>
+                              <div>Delivery</div>
+                              <p class="text-h4 text--primary">
+                                Always deliverying
+                              </p>
+                              <!-- <p>adjective</p> -->
+                              <!-- <div class="text--primary">
+                                relating to or dependent on charity; charitable.<br>
+                                "an eleemosynary educational institution."
+                              </div> -->
+                            </v-card-text>
+                            <v-card-actions>
+                              <v-btn
+                                text
+                                color="teal accent-4"
+                                @click="revealDelivery = true"
+                              >
+                                Learn More
+                              </v-btn>
+                            </v-card-actions>
+                        
+                            <v-expand-transition>
+                              <v-card
+                                v-if="revealDelivery"
+                                class="transition-fast-in-fast-out v-card--reveal"
+                                style="height: 100%;"
+                              >
+                                <v-card-text class="pb-0">
+                                  <p class="text-h4 text--primary">
+                                    Efficiency
+                                  </p>
+                                  <p>50000+ Records Processed</p>
+                                </v-card-text>
+                                <v-card-actions class="pt-0">
+                                  <v-btn
+                                    text
+                                    color="teal accent-4"
+                                    @click="revealDelivery = false"
+                                  >
+                                    Close
+                                  </v-btn>
+                                </v-card-actions>
+                              </v-card>
+                            </v-expand-transition>
+                        </v-card>
+
                         <!-- </span> -->
                         <!-- style="font-size: 44px;" -->
                       </v-col>
 
                       <v-col style="text-align:center; display:inline-block;" align-content="center" cols="4" class="fill-height">
                         <!-- <span> -->
-                          <v-icon color="#000080">account_balance</v-icon>
+
+                          <!-- <v-icon color="#000080">account_balance</v-icon>
                           <v-card-text class="black--text text-h4 font-weight-bold">
                             50% Employess from Harvard/Stanford University
-                          </v-card-text>
+                          </v-card-text> -->
+
+
+                          <v-card
+                            class="mx-auto"
+                            max-width="344"
+                          >
+                            <v-card-text>
+                              <v-icon color="#000080">account_balance</v-icon>
+                              <div>Competitive</div>
+                              <p class="text-h4 text--primary">
+                                Excellence, no less!
+                              </p>
+                              <!-- <p>adjective</p> -->
+                              <!-- <div class="text--primary">
+                                relating to or dependent on charity; charitable.<br>
+                                "an eleemosynary educational institution."
+                              </div> -->
+                            </v-card-text>
+                            <v-card-actions>
+                              <v-btn
+                                text
+                                color="teal accent-4"
+                                @click="revealCompetitive = true"
+                              >
+                                Learn More
+                              </v-btn>
+                            </v-card-actions>
+                        
+                            <v-expand-transition>
+                              <v-card
+                                v-if="revealCompetitive"
+                                class="transition-fast-in-fast-out v-card--reveal"
+                                style="height: 100%;"
+                              >
+                                <v-card-text class="pb-0">
+                                  <p class="text-h4 text--primary">
+                                    Excellence
+                                  </p>
+                                  <p>50% Employess from Harvard/Stanford University</p>
+                                </v-card-text>
+                                <v-card-actions class="pt-0">
+                                  <v-btn
+                                    text
+                                    color="teal accent-4"
+                                    @click="revealCompetitive = false"
+                                  >
+                                    Close
+                                  </v-btn>
+                                </v-card-actions>
+                              </v-card>
+                            </v-expand-transition>
+                          </v-card>
                         <!-- </span> -->
                          <!-- margin-top: 10px -->
                          <!-- style="font-size: 44px;" -->
@@ -179,7 +340,7 @@
               <v-tab-item>
                 <v-parallax
                   height="100%"
-                  src="https://cdn.vuetifyjs.com/images/parallax/material2.jpg"
+                  src="../assets/background.png"
                 >
                   <v-card-title class="justify-center">
                     <h1 id="companyPolicy" class="black--text text-h2 font-weight-medium mb-2">
@@ -206,7 +367,7 @@
               <v-tab-item>
                 <v-parallax
                   height="100%"
-                  src="https://cdn.vuetifyjs.com/images/parallax/material2.jpg"
+                  src="../assets/background.png"
                 >
                 <!-- :src="require('@/assets/mountain.png')" -->
                 <!-- https://cdn.vuetifyjs.com/images/parallax/material2.jpg -->
@@ -235,7 +396,7 @@
               <v-tab-item>
                 <v-parallax
                   height="100%"
-                  src="https://cdn.vuetifyjs.com/images/parallax/material2.jpg"
+                  src="../assets/background.png"
                 >
                 <!-- :src="require('@/assets/mountain.png')" -->
                 <!-- https://cdn.vuetifyjs.com/images/parallax/material2.jpg -->
@@ -264,7 +425,7 @@
               <v-tab-item>
                 <v-parallax
                   height="100%"
-                  src="https://cdn.vuetifyjs.com/images/parallax/material2.jpg"
+                  src="../assets/background.png"
                 >
                 <!-- :src="require('@/assets/mountain.png')" -->
                 <!-- https://cdn.vuetifyjs.com/images/parallax/material2.jpg -->
@@ -298,6 +459,9 @@ export default{
     NavigationBar,
   },
   data: () => ({
+    revealCompetitive : false,
+    revealDelivery: false,
+    revealTeam : false,
     isClicked: false,
     tabs:0,
     tabName : ["About Us", "Company Policy", "Employee Policy", "Core Values", "Mission Statement"],
@@ -445,4 +609,10 @@ export default{
 
 
 <style lang="scss" scoped>
+.v-card--reveal {
+bottom: 0;
+opacity: 1 !important;
+position: absolute;
+width: 100%;
+}
 </style>
