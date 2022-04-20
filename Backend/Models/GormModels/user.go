@@ -3,8 +3,8 @@ package gormModels
 import "time"
 
 type User struct {
-	EmployeeID    int    `json:"EmployeeID";gorm:"primaryKey"`
 	OfficialEmail string `json:"OfficialEmail"`
+	EmployeeID    int    `json:"EmployeeID";gorm:"primaryKey"`
 	FirstName     string `json:"firstName"`
 	LastName      string `json:"lastName"`
 	BusinessUnit  string `json:"businessUnit"`
@@ -41,5 +41,9 @@ type User struct {
 	UpdatedTS     time.Time `json:"updatedTs"`
 	IsOnboard     bool      `json:"IsOnboard"`
 	IsFinance     bool      `json:"IsFinance"`
-	IsResigned    bool      `gorm:"type:bool"`
+	//Leaves // added by Tejas
+	LeavesRemaining int  `json:"leavesRemaining"`
+	PaidLeaves      int  `json:"paidLeaves"`
+	UnpaidLeaves    int  `json:"unpaidLeaves"`
+	IsResigned      bool `json:"isResigned"`
 }

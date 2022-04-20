@@ -26,11 +26,9 @@ func main() {
 
 	/*
 		//  Test router
-
 		getRequest := router.Methods(http.MethodGet).Subrouter()
 		getRequest.HandleFunc("/test", test)
 		getRequest.Use(middleware.ValidateAccessToken)
-
 	*/
 
 	mount(router, "/users", Routers.Router())
@@ -38,7 +36,10 @@ func main() {
 	mount(router, "/dashboard", Routers.DashboardRouter())
 	mount(router, "/working", Routers.WorkingRouter())
 	mount(router, "/paycheck", Routers.PaycheckRouter())
-	mount(router, "/resign", Routers.ResignationRouter())
+	mount(router, "/notify", Routers.NotificationRouter())
+	mount(router, "/leave", Routers.LeaveManagementRouter())
+	mount(router, "/training", Routers.TrainingRouter())
+	mount(router, "/resign", Routers.TrainingRouter())
 
 	c := cors.New(cors.Options{
 		AllowedOrigins:   []string{"*"},
@@ -70,6 +71,4 @@ Test router functionality
 //func test(w http.ResponseWriter, req *http.Request) {
 //	w.Write([]byte(req.Context().Value("email").(string)))
 //}
-
-
 */
