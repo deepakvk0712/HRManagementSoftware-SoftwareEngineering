@@ -16,7 +16,7 @@ func StoreMessage(message models.ReceiveNotificationMessage, sender string) int 
 		Read:     false,
 	}
 
-	result := utils.Db.Create(&notification)
+	result := utils.Db.Omit("MessageID").Create(&notification)
 	if result.Error != nil {
 		fmt.Println(result.Error)
 

@@ -40,6 +40,7 @@ func main() {
 	mount(router, "/paycheck", Routers.PaycheckRouter())
 	mount(router, "/notify", Routers.NotificationRouter())
 	mount(router, "/leave", Routers.LeaveManagementRouter())
+	mount(router, "/training", Routers.TrainingRouter())
 
 	c := cors.New(cors.Options{
 		AllowedOrigins:   []string{"*"},
