@@ -26,4 +26,3 @@ docker run -d -it -p 8080:8080 <image_name>
 
 # API documentation can be found here
 * https://documenter.getpostman.com/view/18807757/UVknubhB
-* https://documenter.getpostman.com/view/19431278/UVktqYpa
