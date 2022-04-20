@@ -18,3 +18,6 @@ Creating a full stack application which will have the capability to manage emplo
 [Click here](https://documenter.getpostman.com/view/18807757/UVknubhB) to view API documentation on POSTMAN 📓 </br>
 [Click here](https://github.com/deepakvk0712/HRManagementSoftware-SoftwareEngineering/wiki/Backend-documentation) to view how to setup Backend 📓 </br>
 </br>
+
+## Link to project board </br>
+[Click here](https://github.com/deepakvk0712/HRManagementSoftware-SoftwareEngineering/projects) to view our project board </br>
