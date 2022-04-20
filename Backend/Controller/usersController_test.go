@@ -15,7 +15,7 @@ import (
 	"testing"
 )
 
-func TestEmployeeRegister(t *testing.T) {
+func TestUser(t *testing.T) {
 	router := mux.NewRouter()
 
 	loginRouter := router.PathPrefix("/login").Subrouter()

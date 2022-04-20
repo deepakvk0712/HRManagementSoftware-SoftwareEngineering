@@ -38,7 +38,7 @@ func TestPaychecks(t *testing.T) {
 	t.Run("If employee is a manager, he should get his paycheck along with paychecks of his employees", func(t *testing.T) {
 		user := models.UserLogin{
 			Email:    "vkashyapdeepak1@hrtools.com",
-			Password: "2G5NUeUV5Sp9gYopPP2tvamR",
+			Password: "abcd1234",
 		}
 
 		payload, err := json.Marshal(&user)
@@ -149,7 +149,7 @@ func TestPaychecks(t *testing.T) {
 	t.Run("Only a manager must be able to update the salary of his employees", func(t *testing.T) {
 		user := models.UserLogin{
 			Email:    "vkashyapdeepak1@hrtools.com",
-			Password: "2G5NUeUV5Sp9gYopPP2tvamR",
+			Password: "abcd1234",
 		}
 
 		payload, err := json.Marshal(&user)
