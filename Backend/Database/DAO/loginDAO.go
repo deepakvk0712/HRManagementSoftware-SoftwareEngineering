@@ -45,7 +45,21 @@ func DeleteLoginDAO(email string) int {
 func GetUserDetailsDAO(email string) (models.UserDetails, int) {
 	userDetails := models.UserDetails{}
 
-	row := utils.Db.Raw("SELECT EMAIL, PASSWORD, ROLE, FIRST_LOGIN FROM LOGIN_USERS WHERE LOWER(EMAIL) = ?", strings.ToLower(email)).Row()
+	isResigned := false
+
+	row := utils.Db.Raw("SELECT IS_RESIGNED FROM USERS WHERE LOWER(OFFICIAL_EMAIL) = ?", strings.ToLower(email)).Row()
+	if row.Err() != nil {
+		fmt.Println(row)
+		return userDetails, 0
+	}
+
+	row.Scan(&isResigned)
+
+	if isResigned {
+		return userDetails, 1
+	}
+
+	row = utils.Db.Raw("SELECT EMAIL, PASSWORD, ROLE, FIRST_LOGIN FROM LOGIN_USERS WHERE LOWER(EMAIL) = ?", strings.ToLower(email)).Row()
 	if row.Err() != nil {
 		fmt.Println(row)
 		return userDetails, 0

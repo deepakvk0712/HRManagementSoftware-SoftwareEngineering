@@ -1,13 +1,14 @@
 package main
 
 import (
+	"log"
+	"net/http"
+	"strings"
+
 	"hrtool.com/HRManagementSoftware-SoftwareEngineering/Backend/Controller"
 	middleware "hrtool.com/HRManagementSoftware-SoftwareEngineering/Backend/Middleware"
 	"hrtool.com/HRManagementSoftware-SoftwareEngineering/Backend/Routers"
 	utils "hrtool.com/HRManagementSoftware-SoftwareEngineering/Backend/Utils"
-	"log"
-	"net/http"
-	"strings"
 
 	"github.com/gorilla/mux"
 	"github.com/rs/cors"
@@ -26,11 +27,9 @@ func main() {
 
 	/*
 		//  Test router
-
 		getRequest := router.Methods(http.MethodGet).Subrouter()
 		getRequest.HandleFunc("/test", test)
 		getRequest.Use(middleware.ValidateAccessToken)
-
 	*/
 
 	mount(router, "/users", Routers.Router())
@@ -41,6 +40,7 @@ func main() {
 	mount(router, "/notify", Routers.NotificationRouter())
 	mount(router, "/leave", Routers.LeaveManagementRouter())
 	mount(router, "/training", Routers.TrainingRouter())
+	mount(router, "/resign", Routers.TrainingRouter())
 
 	c := cors.New(cors.Options{
 		AllowedOrigins:   []string{"*"},
@@ -72,6 +72,4 @@ Test router functionality
 //func test(w http.ResponseWriter, req *http.Request) {
 //	w.Write([]byte(req.Context().Value("email").(string)))
 //}
-
-
 */

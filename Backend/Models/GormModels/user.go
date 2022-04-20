@@ -42,7 +42,8 @@ type User struct {
 	IsOnboard     bool      `json:"IsOnboard"`
 	IsFinance     bool      `json:"IsFinance"`
 	//Leaves // added by Tejas
-	LeavesRemaining int `json:"leavesRemaining"`
-	PaidLeaves      int `json:"paidLeaves"`
-	UnpaidLeaves    int `json:"unpaidLeaves"`
+	LeavesRemaining int  `json:"leavesRemaining"`
+	PaidLeaves      int  `json:"paidLeaves"`
+	UnpaidLeaves    int  `json:"unpaidLeaves"`
+	IsResigned      bool `json:"isResigned"`
 }

@@ -316,27 +316,16 @@ func GetWorkingDetailsBetween(w http.ResponseWriter, r *http.Request) {
 	email := r.Context().Value("email").(string)
 	employee_id := Dao.GetEmployeeIDByEmail(email)
 
+	v := r.URL.Query()
+
+	StartDate := v.Get("StartDate")
+	EndDate := v.Get("EndDate")
+
 	//Get Date start && end time from front end
 	workingDetails := models.WorkingDetails{}
-	FD := models.FrontendDate{}
-	if err := json.NewDecoder(r.Body).Decode(&FD); err != nil {
-		fmt.Println(err)
-		errorResponses.SendBadRequestResponse(w, "Cannot decode json")
-		return
-	}
 
-	arr1 := strings.Split(FD.StartDate, "-")
-	y1, _ := strconv.Atoi(arr1[0])
-	m1, _ := strconv.Atoi(arr1[1])
-	d1, _ := strconv.Atoi(arr1[2])
-
-	arr2 := strings.Split(FD.EndDate, "-")
-	y2, _ := strconv.Atoi(arr2[0])
-	m2, _ := strconv.Atoi(arr2[1])
-	d2, _ := strconv.Atoi(arr2[2])
-
-	workingDetails.StartDate = time.Date(y1, time.Month(m1), d1, 0, 0, 0, 0, time.Local)
-	workingDetails.EndDate = time.Date(y2, time.Month(m2), d2, 23, 59, 59, 0, time.Local)
+	workingDetails.StartDate, _ = time.Parse("2006-01-02", StartDate)
+	workingDetails.EndDate, _ = time.Parse("2006-01-02", EndDate)
 
 	if workingDetails.EndDate.Before(workingDetails.StartDate) {
 		errorResponses.SendBadRequestResponse(w, "Star date must before End Date!")
@@ -444,6 +433,11 @@ func SetWorkingHours(w http.ResponseWriter, r *http.Request) {
 	h2, _ := strconv.Atoi(arr3[0])
 	m2, _ := strconv.Atoi(arr3[1])
 
+	if h1 > h2 {
+		errorResponses.SendBadRequestResponse(w, "End time must greater than start time!")
+		return
+	}
+
 	WH.StartTime = time.Date(year, time.Month(month), day, h1, m1, 0, 0, time.Local)
 	WH.EndTime = time.Date(year, time.Month(month), day, h2, m2, 0, 0, time.Local)
 
@@ -484,10 +478,13 @@ func SetTodayWorkingHours(w http.ResponseWriter, r *http.Request) {
 		errorResponses.SendBadRequestResponse(w, "")
 		return
 	}
-
 	WH := gormModels.WorkingHours{}
 	sh, _ := strconv.Atoi(SE.StartHour)
 	eh, _ := strconv.Atoi(SE.EndHour)
+	if sh < eh {
+		errorResponses.SendBadRequestResponse(w, "end hour must greater than start hour!")
+		return
+	}
 	WH.TimeWorked = float64(eh - sh)
 	t := time.Now()
 	WH.StartTime = time.Date(t.Year(), t.Month(), t.Day(), sh, 0, 0, 0, time.Local)
