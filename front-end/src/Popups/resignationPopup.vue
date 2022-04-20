@@ -213,12 +213,30 @@ export default {
     agreeCheckbox : false,
     documentCheckbox :  false,
     termsCheckbox : false,
+    currentDate : null,
 
   }),
 
   methods: {
       resign(){
-          console.log("resignation call")
+        // console.log("resignation call")
+        const requestObj = {
+          "q1" : this.trainingRating,
+          "q2" : this.growthRating,
+          "q3" : this.recommendOthers,
+          "q4" : this.productRating,
+          "q5" : this.stayRating,
+          "feedback" : this.feedback,
+          "resigndate" : this.currentDate
+        }
+        // console.log(requestObj)
+        this.$axios.post("http://localhost:8080/resign/insertFeedback", requestObj)
+          .then(response => {
+              // console.log(response)
+              this.$emit('notif', 'Successfully submitted your resignation', "success")
+              this.closePopup = false
+                                
+          })
       }
   }
 };
