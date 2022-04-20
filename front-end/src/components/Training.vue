@@ -1,7 +1,7 @@
-<template>
-  <form>
+<template id = "formid">
+  <form class = "container-fluid">
     <div>
-    <h1 class = ma-9> Welcome to the Training Session </h1>
+    <h1 class = ma-9 style="color: black"> Welcome to the Training Session </h1>
     </div>
 
     <div>
@@ -16,10 +16,10 @@
 
     <!-- <video-embed src="https://www.youtube.com/watch?v=sB2iQSvrcG0"></video-embed> -->
 
-    <v-btn id="startID" color = "#6495ED" @click="isHidden = true" class="mb-4">Start Quiz</v-btn>
+    <v-btn id="startID" color = "#6495ED" @click="isHidden = true;click()" class="mb-4">Start Quiz</v-btn>
 
     <div>
-    <h2 class = ma-5> Get 7/10 correct answers to pass</h2>
+    <h2 class = ma-5> Get 7/10 correct answers to complete training</h2>
     </div>
 
     <div>
@@ -28,14 +28,22 @@
 
     <!-- <div v-if="isHidden == true && questionIndex < questions.length">
     <div v-for="q in questions" :key="q.rightAnswer"> -->
+    
+    <v-card class="mx-auto"
+      max-width="700" text-align="left">
+      <v-img
+        src="https://cdn.vuetifyjs.com/images/cards/sunshine.jpg"
+        height="200px"
+      ></v-img>
 
-    <div v-if="isHidden == true && questionIndex < questions.length">
-      <label>{{ question.question }}</label>
-      <div v-for="(c, index) of question.choices" :key="c">
-        <input type="radio" name="choice" :value="index+1" v-model="picked" />
-        <!-- :value="c" -->
-        {{ c }}
-        <!-- {{picked}} -->
+      <v-card-actions class = "justify-left">
+        <div v-if="isHidden == true && questionIndex < questions.length && trainComp == false ">
+          <label class="text-h6">{{ question.question }}</label>
+          <div class = "styled" v-for="(c, index) of question.choices" :key="c">
+            <input type="radio" name="choice" :value="index+1" v-model="picked" />
+          <!-- :value="c" -->
+          {{ c }}
+          <!-- {{picked}} -->
 
         <!-- <v-radio-group v-model="radioGroup"> -->
 
@@ -58,15 +66,37 @@
 
       </div>
     </div>
+    </v-card-actions>
+    </v-card>
     <!-- </div> -->
 
     <!-- <div v-else-if="isHidden == true">
       <button type="button" @click="restart">restart</button>
     </div> -->
 
+
     <div v-if="isHidden == true">
-    <button type="button" :disabled="picked == -1" @click="submit(question)">Submit</button>
+    <button v-if="questionIndex < 9 && trainComp == false" color = "#6495ED" type="button" :disabled="picked == -1" @click="submit(question)" >Submit</button>
     </div>
+
+   <v-btn v-if="questionIndex == 9" id="finishID" color = "#6495ED" @click="scored()" class="mb-4">Final Submit</v-btn>
+
+    <div v-if="trainComp == true">
+      <h2 class = ma-5> Thanks for completing the test! Your score is {{sco}}</h2>
+    </div>
+
+
+    <div v-if="finalSubmit == true && sco <7">
+    <button type="button" :disabled="picked == -1" color = "#6495ED" @click="submit(question)">Retake Quiz</button>
+    </div>
+
+    <!-- <div v-if="trainComp == false && clicked == true">
+      <h2 class = ma-5> Your score is {{sco}}</h2>
+    </div> -->
+    
+    <!-- <h2> {{this.questionIndex}} </h2> 
+
+    <h3>{{this.questions.length}} </h3> -->
 
     <!-- :disabled="picked == -1" -->
     
@@ -237,33 +267,86 @@ export default {
       answer: "",
       isHidden:false,
       picked : -1,
-      answers : []
+      answers : {},
+      trainComp : false,
+      sc: 0,
+      sco:0,
+      clicked: false,
+      finalSubmit: false,
+
     };
   },
   methods: {
     submit() {
+
         const { answer, question, questions, questionIndex } = this;
 
-        const obj = {
-            [question.questionNumber] : this.picked
-        }
-        this.answers.push(obj)
+        let key = [question.questionNumber]
+
+        this.answers[key] =  this.picked
 
         if (answer === question.rightAnswer) {
             this.score++;
         }
 
+        // if(this.finalSubmit == true){
+        //     this.questionIndex = 0
+        //     this.question = questions[0]
+        // }
+        
+        console.log("final")
+        console.log(this.finalSubmit)
+
         if (questionIndex < questions.length) {
             this.questionIndex++;
             this.question = { ...questions[this.questionIndex] };
+            
         }
+        console.log(this.answers)
+        console.log(questionIndex)
+        console.log("submitting")
 
-        else{
-            //call the api
-        }
+        // else if(this.questionIndex == 10)
+        //   {
+        //        console.log("coming to else")
+        //         this.$axios.post("http://192.168.0.16:8080/training/send", this.answers)
+        //           .then(response => {
+        //               let jsonData = JSON.parse(response.data.data)
+        //               console.log(jsonData)
+        //               this.$store.state.accessToken = jsonData.accessToken
+        //               this.sco = score
+        //               this.clicked = true
+        //         })
+        //   }
 
-        this.picked = -1
+      this.picked = -1
+
     },
+
+    scored(){
+
+      const { question, } = this;
+      let key = [question.questionNumber]
+      this.answers[key] =  this.picked
+
+      console.log(this.answers)
+        console.log("coming to score")
+        this.$axios.post("http://localhost:8080/training/send", this.answers)
+          .then(response => {
+              let jsonData = JSON.parse(response.data.data)
+              console.log(jsonData)
+              this.$store.state.accessToken = jsonData.accessToken
+              this.sco = jsonData.score
+              this.trainComp = true
+              // this.clicked = true
+              this.finalSubmit = true
+              this.questionIndex = 0
+              this.question = questions[0]
+
+
+        })
+    },
+
     restart() {
       this.question = questions[0];
       this.answer = "";
@@ -271,6 +354,64 @@ export default {
       this.score = 0;
       this.answers = []
     },
+
+    click(){
+        console.log("coming here to click")
+        // this.$store.commit('LOADER', true)
+        // const requestObj = {
+        //     "email" : this.userName,
+        //     "password" : this.password
+        // }
+        this.$axios.get("http://localhost:8080/training/")
+          .then(response => {
+            // console.log(response)
+            console.log("here")
+              let jsonData = JSON.parse(response.data.data)
+              console.log(jsonData)
+              this.trainComp = jsonData.trainingCompleted
+              console.log(this.trainComp)
+              this.sco = jsonData.score
+              // this.$forceUpdate()
+
+              //this.teamPayslipObj = jsonData.teamSalaries
+              //this.isManager = jsonData.isManager
+
+              // this.$store.state.accessToken = jsonData.accessToken
+              // let token = jsonData.accessToken
+              // this.$axios.defaults.headers.common['Authorization'] = "Bearer " + token
+
+        //       // this.$store.commit('LOADER', false)
+        //       // this.$router.push('/landing')
+        //       // }
+          })
+
+
+    }
+
   },
 };
 </script>
+
+// <style scoped lang="scss">
+// .formid {
+//   background-color: solid red;
+// }
+// </style>
+
+<style scoped>
+    .container-fluid {
+        background-color: rgb(238, 243, 245);
+        height: 100%;
+        width: 100%;
+        background-attachment: fixed;
+        min-height: 100%;
+        min-width: 100%;
+        margin: 0;
+        padding: 10px 75px
+    }
+    .styled{
+      text-align: left ;
+      font-style: oblique;
+      font-size: large;
+    }
+</style>
