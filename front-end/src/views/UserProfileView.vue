@@ -333,10 +333,44 @@ export default {
             this.empName = this.firstName + " " + this.lastName
             // this.empDesignation = this.designation
             this.descriptionEmp = this.description
+
+            //Clearing all the entered inputs here after successful update
+            this.firstName = ""
+            this.lastName = ""
+            this.mobileNumber = null
+            this.emailId = ""
+            this.address = ""
+            this.city = ""
+            this.empState = ""
+            this.zipCode = ""
+            this.description = ""
             
             this.alertMessage = "Successfully updated the user profile information.";
             this.alert = true
             this.alertType = "success"
+            console.log(this.alertMessage)
+            // this.$forceUpdate()
+            setTimeout(() => {
+                this.alert = false;
+                this.alertType = "success"
+                // this.alertMessage="Default message is this!"
+                // this.$forceUpdate();
+            }, 7000)
+        }).catch(() => {
+            //Clearing all the entered inputs here after failed update
+            this.firstName = ""
+            this.lastName = ""
+            this.mobileNumber = null
+            this.emailId = ""
+            this.address = ""
+            this.city = ""
+            this.empState = ""
+            this.zipCode = ""
+            this.description = ""
+
+            this.alertMessage = "Failed to update the user profile information.";
+            this.alert = true
+            this.alertType = "error"
             console.log(this.alertMessage)
             // this.$forceUpdate()
             setTimeout(() => {

@@ -122,6 +122,7 @@
                       ></v-text-field>
                       </template>
                       <v-date-picker
+                      id="leaveApplyEndDateInput"
                       v-model="leaveEndDate"
                       :active-picker.sync="activePicker"
                       min="1950-01-01"
@@ -144,7 +145,7 @@
           </v-col>
           <v-card-actions>
             <v-spacer></v-spacer>
-            <v-btn id="leaveApplyCancelInput" color="grey darken-1" text @click="closePopup = false"
+            <v-btn id="leaveApplyCancelInput" color="grey darken-1" text @click="cancel()"
               >Cancel</v-btn
             >
             <v-btn
@@ -178,6 +179,14 @@ export default {
     inputRules: [(v) => v.length >= 3 || "Minimum lenght is 3 charachters"],
   }),
   methods: {
+    cancel(){
+      this.leaveApplicationTitle = ""
+      this.leaveRequestDescription = ""
+      this.leaveTypeSelection = ""
+      this.leaveStartDate = null
+      this.leaveEndDate = null
+      this.closePopup = false
+    },
     apply(){
       console.log(this.leaveTypeSelection)
       const reqObj = {
@@ -191,8 +200,27 @@ export default {
       this.$axios.post("http://localhost:8080/leave/apply", reqObj)
         .then(response => {
             console.log(response)
+
+            //Clearing the input after successful request
+            this.leaveApplicationTitle = ""
+            this.leaveRequestDescription = ""
+            this.leaveTypeSelection = ""
+            this.leaveStartDate = null
+            this.leaveEndDate = null
+
             this.$emit('notif', 'Requested ' + this.leaveTypeSelection +' from ' + this.leaveStartDate + ' to ' + this.leaveEndDate + ' submitted', "success")
             this.closePopup = false            
+        }).catch(error => {
+            console.log(error)
+
+            //Clearing the input after failed request
+            this.leaveApplicationTitle = ""
+            this.leaveRequestDescription = ""
+            this.leaveTypeSelection = ""
+            this.leaveStartDate = null
+            this.leaveEndDate = null
+            this.$emit('notif', 'Failed to send a leave request to the HR department', "error")
+            this.closePopup = false
         })
     }
   },

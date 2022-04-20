@@ -181,7 +181,7 @@
           
           <v-card-actions>
             <v-spacer></v-spacer>
-            <v-btn id="finCancelButton" color="grey darken-1" text @click="closePopup = false"
+            <v-btn id="finCancelButton" color="grey darken-1" text @click="cancel()"
               >Cancel</v-btn
             >
             <v-btn
@@ -214,10 +214,25 @@ export default {
     documentCheckbox :  false,
     termsCheckbox : false,
     currentDate : null,
-
+    fullName : "",
   }),
 
   methods: {
+      cancel(){
+        this.trainingRating = 5
+        this.growthRating = 5
+        this.recommendOthers = 5
+        this.productRating = 5
+        this.stayRating = 5
+        this.feedback = ""
+        this.currentDate = null
+        this.termsCheckbox = false
+        this.documentCheckbox = false
+        this.agreeCheckbox = false
+        this.changeMind = ""
+        this.fullName = ""
+        this.closePopup = false
+      },
       resign(){
         // console.log("resignation call")
         const requestObj = {
@@ -233,9 +248,37 @@ export default {
         this.$axios.post("http://localhost:8080/resign/insertFeedback", requestObj)
           .then(response => {
               console.log(response)
+              this.trainingRating = 5
+              this.growthRating = 5
+              this.recommendOthers = 5
+              this.productRating = 5
+              this.stayRating = 5
+              this.feedback = ""
+              this.currentDate = null
+              this.termsCheckbox = false
+              this.documentCheckbox = false
+              this.agreeCheckbox = false
+              this.changeMind = ""
+              this.fullName = ""
               this.$emit('notif', 'Successfully submitted your resignation', "success")
               this.closePopup = false
                                 
+          }).catch(error => {
+              console.log(error)
+              this.trainingRating = 5
+              this.growthRating = 5
+              this.recommendOthers = 5
+              this.productRating = 5
+              this.stayRating = 5
+              this.feedback = ""
+              this.currentDate = null
+              this.termsCheckbox = false
+              this.documentCheckbox = false
+              this.agreeCheckbox = false
+              this.changeMind = ""
+              this.fullName = ""
+              this.$emit('notif', 'Failed to submit resignation to HR department!', "error")
+              this.closePopup = false
           })
       }
   }
