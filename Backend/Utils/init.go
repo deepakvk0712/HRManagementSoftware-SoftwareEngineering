@@ -10,7 +10,7 @@ import (
 var LoginJWT models.JWTParams
 
 func Init() {
-	godotenv.Load("./secrets.env")
+	godotenv.Load("../secrets.env")
 	ConnectToDb()
 
 	loginTimeout, _ := strconv.Atoi(os.Getenv("LOGIN_TIMEOUT"))

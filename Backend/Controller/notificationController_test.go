@@ -37,7 +37,7 @@ func TestNotifications(t *testing.T) {
 	utils.Init()
 
 	sender := "vkashyapdeepak1@hrtools.com"
-	receiver := "vkashyapdeepak4@hrtools.com"
+	receiver := "vkashyapdeepak5@hrtools.com"
 	message := "testing this now"
 	messageId := 0
 
@@ -239,8 +239,8 @@ func TestNotifications(t *testing.T) {
 
 	t.Run("Only HRs should be able to get team members of particular business units", func(t *testing.T) {
 		user := models.UserLogin{
-			Email:    "vkashyapdeepak1@hrtools.com",
-			Password: "abcd1234",
+			Email:    "dstejas191@hrtools.com",
+			Password: "123",
 		}
 
 		payload, err := json.Marshal(&user)
@@ -287,9 +287,9 @@ func TestNotifications(t *testing.T) {
 		assert.Less(t, 0, len(membersResponse.TeamMembers))
 	})
 
-	t.Run("Team members should not work for other employees", func(t *testing.T) {
+	t.Run("get Team members should not work for other employees", func(t *testing.T) {
 		user := models.UserLogin{
-			Email:    "vkashyapdeepak4@hrtools.com",
+			Email:    "vkashyapdeepak5@hrtools.com",
 			Password: "abcd1234",
 		}
 
@@ -327,4 +327,6 @@ func TestNotifications(t *testing.T) {
 		router.ServeHTTP(w, createRequest)
 		assert.Equal(t, 403, w.Code)
 	})
+
+	utils.Db.Exec("DELETE FROM NOTIFICATIONS WHERE MESSAGE_ID = ?", messageId)
 }

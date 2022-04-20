@@ -3,6 +3,7 @@ package Controller
 import (
 	"bytes"
 	"encoding/json"
+	"fmt"
 	"github.com/gorilla/mux"
 	"github.com/stretchr/testify/assert"
 	middleware "hrtool.com/HRManagementSoftware-SoftwareEngineering/Backend/Middleware"
@@ -30,7 +31,7 @@ func TestTraining(t *testing.T) {
 
 	t.Run("When an employee hasn't completed training, he should get training completed as false", func(t *testing.T) {
 		user := models.UserLogin{
-			Email:    "vkashyapdeekap4@hrtools.com",
+			Email:    "vkashyapdeepak5@hrtools.com",
 			Password: "abcd1234",
 		}
 
@@ -85,7 +86,7 @@ func TestTraining(t *testing.T) {
 
 	t.Run("When an employee submits his answers, the response should contain the score", func(t *testing.T) {
 		user := models.UserLogin{
-			Email:    "vkashyapdeekap4@hrtools.com",
+			Email:    "vkashyapdeepak5@hrtools.com",
 			Password: "abcd1234",
 		}
 
@@ -121,7 +122,7 @@ func TestTraining(t *testing.T) {
 			QuestionFive:  2,
 			QuestionSix:   4,
 			QuestionSeven: 3,
-			QuestionEight: 2,
+			QuestionEight: 4,
 			QuestionNine:  4,
 			QuestionTen:   4,
 		}
@@ -146,12 +147,14 @@ func TestTraining(t *testing.T) {
 		json.NewDecoder(w.Body).Decode(&response)
 		json.Unmarshal([]byte(response.Data), &trainingResponse)
 
+		fmt.Println(trainingResponse.Score)
+
 		assert.Less(t, -1, trainingResponse.Score)
 	})
 
 	t.Run("When an employee has completed training, he should get training completed as true and his score", func(t *testing.T) {
 		user := models.UserLogin{
-			Email:    "vkashyapdeekap4@hrtools.com",
+			Email:    "vkashyapdeepak5@hrtools.com",
 			Password: "abcd1234",
 		}
 
@@ -203,4 +206,6 @@ func TestTraining(t *testing.T) {
 		assert.Equal(t, true, trainingResponse.TrainingCompleted)
 		assert.Less(t, -1, trainingResponse.Score)
 	})
+
+	utils.Db.Exec("DELETE FROM TRAININGS WHERE EMAIL = ?", "vkashyapdeepak5@hrtools.com")
 }
