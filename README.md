@@ -13,17 +13,8 @@ Creating a full stack application which will have the capability to manage emplo
 * Tejas Dharmastalam Sridhar - tejasdharmastala@ufl.edu (Backend)
 * Zihan Wei - weizihan@ufl.edu (Backend)
 
-# Steps to setup backend
-* Populate the secrets.env file as suggested
-* Build the docker file using command
-```
-docker build -t <image_name> .
-```
-* Run the docker image using command
-```
-docker run -d -it -p 8080:8080 <image_name>
-```
-
-# API documentation can be found here
-* https://documenter.getpostman.com/view/18807757/UVknubhB
-* https://documenter.getpostman.com/view/19431278/UVktqYpa
+## Backend documentation </br>
+[Click here](https://github.com/deepakvk0712/HRManagementSoftware-SoftwareEngineering/wiki/API-documentation) to view our backend API documentation on GitHub-Wiki📓 </br>
+[Click here](https://documenter.getpostman.com/view/18807757/UVknubhB) to view API documentation on POSTMAN 📓 </br>
+[Click here](https://github.com/deepakvk0712/HRManagementSoftware-SoftwareEngineering/wiki/Backend-documentation) to view how to setup Backend 📓 </br>
+</br>
