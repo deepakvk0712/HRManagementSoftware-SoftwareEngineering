@@ -2,13 +2,14 @@ package Dao
 
 import (
 	"fmt"
-	models "hrtool.com/HRManagementSoftware-SoftwareEngineering/Backend/Models"
-	gormModels "hrtool.com/HRManagementSoftware-SoftwareEngineering/Backend/Models/GormModels"
-	utils "hrtool.com/HRManagementSoftware-SoftwareEngineering/Backend/Utils"
 	"os"
 	"strconv"
 	"strings"
 	"time"
+
+	models "hrtool.com/HRManagementSoftware-SoftwareEngineering/Backend/Models"
+	gormModels "hrtool.com/HRManagementSoftware-SoftwareEngineering/Backend/Models/GormModels"
+	utils "hrtool.com/HRManagementSoftware-SoftwareEngineering/Backend/Utils"
 )
 
 func CreateUserDAO(u models.User, personalEmail string) (string, int) {
@@ -239,4 +240,22 @@ func GetTeamDetailsByBU(businessUnit, email string) ([]models.TeamMember, int) {
 
 	return teamMembers, 1
 
+}
+
+func GetEmployeeNameByEmail(officialEmail string) string {
+
+	var fn string
+	var ln string
+	result1 := utils.Db.Raw("SELECT FIRST_NAME FROM users WHERE OFFICIAL_EMAIL = ?", officialEmail).Scan(&fn)
+	result2 := utils.Db.Raw("SELECT LAST_NAME FROM users WHERE OFFICIAL_EMAIL = ?", officialEmail).Scan(&ln)
+
+	if result1.Error != nil && result2.Error != nil {
+		fmt.Println(result1.Error, result2.Error)
+		return "0"
+	}
+	fmt.Println(result1.RowsAffected, result2.RowsAffected)
+
+	name1 := fn + " " + ln
+
+	return name1
 }

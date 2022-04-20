@@ -20,4 +20,4 @@ Creating a full stack application which will have the capability to manage emplo
 </br>
 
 ## Link to project board </br>
-[Click here](https://github.com/deepakvk0712/HRManagementSoftware-SoftwareEngineering/projects) to view our project board </br>
+[Click here](https://github.com/deepakvk0712/HRManagementSoftware-SoftwareEngineering/projects) to view our project board </br
