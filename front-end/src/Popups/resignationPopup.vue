@@ -232,7 +232,7 @@ export default {
         // console.log(requestObj)
         this.$axios.post("http://localhost:8080/resign/insertFeedback", requestObj)
           .then(response => {
-              // console.log(response)
+              console.log(response)
               this.$emit('notif', 'Successfully submitted your resignation', "success")
               this.closePopup = false
                                 
