@@ -41,6 +41,9 @@ func CreateUserDAO(u models.User, personalEmail string) (string, int) {
 		Salary:        u.Salary,
 		CreatedTS:     time.Now(),
 		UpdatedTS:     time.Now(),
+		LeavesRemaining: 40,
+		UnpaidLeaves:    20,
+		PaidLeaves:      20,
 	}
 
 	result := utils.Db.Omit("EmployeeID").Create(&user)
