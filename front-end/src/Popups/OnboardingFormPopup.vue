@@ -13,21 +13,21 @@
         </v-card-title>
         <v-form class="px-3" ref="form">
           <v-card-text>
-            <v-text-field
+            <!-- <v-text-field
               label="Enter Employee ID"
               v-model="empID"
               hide-details
               single-line
               type="number"
-            />
+            /> -->
             <v-text-field
               label="First Name"
-              v-model="FirstName"
+              v-model="firstName"
               prepend-icon="person"
             ></v-text-field>
             <v-text-field
               label="Last Name"
-              v-model="LastName"
+              v-model="lastName"
               prepend-icon="person"
             ></v-text-field>
 
@@ -183,7 +183,7 @@
           
           <v-card-actions>
             <v-spacer></v-spacer>
-            <v-btn color="grey darken-1" text @click="closePopup = false"
+            <v-btn color="grey darken-1" text @click="cancel()"
               >Cancel</v-btn
             >
             <v-btn
@@ -253,6 +253,9 @@ export default {
     dropdownItems:[
         'Paid Leave', 'Un-Paid Leave'
     ],
+    firstName : "",
+    lastName : "",
+    alternateEmail : "",
     permanentAddress : "",
     leaveTypeSelection:1,
     closePopup: false,
@@ -261,6 +264,24 @@ export default {
   }),
 
   methods : {
+    cancel(){
+      this.driversLicense = ""
+      this.ssn = ""
+      this.stateId = ""
+      this.permanentAddress = ""
+      this.alternateEmail = ""
+      this.mobileNumber = ""
+      this.firstName = ""
+      this.lastName = ""
+      this.empGender = ""
+      this.empRace = ""
+      this.empEthnicity = ""
+      this.empCitizenship = ""
+      this.empNationality = ""
+      this.empPronoun = ""
+      this.dob = null
+      this.closePopup = false
+    },
     submit(){
       const reqObj = {
         "EmployeeID" : parseInt(this.empID),
@@ -284,6 +305,46 @@ export default {
       this.$axios.post("http://localhost:8080/users/UpdateEmployeeInfo1", reqObj)
         .then(response => {
           console.log(response)
+
+          //Clearing input after successful submission
+          this.driversLicense = ""
+          this.ssn = ""
+          this.stateId = ""
+          this.permanentAddress = ""
+          this.alternateEmail = ""
+          this.mobileNumber = ""
+          this.firstName = ""
+          this.lastName = ""
+          this.empGender = ""
+          this.empRace = ""
+          this.empEthnicity = ""
+          this.empCitizenship = ""
+          this.empNationality = ""
+          this.empPronoun = ""
+          this.dob = null
+
+          this.$emit('notif', 'Onboarding form submitted successfully.', "success")
+          this.closePopup = false
+        }).catch(error => {
+          console.log(error)
+
+          //Clearing input after failed submission
+          this.driversLicense = ""
+          this.ssn = ""
+          this.stateId = ""
+          this.permanentAddress = ""
+          this.alternateEmail = ""
+          this.mobileNumber = ""
+          this.firstName = ""
+          this.lastName = ""
+          this.empGender = ""
+          this.empRace = ""
+          this.empEthnicity = ""
+          this.empCitizenship = ""
+          this.empNationality = ""
+          this.empPronoun = ""
+          this.dob = null
+          this.$emit('notif', 'Failed to submit onboarding form', "error")
           this.closePopup = false
         })
     }

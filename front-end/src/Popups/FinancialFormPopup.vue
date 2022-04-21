@@ -13,13 +13,13 @@
         </v-card-title>
         <v-form class="px-3" ref="form">
           <v-card-text>
-            <v-text-field
+            <!-- <v-text-field
               label="Enter Employee ID"
               v-model="empID"
               hide-details
               single-line
               type="number"
-            />
+            /> -->
             <v-text-field
               id="bankNameInput"
               label="Enter Bank Name"
@@ -54,7 +54,7 @@
           
           <v-card-actions>
             <v-spacer></v-spacer>
-            <v-btn id="finCancelButton" color="grey darken-1" text @click="closePopup = false"
+            <v-btn id="finCancelButton" color="grey darken-1" text @click="cancel()"
               >Cancel</v-btn
             >
             <v-btn
@@ -88,6 +88,12 @@ export default {
   }),
 
   methods: {
+    cancel(){
+      this.bankName = ""
+      this.routingNumber = ""
+      this.accountNumber = ""
+      this.closePopup = false
+    },
     submit() {
       const requestObj = {
         "EmployeeID" : parseInt(this.empID),
@@ -99,9 +105,25 @@ export default {
       this.$axios.post("http://localhost:8080/users/UpdateEmployeeInfo2", requestObj)
         .then(response => {
             console.log(response)
+
+            //Clearing the financial input after successful submission
+            this.bankName = ""
+            this.routingNumber = ""
+            this.accountNumber = ""
+
+            this.$emit('notif', 'Financial form submitted successfully.', "success")
             this.closePopup = false
             // this.$router.push('/landing')
             
+        }).catch(error => {
+          console.log(error)
+
+          //Clearing the financial input after failed submission
+          this.bankName = ""
+          this.routingNumber = ""
+          this.accountNumber = ""
+          this.$emit('notif', 'Failed to submit the financial form', "error")
+          this.closePopup = false
         })
     }
   }
