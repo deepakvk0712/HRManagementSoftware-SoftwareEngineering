@@ -1,6 +1,6 @@
 # Front End Changes
 
-Added the following features to sprint 3:
+## Added the following features to sprint 3:
 
 * Designed and developed the notification component. This lets users send and receive notifications to their HR manager or team members.
 * Integrated the notification component with the backend.
@@ -15,6 +15,14 @@ Added the following features to sprint 3:
 * 
 
 
-Link to the feature demo video for sprint 4: 
+## Link to the feature demo video for sprint 4: 
 
-Link to the testing demo video for sprint 4:
+Demo Part 1: https://uflorida-my.sharepoint.com/:v:/g/personal/deepakvaskashyap_ufl_edu/EVFZLFRym_pAm7K3jtdJr20Bualw4d6QsxVl4j7EQUhrTg?e=8LJ71u
+
+Demo Part 2: https://uflorida-my.sharepoint.com/:v:/g/personal/deepakvaskashyap_ufl_edu/ERfHPhzK6UFGgdNj5nh0CmABTyksFSucGwMkf8riMztJsg?e=PD8j7T
+
+Payslip Component Demo: https://uflorida-my.sharepoint.com/:v:/g/personal/deepakvaskashyap_ufl_edu/Eec-VCvpaxVImS6CUJVOEfUBMsoCjKRwzgEwa-8ZS1GIgA?e=zmVakh
+
+## Link to the testing demo video for sprint 4: 
+
+https://uflorida-my.sharepoint.com/:v:/g/personal/deepakvaskashyap_ufl_edu/ERG4xXuEa61Lmt0YS7c5Q6cBPCdtAK4ev5RXRdztpVPCtg?e=7TAHbW
