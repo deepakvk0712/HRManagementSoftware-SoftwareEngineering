@@ -52,10 +52,10 @@ export default {
   },
     name: "LoginPage",
     data: () => ({
-      showPassword:false,
-      userName : "",
-      password : "",
-      value : "",
+        showPassword:false,
+        userName : "",
+        password : "",
+        value : "",
     }),
 
     methods : {
@@ -84,6 +84,8 @@ export default {
                         // this.$store.commit('LOADER', false)
                         this.$router.push('/landing')
                     }
+                }).catch(() =>{
+                    alert("You entered invalid credentials. Please try again!");
                 })
         },
     }
