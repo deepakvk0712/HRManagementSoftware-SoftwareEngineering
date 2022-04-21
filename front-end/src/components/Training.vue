@@ -1,10 +1,10 @@
 <template id = "formid">
   <form class = "container-fluid">
-    <div>
+    <div id = "trainingID">
     <h1 class = ma-9 style="color: black"> Welcome to the Training Session </h1>
     </div>
 
-    <div>
+    <div id = "tID">
     <h4 class = ma-9> Please watch this video and answer the below questions</h4>
     </div>
 
@@ -18,11 +18,11 @@
 
     <v-btn id="startID" color = "#6495ED" @click="isHidden = true;click()" class="mb-4">Start Quiz</v-btn>
 
-    <div>
+    <div id = "ansID">
     <h2 class = ma-5> Get 7/10 correct answers to complete training</h2>
     </div>
 
-    <div>
+    <div id = "aID">
     <h2 class = ma-5> All the Best!</h2>
     </div>
 
@@ -81,7 +81,7 @@
 
    <v-btn v-if="questionIndex == 9" id="finishID" color = "#6495ED" @click="scored()" class="mb-4">Final Submit</v-btn>
 
-    <div v-if="trainComp == true">
+    <div id = "cID" v-if="trainComp == true">
       <h2 class = ma-5> Thanks for completing the test! Your score is {{sco}}</h2>
     </div>
 
