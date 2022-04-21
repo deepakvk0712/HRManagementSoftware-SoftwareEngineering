@@ -12,8 +12,10 @@
 * Added documentation for the login page, sign up page, landing page(Dashboard), user profile page, attendance page, resignation component, leave application component, attendance page, signout and about us page.
 * Integrated the leave application component with the backend.
 * Integrated the attendance page with the backend. This includes fetching the stats by start and end date and displaying these employee work stats.
-* 
-
+* Added the update salary feature in the pay slip page. This is given only to the manager to update the salary of his team members working under him.
+* Added a filter to start and end date in pay slip page. This is will display the pay checks only in this date range.
+* Integrated this whole pay slip page with backend.
+* Added a training component that allows employee to watch some training videos. After the training is completed a quiz is available to take for the employee.
 
 ## Link to the feature demo video for sprint 4: 
 
@@ -23,10 +25,11 @@ Demo Part 2: https://uflorida-my.sharepoint.com/:v:/g/personal/deepakvaskashyap_
 
 Payslip Component Demo: https://uflorida-my.sharepoint.com/:v:/g/personal/deepakvaskashyap_ufl_edu/Eec-VCvpaxVImS6CUJVOEfUBMsoCjKRwzgEwa-8ZS1GIgA?e=zmVakh
 
+Notification Component Demo: https://uflorida-my.sharepoint.com/:i:/g/personal/deepakvaskashyap_ufl_edu/EaBlgzyjM0dEjNoZrE5WxfcBv6Qf1sAI2w97OZDWqdOumg?e=J5RLe3
+
 ## Link to the testing demo video for sprint 4: 
 
 https://uflorida-my.sharepoint.com/:v:/g/personal/deepakvaskashyap_ufl_edu/ERG4xXuEa61Lmt0YS7c5Q6cBPCdtAK4ev5RXRdztpVPCtg?e=7TAHbW
-
 
 # Back End Changes
 
