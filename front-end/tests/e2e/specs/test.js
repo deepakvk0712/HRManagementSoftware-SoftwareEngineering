@@ -9,7 +9,7 @@ describe('Testing login procedure and landing page elements ', () => {
     const email = 'dstejas191@hrtools.com'
     const password = '123'
 
-    cy.visit('http://localhost:8080/')
+    cy.visit('http://localhost:8081/')
     cy.get('#userNameInput')
       .type('dstejas191@hrtools.com')
 
@@ -25,7 +25,7 @@ describe('Testing login procedure and landing page elements ', () => {
       password
     });
 
-    cy.visit('http://localhost:8080/landing')
+    cy.visit('http://localhost:8081/landing')
 
   });
 
@@ -60,7 +60,7 @@ describe('Testing login procedure and landing page elements ', () => {
     const email = 'dstejas191@hrtools.com'
     const password = '123'
 
-    cy.visit('http://localhost:8080/')
+    cy.visit('http://localhost:8081/')
     cy.get('#userNameInput')
       .type('dstejas191@hrtools.com')
 
@@ -76,6 +76,6 @@ describe('Testing login procedure and landing page elements ', () => {
       password
     });
 
-    cy.visit('http://localhost:8080/landing')
+    cy.visit('http://localhost:8081/landing')
   });
 })
