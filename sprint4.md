@@ -1,6 +1,6 @@
 # Front End Changes
 
-## Added the following features to sprint 3:
+## Added the following features to sprint 4:
 
 * Designed and developed the notification component. This lets users send and receive notifications to their HR manager or team members.
 * Integrated the notification component with the backend.
@@ -26,3 +26,19 @@ Payslip Component Demo: https://uflorida-my.sharepoint.com/:v:/g/personal/deepak
 ## Link to the testing demo video for sprint 4: 
 
 https://uflorida-my.sharepoint.com/:v:/g/personal/deepakvaskashyap_ufl_edu/ERG4xXuEa61Lmt0YS7c5Q6cBPCdtAK4ev5RXRdztpVPCtg?e=7TAHbW
+
+
+# Back End Changes
+
+## Added the following features to sprint 4:
+
+* Designed and developed APIs for notification component. Allows users to notify and receive notifications in dashboard.
+* Integrated the notification component with the frontend.
+* Designed and developed APIs for resignation component. 
+* Integrated the resignation component with the frontend.
+* Designed and developed APIs for leave application
+* Deesigned and developed APIs for training 
+* Prepared API documentation, Backend documentation and videos for the same
+
+Demo Link:
+https://uflorida-my.sharepoint.com/:v:/g/personal/tejasdharmastala_ufl_edu/EWEHDcbzYP5KoiQJOxZB0iEBAzX-BmFcb8HRb2y5XJoSmA?e=TWFwyp
