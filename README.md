@@ -17,13 +17,9 @@ The application focuses on providing an employee management tool to companies to
 * There is also a notification feature that facilitates communication between team members. This also allows hiring managers to notify any user.
 * Employees can resign from their position.
 
-## Frontend Demonstration Part 1
+## Frontend Demonstration Feature Demonstration
 
-https://user-images.githubusercontent.com/90729944/164357887-373cf978-bf17-4127-9d05-dc8df078c983.mp4
-
-## Frontend Demonstration Part 2
-
-https://user-images.githubusercontent.com/90729944/164357908-39797e6f-b33d-4e9d-a088-88f4e712f432.mp4
+https://user-images.githubusercontent.com/89712730/164364603-8de82cfe-4670-4c5f-b703-f502ce1f97c9.mp4
 
 ## Frontend Testing Demonstration
 

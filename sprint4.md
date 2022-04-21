@@ -25,8 +25,7 @@ Demo Part 2: https://uflorida-my.sharepoint.com/:v:/g/personal/deepakvaskashyap_
 
 Payslip Component Demo: https://uflorida-my.sharepoint.com/:v:/g/personal/deepakvaskashyap_ufl_edu/Eb3mg0Dzr2NGnzftKST8AkAB7ybi9qxZkW8qfaC7o9zZLw?e=4dPcR9
 
-Notification Component Demo: 
-https://uflorida-my.sharepoint.com/:i:/g/personal/deepakvaskashyap_ufl_edu/EaBlgzyjM0dEjNoZrE5WxfcBv6Qf1sAI2w97OZDWqdOumg?e=J5RLe3
+Notification Component Demo: https://uflorida-my.sharepoint.com/:v:/g/personal/deepakvaskashyap_ufl_edu/EdZHC1QZrpZAvPrPftnn-wkBoygwIvTsEURMW0jYWL1LHg?e=toptyM
 
 ## Link to the testing demo video for sprint 4: 
 
